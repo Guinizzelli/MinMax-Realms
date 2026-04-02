@@ -1,0 +1,53 @@
+// lvl 50, rare bow
+[HAND]
+type=BOW
+tag={customLore:"The cries of the battlefield still ring within the bowstring.",rarity:"RARE",mythic:1,customName:"Yakhel's Haunted Bow",tier:3,level:50,type:"BOW"}
+DMG: <79,85> - <85,90>
+FIRE DMG: +<17,19>
+PIERCING: +<10,12>
+BLEEDING: +<6,8>%
+EXECUTE: +<8,10>%
+
+[FEET]
+type=IRON_BOOTS
+tag={customLore:"Hundreds of skeletons have been laid to rest underneath these boots.",rarity:"RARE",mythic:1,customName:"Yahkel's Dusty Footwear",tier:3,level:50,type:"ARMOR"}
+HP: +<516,556>
+ARMOR: 9 - <9,10>
+ENERGY REGEN: +<5.06,5.25>/s
+DEX: +<225,250>
+STR: +<225,250>
+DODGE: +<3,4>%
+THORNS: +<5,6>%
+
+[LEGS]
+type=IRON_LEGGINGS
+tag={customLore:"The bloodstained leggings of a fearsome raider.",rarity:"RARE",mythic:1,customName:"Yakhel's Bloodied Leggings",tier:3,level:50,type:"ARMOR"}
+HP: +<516,556>
+ARMOR: 9 - <9,10>
+ENERGY REGEN: +<5.06,5.25>/s
+DEX: +<225,250>
+STR: +<225,250>
+DODGE: +<3,4>%
+THORNS: +<5,6>%
+
+[CHEST]
+type=IRON_CHESTPLATE
+tag={customLore:"The beaten plate of a fearsome raider.",rarity:"RARE",mythic:1,customName:"Yakhel's Beaten Breastplate",tier:3,level:50,type:"ARMOR"}
+HP: +<516,556>
+ARMOR: 9 - <9,10>
+ENERGY REGEN: +<5.06,5.25>/s
+DEX: +<225,250>
+STR: +<225,250>
+DODGE: +<3,4>%
+THORNS: +<5,6>%
+
+[HEAD]
+type=IRON_HELMET
+tag={customLore:"A horn is broken off due to a previous battle.",rarity:"RARE",mythic:1,customName:"Yakhel's One-Horned Helmet",tier:3,level:50,type:"ARMOR"}
+HP: +<516,556>
+ARMOR: 9 - <9,10>
+ENERGY REGEN: +<5.06,5.25>/s
+DEX: +<225,250>
+STR: +<225,250>
+DODGE: +<3,4>%
+THORNS: +<5,6>%

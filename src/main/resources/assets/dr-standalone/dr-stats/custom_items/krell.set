@@ -1,0 +1,54 @@
+// lvl 93, epic mace
+[HAND]
+type=GOLD_SPADE
+tag={customLore:"A heavy warmaul capable of obliterating defenders.",rarity:"EPIC",mythic:1,customName:"Siegebreaker",tier:5,level:93,type:"WEAPON"}
+DMG: <380,399> - <399,418>
+FIRE DMG: +<70,75>
+vs. PLAYERS: +<12,15>%
+CRUSHING: +<12,15>%
+CRITICAL HIT: +<10,12>%
+BLEEDING: +<8,10>%
+
+[FEET]
+type=GOLD_BOOTS
+tag={customLore:"Durable boots that have traveled across the land of Andalucia.",rarity:"EPIC",mythic:1,customName:"Krell's Trench Boots",tier:5,level:93,type:"ARMOR"}
+HP: +<3306,3499>
+ARMOR: <15,16> - <17,18>
+ENERGY REGEN: +<7.13,7.31>/s
+VIT: +<275,300>
+STR: +<275,300>
+BLOCK: +<5,6>%
+HEALING: +<4,5>%
+
+[LEGS]
+type=GOLD_LEGGINGS
+tag={customLore:"Thick, powerful leggings marred with dents and scratches.",rarity:"EPIC",mythic:1,customName:"Krell's Legguards",tier:5,level:93,type:"ARMOR"}
+HP: +<3306,3499>
+ARMOR: <15,16> - <17,18>
+ENERGY REGEN: +<7.13,7.31>/s
+VIT: +<275,300>
+STR: +<275,300>
+BLOCK: +<5,6>%
+HEALING: +<4,5>%
+
+[CHEST]
+type=GOLD_CHESTPLATE
+tag={customLore:"A heavy chestplate marked with medals and awards.",rarity:"EPIC",mythic:1,customName:"Krell's Adorned Chestplate",tier:5,level:93,type:"ARMOR"}
+HP: +<3306,3499>
+ARMOR: <15,16> - <17,18>
+ENERGY REGEN: +<7.13,7.31>/s
+VIT: +<275,300>
+STR: +<275,300>
+BLOCK: +<5,6>%
+HEALING: +<4,5>%
+
+[HEAD]
+type=GOLD_HELMET
+tag={customLore:"Once the key to the throne, owned by one who cannot claim it alone.",rarity:"EPIC",mythic:1,customName:"Krell's Peaked Helm",tier:5,level:93,type:"ARMOR"}
+HP: +<3306,3499>
+ARMOR: <15,16> - <17,18>
+ENERGY REGEN: +<7.13,7.31>/s
+VIT: +<275,300>
+STR: +<275,300>
+BLOCK: +<5,6>%
+HEALING: +<4,5>%

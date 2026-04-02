@@ -1,0 +1,53 @@
+// lvl 70, rare mace
+[HAND]
+type=DIAMOND_SPADE
+tag={customLore:"A jewel encrusted mace which glimmers in the sunlight.",rarity:"RARE",mythic:1,customName:"The Collector's Shiny Mace",tier:4,level:70,type:"WEAPON"}
+DMG: <164,174> - <174,185>
+PURE DMG: +<32,36>
+ICE DMG: +<32,36>
+CRITICAL HIT: +<7,8>%
+vs. MONSTERS: +<12,15>%
+
+[FEET]
+type=DIAMOND_BOOTS
+tag={customLore:"Shiny boots reinforced with mithril.",rarity:"RARE",mythic:1,customName:"The Collector's Lucky Treads",tier:4,level:70,type:"ARMOR"}
+HP: +<1260,1352>
+ARMOR: <11,12> - <12,13>
+ENERGY REGEN: +<6.0,6.19>/s
+VIT: +<250,275>
+STR: +<250,275>
+ITEM FIND: +<7,8>%
+GEM FIND: +<14,16>%
+
+[LEGS]
+type=DIAMOND_LEGGINGS
+tag={customLore:"Rumors say that these pockets can expand to hold any amout of treasure.",rarity:"RARE",mythic:1,customName:"The Collector's Shimmering Garbs",tier:4,level:70,type:"ARMOR"}
+HP: +<1260,1352>
+ARMOR: <11,12> - <12,13>
+ENERGY REGEN: +<6.0,6.19>/s
+VIT: +<250,275>
+STR: +<250,275>
+ITEM FIND: +<7,8>%
+GEM FIND: +<14,16>%
+
+[CHEST]
+type=DIAMOND_CHESTPLATE
+tag={customLore:"Magical energies flow out of the large gem located in the middle of this platebody.",rarity:"RARE",mythic:1,customName:"The Collector's Magical Platebody",tier:4,level:70,type:"ARMOR"}
+HP: +<1260,1352>
+ARMOR: <11,12> - <12,13>
+ENERGY REGEN: +<6.0,6.19>/s
+VIT: +<250,275>
+STR: +<250,275>
+ITEM FIND: +<7,8>%
+GEM FIND: +<14,16>%
+
+[HEAD]
+type=DIAMOND_HELMET
+tag={customLore:"Rolling cogs make this braincase particularly uncomfortable.",rarity:"RARE",mythic:1,customName:"The Collector's Glistening Braincase",tier:4,level:70,type:"ARMOR"}
+HP: +<1260,1352>
+ARMOR: <11,12> - <12,13>
+ENERGY REGEN: +<6.0,6.19>/s
+VIT: +<250,275>
+STR: +<250,275>
+ITEM FIND: +<7,8>%
+GEM FIND: +<14,16>%

@@ -1,0 +1,53 @@
+// lvl 74, rare/epic bow
+[HAND]
+type=BOW
+tag={customLore:"A powerful bow which radiates an energy reminiscent of the great peaks of the Frozen North.",rarity:"EPIC",mythic:1,customName:"Bow of Eternal Glory",tier:4,level:74,type:"BOW"}
+DMG: <189,199> - <199,210>
+ICE DMG: +<34,38>
+SLOW: +<14,16>%
+BLEEDING: +<8,10>%
+PIERCING: +<12,15>
+
+[FEET]
+type=DIAMOND_BOOTS
+tag={customLore:"The footsteps of the victorious will last for an eternity.",rarity:"EPIC",mythic:1,customName:"Footguards of Neverending Triumph",tier:4,level:74,type:"ARMOR"}
+HP: +<1405,1500>
+ARMOR: <12,13> - <13,14>
+ENERGY REGEN: +<6.1,6.29>/s
+DEX: +<250,275>
+STR: +<250,275>
+ITEM FIND: +<7,8>%
+DODGE: +<4,5>%
+
+[LEGS]
+type=DIAMOND_LEGGINGS
+tag={customLore:"Fame will befall on those capable of excellence.",rarity:"EPIC",mythic:1,customName:"Legplates of Boundless Splendor",tier:4,level:74,type:"ARMOR"}
+HP: +<1405,1500>
+ARMOR: <12,13> - <13,14>
+ENERGY REGEN: +<6.1,6.29>/s
+DEX: +<250,275>
+STR: +<250,275>
+ITEM FIND: +<7,8>%
+DODGE: +<4,5>%
+
+[CHEST]
+type=DIAMOND_CHESTPLATE
+tag={customLore:"The glory of battle is forever lasting.",rarity:"EPIC",mythic:1,customName:"Breastplate of Absolute Greatness",tier:4,level:74,type:"ARMOR"}
+HP: +<1405,1500>
+ARMOR: <12,13> - <13,14>
+ENERGY REGEN: +<6.1,6.29>/s
+DEX: +<250,275>
+STR: +<250,275>
+ITEM FIND: +<7,8>%
+DODGE: +<4,5>%
+
+[HEAD]
+type=DIAMOND_HELMET
+tag={customLore:"A magnificent crown, worn by great rulers of the past.",rarity:"EPIC",mythic:1,customName:"Crown of Everlasting Prestige",tier:4,level:74,type:"ARMOR"}
+HP: +<1405,1500>
+ARMOR: <12,13> - <13,14>
+ENERGY REGEN: +<6.1,6.29>/s
+DEX: +<250,275>
+STR: +<250,275>
+ITEM FIND: +<7,8>%
+DODGE: +<4,5>%

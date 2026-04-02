@@ -1,0 +1,53 @@
+// lvl 35, epic bow
+[HAND]
+type=BOW
+tag={customLore:"The gnarled, accursed bow of Mistress Sibyl.",rarity:"EPIC",mythic:1,customName:"Eternal Agony",tier:2,level:35,type:"BOW"}
+DMG: <41,42> - <42,45>
+POISON DMG: +<9,10>
+SLOW: +<10,12>%
+BLINDING: +<8,10>%
+PIERCING: +<8,10>
+
+[FEET]
+type=CHAINMAIL_BOOTS
+tag={customLore:"The enchanted boots of eternal pain.",rarity:"EPIC",mythic:1,customName:"Mistress' Enchanted Boots",tier:2,level:35,type:"ARMOR"}
+HP: +<239,256>
+ARMOR: <6,7> - <7,8>
+ENERGY REGEN: +<4.31,4.5>/s
+DEX: +<200,225>
+INT: +<200,225>
+REFLECT: +<3,4>%
+THORNS: +<5,6>%
+
+[LEGS]
+type=CHAINMAIL_LEGGINGS
+tag={customLore:"The torn skirt of The Mistress.",rarity:"EPIC",mythic:1,customName:"Mistress' Torn Skirt",tier:2,level:35,type:"ARMOR"}
+HP: +<239,256>
+ARMOR: <6,7> - <7,8>
+ENERGY REGEN: +<4.31,4.5>/s
+DEX: +<200,225>
+INT: +<200,225>
+REFLECT: +<3,4>%
+THORNS: +<5,6>%
+
+[CHEST]
+type=CHAINMAIL_CHESTPLATE
+tag={customLore:"The crimson hexed breastplate of The Mistress.",rarity:"EPIC",mythic:1,customName:"Mistress' Hexed Breastplate",tier:2,level:35,type:"ARMOR"}
+HP: +<239,256>
+ARMOR: <6,7> - <7,8>
+ENERGY REGEN: +<4.31,4.5>/s
+DEX: +<200,225>
+INT: +<200,225>
+REFLECT: +<3,4>%
+THORNS: +<5,6>%
+
+[HEAD]
+type=CHAINMAIL_HELMET
+tag={customLore:"The ancient crown of the Chapel.",rarity:"EPIC",mythic:1,customName:"Dying Breath",tier:2,level:35,type:"ARMOR"}
+HP: +<239,256>
+ARMOR: <6,7> - <7,8>
+ENERGY REGEN: +<4.31,4.5>/s
+DEX: +<200,225>
+INT: +<200,225>
+REFLECT: +<3,4>%
+THORNS: +<5,6>%

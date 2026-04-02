@@ -1,0 +1,53 @@
+// lvl 20, epic/legendary bow
+[HAND]
+type=BOW
+tag={customLore:"A bow strung together with wicked magic and explosives.",rarity:"LEGENDARY",mythic:2,customName:"Wildfire",tier:1,level:20,type:"BOW"}
+DMG: <18,19> - <19,21>
+FIRE DMG: +<4,5>
+CRITICAL HIT: +<6,8>%
+BLINDING: +<7,8>%
+PIERCING: +<6,8>
+
+[FEET]
+type=LEATHER_BOOTS
+tag={customLore:"Boots made for the endeavors of Stonehenge.",rarity:"LEGENDARY",mythic:2,customName:"The Mad Pyromancer's Boots",tier:1,level:20,type:"ARMOR"}
+HP: +<95,102>
+ARMOR: <5,5> - <5,5>
+ENERGY REGEN: +<3.47,3.66>/s
+DEX: +<175,200>
+VIT: +<175,200>
+GEM FIND: +<12,15>%
+REFLECT: +<3,4>%
+
+[LEGS]
+type=LEATHER_LEGGINGS
+tag={customLore:"Leggings scorched from a failed experiment.",rarity:"LEGENDARY",mythic:2,customName:"The Mad Pyromancer's Scorched Leggings",tier:1,level:20,type:"ARMOR"}
+HP: +<95,102>
+ARMOR: <5,5> - <5,5>
+ENERGY REGEN: +<3.47,3.66>/s
+DEX: +<175,200>
+VIT: +<175,200>
+GEM FIND: +<12,15>%
+REFLECT: +<3,4>%
+
+[CHEST]
+type=LEATHER_CHESTPLATE
+tag={customLore:"A cloak singed in burning embers.",rarity:"LEGENDARY",mythic:2,customName:"The Mad Pyromancer's Cloak",tier:1,level:20,type:"ARMOR"}
+HP: +<95,102>
+ARMOR: <5,5> - <5,5>
+ENERGY REGEN: +<3.47,3.66>/s
+DEX: +<175,200>
+VIT: +<175,200>
+GEM FIND: +<12,15>%
+REFLECT: +<3,4>%
+
+[HEAD]
+type=LEATHER_HELMET
+tag={customLore:"Goggles crafted to withstand explosions and flames.",rarity:"LEGENDARY",mythic:2,customName:"The Mad Pyromancer's Cracked Goggles",tier:1,level:20,type:"ARMOR"}
+HP: +<95,102>
+ARMOR: <5,5> - <5,5>
+ENERGY REGEN: +<3.47,3.66>/s
+DEX: +<175,200>
+VIT: +<175,200>
+GEM FIND: +<12,15>%
+REFLECT: +<3,4>%

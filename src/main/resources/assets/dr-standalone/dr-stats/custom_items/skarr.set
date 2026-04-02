@@ -1,0 +1,53 @@
+// lvl 92, rare/epic mace
+[HAND]
+type=GOLD_SPADE
+tag={customLore:"A single, well-placed strike triumphs any foe.",rarity:"EPIC",mythic:1,customName:"Heart of Rebellion",tier:5,level:92,type:"WEAPON"}
+DMG: <357,376> - <376,395>
+POISON DMG: +<70,75>
+ACCURACY: +<20,25>%
+SHATTER: +<10,12>%
+CRITICAL HIT: +<10,12>%
+
+[FEET]
+type=GOLD_BOOTS
+tag={customLore:"With agile steps, these boots are the only piece to be dirtied.",rarity:"EPIC",mythic:1,customName:"Conqueror's War-stained Boots",tier:5,level:92,type:"ARMOR"}
+HP: +<3081,3273>
+ARMOR: <15,16> - <16,17>
+ENERGY REGEN: +<7.04,7.22>/s
+VIT: +<275,300>
+DEX: +<275,300>
+DODGE: +<5,6>%
+GEM FIND: +<14,16>%
+
+[LEGS]
+type=GOLD_LEGGINGS
+tag={customLore:"Flexible leggings for sidestepping spear throws.",rarity:"EPIC",mythic:1,customName:"Conqueror's Efficient Leggings",tier:5,level:92,type:"ARMOR"}
+HP: +<3081,3273>
+ARMOR: <15,16> - <16,17>
+ENERGY REGEN: +<7.04,7.22>/s
+VIT: +<275,300>
+DEX: +<275,300>
+DODGE: +<5,6>%
+GEM FIND: +<14,16>%
+
+[CHEST]
+type=GOLD_CHESTPLATE
+tag={customLore:"Shiny as the day it was made, polished and undented.",rarity:"EPIC",mythic:1,customName:"Conqueror's Perfect Plate",tier:5,level:92,type:"ARMOR"}
+HP: +<3081,3273>
+ARMOR: <15,16> - <16,17>
+ENERGY REGEN: +<7.04,7.22>/s
+VIT: +<275,300>
+DEX: +<275,300>
+DODGE: +<5,6>%
+GEM FIND: +<14,16>%
+
+[HEAD]
+type=GOLD_HELMET
+tag={customLore:"No other troll gear has so little bloodstains.",rarity:"EPIC",mythic:1,customName:"Crown of Conquering",tier:5,level:92,type:"ARMOR"}
+HP: +<3081,3273>
+ARMOR: <15,16> - <16,17>
+ENERGY REGEN: +<7.04,7.22>/s
+VIT: +<275,300>
+DEX: +<275,300>
+DODGE: +<5,6>%
+GEM FIND: +<14,16>%

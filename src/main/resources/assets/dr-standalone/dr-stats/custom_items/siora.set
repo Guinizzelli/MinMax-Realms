@@ -1,0 +1,52 @@
+// lvl 58, rare/epic scythe
+[HAND]
+type=IRON_HOE
+tag={customLore:"A mystical weapon, capable of sapping the life out of anything it touches.",rarity:"EPIC",mythic:1,customName:"Harvester of Life",tier:3,level:58,type:"WEAPON"}
+DMG: <79,85> - <85,89>
+PURE DMG: +<15,17>
+LIFE STEAL: +<10,12>%
+CLEAVE: +<7,8>%
+
+[FEET]
+type=IRON_BOOTS
+tag={customLore:"These lightweight boots make traversing through treacherous terrain almost effortless.",rarity:"EPIC",mythic:1,customName:"Rustic Treads",tier:3,level:58,type:"ARMOR"}
+HP: +<600,643>
+ARMOR: 9 - <9,10>
+ENERGY REGEN: +<5.15,5.35>/s
+INT: +<225,250>
+VIT: +<225,250>
+HEALING: +<3,4>%
+THORNS: +<4,5>%
+
+[LEGS]
+type=IRON_LEGGINGS
+tag={customLore:"Although stained with mud, these leggings feel soft and comforting to wear.",rarity:"EPIC",mythic:1,customName:"Rustic Leggings",tier:3,level:58,type:"ARMOR"}
+HP: +<600,643>
+ARMOR: 9 - <9,10>
+ENERGY REGEN: +<5.15,5.35>/s
+INT: +<225,250>
+VIT: +<225,250>
+HEALING: +<3,4>%
+THORNS: +<4,5>%
+
+[CHEST]
+type=IRON_CHESTPLATE
+tag={customLore:"Even the deepest of injuries seem to disappear while wearing this chestplate.",rarity:"EPIC",mythic:1,customName:"Rustic Chestplate",tier:3,level:58,type:"ARMOR"}
+HP: +<600,643>
+ARMOR: 9 - <9,10>
+ENERGY REGEN: +<5.15,5.35>/s
+INT: +<225,250>
+VIT: +<225,250>
+HEALING: +<3,4>%
+THORNS: +<4,5>%
+
+[HEAD]
+type=IRON_HELMET
+tag={customLore:"When equipping this hat, a sense of calmness can be felt throughout the entire body.",rarity:"EPIC",mythic:1,customName:"Rustic Cowl",tier:3,level:58,type:"ARMOR"}
+HP: +<600,643>
+ARMOR: 9 - <9,10>
+ENERGY REGEN: +<5.15,5.35>/s
+INT: +<225,250>
+VIT: +<225,250>
+HEALING: +<3,4>%
+THORNS: +<4,5>%

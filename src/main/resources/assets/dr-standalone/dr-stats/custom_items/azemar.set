@@ -1,0 +1,53 @@
+// lvl 58, epic sword
+[HAND]
+type=IRON_SWORD
+tag={customLore:"The cursed blade of a legendary warrior.",rarity:"EPIC",mythic:1,customName:"Lightsbane",tier:3,level:58,type:"WEAPON"}
+DMG: <81,85> - <85,89>
+PURE DMG: +<14,16>
+ACCURACY: +<8,10>%
+CRITICAL HIT: +<7,8>%
+EXECUTE: +<7,8>%
+
+[FEET]
+type=IRON_BOOTS
+tag={customLore:"Covered in the gore of endless torture.",rarity:"EPIC",mythic:1,customName:"Boots of the Underworld",tier:3,level:58,type:"ARMOR"}
+HP: +<643,686>
+ARMOR: <9,10> - <10,11>
+ENERGY REGEN: +<5.25,5.44>/s
+DEX: +<225,250>
+STR: +<225,250>
+DODGE: +<3,4>%
+BLOCK: +<3,4>%
+
+[LEGS]
+type=IRON_LEGGINGS
+tag={customLore:"Disrepair shown through the endless ages of suffering.",rarity:"EPIC",mythic:1,customName:"Tattered Leggings of Suffering",tier:3,level:58,type:"ARMOR"}
+HP: +<643,686>
+ARMOR: <9,10> - <10,11>
+ENERGY REGEN: +<5.25,5.44>/s
+DEX: +<225,250>
+STR: +<225,250>
+DODGE: +<3,4>%
+BLOCK: +<3,4>%
+
+[CHEST]
+type=IRON_CHESTPLATE
+tag={customLore:"The soul is all that remains of those sentenced to their doom.",rarity:"EPIC",mythic:1,customName:"Platemail of Wailing Souls",tier:3,level:58,type:"ARMOR"}
+HP: +<643,686>
+ARMOR: <9,10> - <10,11>
+ENERGY REGEN: +<5.25,5.44>/s
+DEX: +<225,250>
+STR: +<225,250>
+DODGE: +<3,4>%
+BLOCK: +<3,4>%
+
+[HEAD]
+type=IRON_HELMET
+tag={customLore:"The horned skull of an abyssal being.",rarity:"EPIC",mythic:1,customName:"Full Helmet of the Damned",tier:3,level:58,type:"ARMOR"}
+HP: +<643,686>
+ARMOR: <9,10> - <10,11>
+ENERGY REGEN: +<5.25,5.44>/s
+DEX: +<225,250>
+STR: +<225,250>
+DODGE: +<3,4>%
+BLOCK: +<3,4>%

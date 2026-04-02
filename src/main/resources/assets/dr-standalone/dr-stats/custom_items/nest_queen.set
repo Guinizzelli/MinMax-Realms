@@ -1,0 +1,52 @@
+// lvl 36, rare/epic scythe
+[HAND]
+type=STONE_HOE
+tag={customLore:"The sharp fang of a powerful spider queen, tipped with poison.",rarity:"EPIC",mythic:1,customName:"The Nest Queen's Fang",tier:2,level:36,type:"WEAPON"}
+DMG: <34,35> - <35,37>
+ICE DMG: +<7,8>
+CLEAVE: +<10,12>%
+PIERCING: +<10,12>
+
+[FEET]
+type=CHAINMAIL_BOOTS
+tag={customLore:"Long lost boots of an undead noble, scavenged by the Nest Queen.",rarity:"EPIC",mythic:1,customName:"Queen's Looted Boots",tier:2,level:36,type:"ARMOR"}
+HP: +<224,241>
+ARMOR: 6 - <6,7>
+ENERGY REGEN: +<4.22,4.4>/s
+INT: +<200,225>
+VIT: +<200,225>
+ITEM FIND: +<7,8>%
+THORNS: +<5,6>%
+
+[LEGS]
+type=CHAINMAIL_LEGGINGS
+tag={customLore:"The leggings of an ancient adventurer, gifted to the Nest Queen.",rarity:"EPIC",mythic:1,customName:"Queen's Looted Leggings",tier:2,level:36,type:"ARMOR"}
+HP: +<224,241>
+ARMOR: 6 - <6,7>
+ENERGY REGEN: +<4.22,4.4>/s
+INT: +<200,225>
+VIT: +<200,225>
+ITEM FIND: +<7,8>%
+THORNS: +<5,6>%
+
+[CHEST]
+type=CHAINMAIL_CHESTPLATE
+tag={customLore:"The prized chainmal of a foolish hero, stolen by the Nest Queen.",rarity:"EPIC",mythic:1,customName:"Queen's Looted Chainbody",tier:2,level:36,type:"ARMOR"}
+HP: +<224,241>
+ARMOR: 6 - <6,7>
+ENERGY REGEN: +<4.22,4.4>/s
+INT: +<200,225>
+VIT: +<200,225>
+ITEM FIND: +<7,8>%
+THORNS: +<5,6>%
+
+[HEAD]
+type=CHAINMAIL_HELMET
+tag={customLore:"A rare helm found holding some spider eggs.",rarity:"EPIC",mythic:1,customName:"Queen's Looted Headgear",tier:2,level:36,type:"ARMOR"}
+HP: +<224,241>
+ARMOR: 6 - <6,7>
+ENERGY REGEN: +<4.22,4.4>/s
+INT: +<200,225>
+VIT: +<200,225>
+ITEM FIND: +<7,8>%
+THORNS: +<5,6>%

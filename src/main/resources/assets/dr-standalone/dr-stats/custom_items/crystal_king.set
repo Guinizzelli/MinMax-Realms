@@ -1,0 +1,59 @@
+// lvl 95, epic/legendary sword
+[HAND]
+type=GOLD_SWORD
+tag={customLore:"This brilliant blade flashes a spectrum of colors from its crystalline edge.",rarity:"LEGENDARY",mythic:1,customName:"Omniscient Fury",tier:5,level:95,type:"WEAPON"}
+DMG: <353,369> - <369,386>
+POISON DMG: +<60,64>
+ICE DMG: +<60,64>
+FIRE DMG: +<60,64>
+PURE DMG: +<60,64>
+CRITICAL HIT: +<6,8>%
+EXECUTE: +<6,8>%
+
+[FEET]
+type=GOLD_BOOTS
+tag={customLore:"Energy flows into you from the void your toes. You feel like you're flying.",rarity:"LEGENDARY",mythic:1,customName:"Rift Walkers",tier:5,level:95,type:"ARMOR"}
+HP: +<3567,3765>
+ARMOR: <17,18> - <18,19>
+ENERGY REGEN: +<7.22,7.4>/s
+DEX: +<350,400>
+INT: +<350,400>
+STR: +<350,400>
+VIT: +<350,400>
+ELEMENTAL RESISTANCE: +30%
+
+[LEGS]
+type=GOLD_LEGGINGS
+tag={customLore:"The void between the crystal is filled with energy.",rarity:"LEGENDARY",mythic:1,customName:"Monolith Cuisse",tier:5,level:95,type:"ARMOR"}
+HP: +<3567,3765>
+ARMOR: <17,18> - <18,19>
+ENERGY REGEN: +<7.22,7.4>/s
+DEX: +<350,400>
+INT: +<350,400>
+STR: +<350,400>
+VIT: +<350,400>
+ELEMENTAL RESISTANCE: +30%
+
+[CHEST]
+type=GOLD_CHESTPLATE
+tag={customLore:"Unbreakable crystal, formed of gemstones for thousands of years, fashioned into a chestplate.",rarity:"LEGENDARY",mythic:1,customName:"Obelisk Cuirass",tier:5,level:95,type:"ARMOR"}
+HP: +<3567,3765>
+ARMOR: <17,18> - <18,19>
+ENERGY REGEN: +<7.22,7.4>/s
+DEX: +<350,400>
+INT: +<350,400>
+STR: +<350,400>
+VIT: +<350,400>
+ELEMENTAL RESISTANCE: +30%
+
+[HEAD]
+type=GOLD_HELMET
+tag={customLore:"In an empty world, the only thing it needed was one who could mold it.",rarity:"LEGENDARY",mythic:1,customName:"Crystal Crown",tier:5,level:95,type:"ARMOR"}
+HP: +<3567,3765>
+ARMOR: <17,18> - <18,19>
+ENERGY REGEN: +<7.22,7.4>/s
+DEX: +<350,400>
+INT: +<350,400>
+STR: +<350,400>
+VIT: +<350,400>
+ELEMENTAL RESISTANCE: +30%

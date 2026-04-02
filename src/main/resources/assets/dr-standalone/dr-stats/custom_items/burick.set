@@ -1,0 +1,52 @@
+// lvl 55, epic/legendary axe
+[HAND]
+type=IRON_AXE
+tag={customLore:"An axe stained crimson red with the blood of fallen innocents.",rarity:"LEGENDARY",mythic:1,customName:"Burick's Cruel Axe",tier:3,level:55,type:"WEAPON"}
+DMG: <91,95> - <95,100>
+FIRE DMG: +<16,18>
+SHATTER: +<10,12>%
+CRITICAL HIT: +<10,12>%
+
+[FEET]
+type=IRON_BOOTS
+tag={customLore:"Spiked black boots clad in iron.",rarity:"LEGENDARY",mythic:1,customName:"Burick's Black Platemail Boots",tier:3,level:55,type:"ARMOR"}
+HP: +<667,709>
+ARMOR: <9,10> - <10,11>
+ENERGY REGEN: +<5.35,5.54>/s
+STR: +<225,250>
+INT: +<225,250>
+REFLECT: +<3,4>%
+BLOCK: +<3,4>%
+
+[LEGS]
+type=IRON_LEGGINGS
+tag={customLore:"Made for long powerful legs which offer good protection.",rarity:"LEGENDARY",mythic:1,customName:"Burick's Black Platemail Leggings",tier:3,level:55,type:"ARMOR"}
+HP: +<667,709>
+ARMOR: <9,10> - <10,11>
+ENERGY REGEN: +<5.35,5.54>/s
+STR: +<225,250>
+INT: +<225,250>
+REFLECT: +<3,4>%
+BLOCK: +<3,4>%
+
+[CHEST]
+type=IRON_CHESTPLATE
+tag={customLore:"A thick, hard and black piece of iron armour.",rarity:"LEGENDARY",mythic:1,customName:"Burick's Black Iron Chestplate",tier:3,level:55,type:"ARMOR"}
+HP: +<667,709>
+ARMOR: <9,10> - <10,11>
+ENERGY REGEN: +<5.35,5.54>/s
+STR: +<225,250>
+INT: +<225,250>
+REFLECT: +<3,4>%
+BLOCK: +<3,4>%
+
+[HEAD]
+type=IRON_HELMET
+tag={customLore:"A dented and bloodstained helmet.",rarity:"LEGENDARY",mythic:1,customName:"Burick's Black Full Helmet",tier:3,level:55,type:"ARMOR"}
+HP: +<667,709>
+ARMOR: <9,10> - <10,11>
+ENERGY REGEN: +<5.35,5.54>/s
+STR: +<225,250>
+INT: +<225,250>
+REFLECT: +<3,4>%
+BLOCK: +<3,4>%

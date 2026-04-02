@@ -1,0 +1,53 @@
+// lvl 78, epic sword
+[HAND]
+type=DIAMOND_SWORD
+tag={customLore:"A fang ripped from the Mother's mouth, oozing with venom.",rarity:"EPIC",mythic:1,customName:"Mother of Doom's Poisonous Fang",tier:4,level:78,type:"WEAPON"}
+DMG: <173,182> - <182,191>
+POISON DMG: +<30,32>
+PIERCING: +<12,15>
+EXECUTE: +<10,12>%
+vs. PLAYERS: +<12,15>%
+
+[FEET]
+type=DIAMOND_BOOTS
+tag={customLore:"They give your feet an insatiably itching sensation.",rarity:"EPIC",mythic:1,customName:"Mother of Doom's Creepy Crawlers",tier:4,level:78,type:"ARMOR"}
+HP: +<1558,1657>
+ARMOR: <12,13> - <14,15>
+ENERGY REGEN: +<6.19,6.38>/s
+DEX: +<250,275>
+INT: +<250,275>
+REFLECT: +<4,5>%
+THORNS: +<5,6>%
+
+[LEGS]
+type=DIAMOND_LEGGINGS
+tag={customLore:"Those who wear these too long may find themselves succumbing to insidious influence.",rarity:"EPIC",mythic:1,customName:"Mother of Doom's Web Weave Leggings",tier:4,level:78,type:"ARMOR"}
+HP: +<1558,1657>
+ARMOR: <12,13> - <14,15>
+ENERGY REGEN: +<6.19,6.38>/s
+DEX: +<250,275>
+INT: +<250,275>
+REFLECT: +<4,5>%
+THORNS: +<5,6>%
+
+[CHEST]
+type=DIAMOND_CHESTPLATE
+tag={customLore:"Crystal-encrusted exoskeleton once worn by the Mother.",rarity:"EPIC",mythic:1,customName:"Mother of Doom's Crystalhide Plate",tier:4,level:78,type:"ARMOR"}
+HP: +<1558,1657>
+ARMOR: <12,13> - <14,15>
+ENERGY REGEN: +<6.19,6.38>/s
+DEX: +<250,275>
+INT: +<250,275>
+REFLECT: +<4,5>%
+THORNS: +<5,6>%
+
+[HEAD]
+type=DIAMOND_HELMET
+tag={customLore:"A trophy from the Mother of Doom, still dripping with venom.",rarity:"EPIC",mythic:1,customName:"Mother of Doom's Head",tier:4,level:78,type:"ARMOR"}
+HP: +<1558,1657>
+ARMOR: <12,13> - <14,15>
+ENERGY REGEN: +<6.19,6.38>/s
+DEX: +<250,275>
+INT: +<250,275>
+REFLECT: +<4,5>%
+THORNS: +<5,6>%

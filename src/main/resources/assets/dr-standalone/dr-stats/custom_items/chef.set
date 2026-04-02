@@ -1,0 +1,53 @@
+// lvl 93, rare/epic sword
+[HAND]
+type=GOLD_SWORD
+tag={customLore:"A razor sharp blade, cursed by the undead skeleton chef.",rarity:"EPIC",mythic:1,customName:"Cursed Filet Knife",tier:5,level:93,type:"WEAPON"}
+DMG: <314,330> - <330,347>
+POISON DMG: +<60,64>
+ACCURACY: +<20,25>%
+PIERCING: +<14,16>
+LIFE STEAL: +<7,8>%
+
+[FEET]
+type=GOLD_BOOTS
+tag={customLore:"Legendary wyvern skin boots, solid at the toes.",rarity:"EPIC",mythic:1,customName:"Chef's Reinforced Boots",tier:5,level:93,type:"ARMOR"}
+HP: +<3111,3305>
+ARMOR: <15,16> - <17,18>
+ENERGY REGEN: +<7.04,7.22>/s
+DEX: +<275,300>
+VIT: +<275,300>
+HEALING: +<4,5>%
+DODGE: +<5,6>%
+
+[LEGS]
+type=GOLD_LEGGINGS
+tag={customLore:"A legendary pair of leggings, splattered with blood.",rarity:"EPIC",mythic:1,customName:"Chef's Houndstooth-Patterned Leggings",tier:5,level:93,type:"ARMOR"}
+HP: +<3111,3305>
+ARMOR: <15,16> - <17,18>
+ENERGY REGEN: +<7.04,7.22>/s
+DEX: +<275,300>
+VIT: +<275,300>
+HEALING: +<4,5>%
+DODGE: +<5,6>%
+
+[CHEST]
+type=GOLD_CHESTPLATE
+tag={customLore:"A legendary chef's jacket, wrapped tight around the bones of the skeleton.",rarity:"EPIC",mythic:1,customName:"Chef's Double-Breasted Jacket",tier:5,level:93,type:"ARMOR"}
+HP: +<3111,3305>
+ARMOR: <15,16> - <17,18>
+ENERGY REGEN: +<7.04,7.22>/s
+DEX: +<275,300>
+VIT: +<275,300>
+HEALING: +<4,5>%
+DODGE: +<5,6>%
+
+[HEAD]
+type=GOLD_HELMET
+tag={customLore:"A legendary toque blanche, ripped and well worn.",rarity:"EPIC",mythic:1,customName:"Chef's Legendary Toque Blanche",tier:5,level:93,type:"ARMOR"}
+HP: +<3111,3305>
+ARMOR: <15,16> - <17,18>
+ENERGY REGEN: +<7.04,7.22>/s
+DEX: +<275,300>
+VIT: +<275,300>
+HEALING: +<4,5>%
+DODGE: +<5,6>%

@@ -1,0 +1,57 @@
+// lvl 105, epic axe
+[HAND]
+type=GOLD_AXE
+tag={customLore:"The axe of Gorgath's champion. It banishes foes to the underworld immediately after death.",rarity:"EPIC",mythic:1,customName:"Xul'Grath's Axe of Banishment",tier:5,level:105,type:"WEAPON"}
+DMG: <406,426> - <426,446>
+FIRE DMG: +<70,75>
+SHATTER: +<10,12>%
+CRITICAL HIT: +<12,15>%
+CRUSHING: +<10,12>%
+
+[FEET]
+type=GOLD_BOOTS
+tag={customLore:"Boots that have walked throughout many realms.",rarity:"EPIC",mythic:1,customName:"Xul'Grath's Unwavering Boots of Fortitude",tier:5,level:105,type:"ARMOR"}
+HP: +<3691,3907>
+ARMOR: <16,17> - <18,19>
+ENERGY REGEN: +<7.17,7.31>/s
+STR: +<275,300>
+DEX: +<275,300>
+BLOCK: +<3,4>%
+DODGE: +<3,4>%
+ELEMENTAL RESISTANCE: +<15,20>%
+
+[LEGS]
+type=GOLD_LEGGINGS
+tag={customLore:"The tough leggings of Maltai's defender, infused with the might of Gorgath.",rarity:"EPIC",mythic:1,customName:"Xul'Grath's Warded Leggings of the Underworld",tier:5,level:105,type:"ARMOR"}
+HP: +<3691,3907>
+ARMOR: <16,17> - <18,19>
+ENERGY REGEN: +<7.17,7.31>/s
+STR: +<275,300>
+DEX: +<275,300>
+BLOCK: +<3,4>%
+DODGE: +<3,4>%
+ELEMENTAL RESISTANCE: +<15,20>%
+
+[CHEST]
+type=GOLD_CHESTPLATE
+tag={customLore:"Platemail forged and pervaded by the souls of the underworld. It seems virtually unbreakable.",rarity:"EPIC",mythic:1,customName:"Xul'Grath's Carapace of Souls",tier:5,level:105,type:"ARMOR"}
+HP: +<3691,3907>
+ARMOR: <16,17> - <18,19>
+ENERGY REGEN: +<7.17,7.31>/s
+STR: +<275,300>
+DEX: +<275,300>
+BLOCK: +<3,4>%
+DODGE: +<3,4>%
+ELEMENTAL RESISTANCE: +<15,20>%
+
+[HEAD]
+type=GOLD_HELMET
+tag={customLore:"A legendary helmet that possesses vast knowledge of all of Andalucia's history.",rarity:"EPIC",mythic:1,customName:"Xul'Grath's Helm of Wisdom",tier:5,level:105,type:"ARMOR"}
+HP: +<3691,3907>
+ARMOR: <16,17> - <18,19>
+ENERGY REGEN: +<7.17,7.31>/s
+STR: +<275,300>
+DEX: +<275,300>
+BLOCK: +<3,4>%
+DODGE: +<3,4>%
+ELEMENTAL RESISTANCE: +<15,20>%

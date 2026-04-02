@@ -1,0 +1,53 @@
+// lvl 38, epic mace
+[HAND]
+type=STONE_SPADE
+tag={customLore:"A timeless morningstar, forged by a legendary blacksmith.",rarity:"EPIC",mythic:1,customName:"Helmchen Family Mace",tier:2,level:38,type:"WEAPON"}
+DMG: <40,42> - <42,44>
+PURE DMG: +<8,9>
+CRUSHING: +<8,10>%
+CRITICAL HIT: +<8,10>%
+vs. PLAYERS: +<12,15>%
+
+[FEET]
+type=CHAINMAIL_BOOTS
+tag={customLore:"Boots in disrepair, but still fit for a lord.",rarity:"EPIC",mythic:1,customName:"Lord Taylor's Shattered Boots",tier:2,level:38,type:"ARMOR"}
+HP: +<246,263>
+ARMOR: <6,7> - 7
+ENERGY REGEN: +<4.31,4.5>/s
+VIT: +<200,225>
+INT: +<200,225>
+BLOCK: +<3,4>%
+DODGE: +<3,4>%
+
+[LEGS]
+type=CHAINMAIL_LEGGINGS
+tag={customLore:"Leggings fit for an everlasting lord.",rarity:"EPIC",mythic:1,customName:"Lord Taylor's Leggings",tier:2,level:38,type:"ARMOR"}
+HP: +<246,263>
+ARMOR: <6,7> - 7
+ENERGY REGEN: +<4.31,4.5>/s
+VIT: +<200,225>
+INT: +<200,225>
+BLOCK: +<3,4>%
+DODGE: +<3,4>%
+
+[CHEST]
+type=CHAINMAIL_CHESTPLATE
+tag={customLore:"A chestplate that cannot hide Lord Taylor's hunger.",rarity:"EPIC",mythic:1,customName:"Lord Taylor's Platemail",tier:2,level:38,type:"ARMOR"}
+HP: +<246,263>
+ARMOR: <6,7> - 7
+ENERGY REGEN: +<4.31,4.5>/s
+VIT: +<200,225>
+INT: +<200,225>
+BLOCK: +<3,4>%
+DODGE: +<3,4>%
+
+[HEAD]
+type=CHAINMAIL_HELMET
+tag={customLore:"A regal helmet passed down by The Lords of Helmchen.",rarity:"EPIC",mythic:1,customName:"Royal Helm of Helmchen",tier:2,level:38,type:"ARMOR"}
+HP: +<246,263>
+ARMOR: <6,7> - 7
+ENERGY REGEN: +<4.31,4.5>/s
+VIT: +<200,225>
+INT: +<200,225>
+BLOCK: +<3,4>%
+DODGE: +<3,4>%

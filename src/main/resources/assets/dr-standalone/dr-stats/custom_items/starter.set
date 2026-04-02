@@ -1,0 +1,39 @@
+[HAND]
+type=WOOD_SWORD
+tag={rarity:"COMMON",tier:1,level:1,type:"WEAPON",untradeable:1,customName:"Training Sword"}
+DMG: 7 - 8
+
+[OFF_HAND]
+type=SHIELD
+tag={rarity:"COMMON",tier:1,level:1,type:"OFFHAND",untradeable:1,customName:"Training Shield"}
+HP: +40
+DMG REDUCTION: 3 - 3
+HP REGEN: +20/s
+
+[FEET]
+type=LEATHER_BOOTS
+tag={rarity:"COMMON",tier:1,level:1,type:"ARMOR",untradeable:1,customName:"Training Boots"}
+HP: +40
+ARMOR: 3 - 3
+ENERGY REGEN: +3/s
+
+[LEGS]
+type=LEATHER_LEGGINGS
+tag={rarity:"COMMON",tier:1,level:1,type:"ARMOR",untradeable:1,customName:"Training Leggings"}
+HP: +40
+ARMOR: 3 - 3
+ENERGY REGEN: +3/s
+
+[CHEST]
+type=LEATHER_CHESTPLATE
+tag={rarity:"COMMON",tier:1,level:1,type:"ARMOR",untradeable:1,customName:"Training Chestplate"}
+HP: +40
+ARMOR: 3 - 3
+ENERGY REGEN: +3/s
+
+[HEAD]
+type=LEATHER_HELMET
+tag={rarity:"COMMON",tier:1,level:1,type:"ARMOR",untradeable:1,customName:"Training Helmet"}
+HP: +40
+ARMOR: 3 - 3
+ENERGY REGEN: +3/s

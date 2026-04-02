@@ -1,0 +1,52 @@
+// lvl 17, epic sword
+[HAND]
+type=WOOD_SWORD
+tag={customLore:"Mitsuki's blood-stained, rigid sword.",rarity:"EPIC",mythic:1,customName:"Mitsuki's Sword of Bloodthirst",tier:1,level:17,type:"WEAPON"}
+DMG: <13,14> - <14,16>
+PURE DMG: +<3,4>
+LIFE STEAL: +<15,20>%
+EXECUTE: +<8,10>%
+
+[FEET]
+type=LEATHER_BOOTS
+tag={customLore:"Blood stained sandals, which appear to be uncomfortable.",rarity:"EPIC",mythic:1,customName:"Mitsuki's Leather Sandals",tier:1,level:17,type:"ARMOR"}
+HP: +<86,93>
+ARMOR: <4,5> - 5
+ENERGY REGEN: +<3.38,3.56>/s
+DEX: +<175,200>
+INT: +<175,200>
+DODGE: +<3,4>%
+REFLECT: +<3,4>%
+
+[LEGS]
+type=LEATHER_LEGGINGS
+tag={customLore:"These pants may as well be shorts due to their ripped nature.",rarity:"EPIC",mythic:1,customName:"Mitsuki's Ripped Leather Pants",tier:1,level:17,type:"ARMOR"}
+HP: +<86,93>
+ARMOR: <4,5> - 5
+ENERGY REGEN: +<3.38,3.56>/s
+DEX: +<175,200>
+INT: +<175,200>
+DODGE: +<3,4>%
+REFLECT: +<3,4>%
+
+[CHEST]
+type=LEATHER_CHESTPLATE
+tag={customLore:"Blood stained rags that reek of rotten flesh.",rarity:"EPIC",mythic:1,customName:"Mitsuki's Dirty Leather Rags",tier:1,level:17,type:"ARMOR"}
+HP: +<86,93>
+ARMOR: <4,5> - 5
+ENERGY REGEN: +<3.38,3.56>/s
+DEX: +<175,200>
+INT: +<175,200>
+DODGE: +<3,4>%
+REFLECT: +<3,4>%
+
+[HEAD]
+type=LEATHER_HELMET
+tag={customLore:"The ripped remains of a leather coif, far from an armorer's standards.",rarity:"EPIC",mythic:1,customName:"Mitsuki's Leather Coif",tier:1,level:17,type:"ARMOR"}
+HP: +<86,93>
+ARMOR: <4,5> - 5
+ENERGY REGEN: +<3.38,3.56>/s
+DEX: +<175,200>
+INT: +<175,200>
+DODGE: +<3,4>%
+REFLECT: +<3,4>%

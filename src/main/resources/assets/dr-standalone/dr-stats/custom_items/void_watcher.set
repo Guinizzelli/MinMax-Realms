@@ -1,0 +1,58 @@
+// lvl 95, epic bow
+[HAND]
+type=BOW
+tag={customLore:"A crystalline bow. The string hums with energy.",rarity:"EPIC",mythic:1,customName:"Voidseeker",tier:5,level:95,type:"BOW"}
+DMG: <404,424> - <424,444>
+PURE DMG: +<75,80>
+BLEEDING: +<12,15>%
+BLINDING: +<12,15>%
+SLOW: +<12,15>%
+vs. PLAYERS: +<12,15>%
+
+[FEET]
+type=GOLD_BOOTS
+tag={customLore:"These boots feel both heavy and light at the same time.",rarity:"EPIC",mythic:1,customName:"Gravity Soles",tier:5,level:95,type:"ARMOR"}
+HP: +<3370,3567>
+ARMOR: <16,17> - <18,19>
+ENERGY REGEN: +<7.13,7.31>/s
+DEX: +<275,300>
+VIT: +<275,300>
+REFLECT: +<5,6>%
+THORNS: +<7,8>%
+ELEMENTAL RESISTANCE: +<15,20>%
+
+[LEGS]
+type=GOLD_LEGGINGS
+tag={customLore:"Spiked crystals coat the exterior of these greaves.",rarity:"EPIC",mythic:1,customName:"Void Tassets",tier:5,level:95,type:"ARMOR"}
+HP: +<3370,3567>
+ARMOR: <16,17> - <18,19>
+ENERGY REGEN: +<7.13,7.31>/s
+DEX: +<275,300>
+VIT: +<275,300>
+REFLECT: +<5,6>%
+THORNS: +<7,8>%
+ELEMENTAL RESISTANCE: +<15,20>%
+
+[CHEST]
+type=GOLD_CHESTPLATE
+tag={customLore:"Void energy pulses from the chestplate into your core.",rarity:"EPIC",mythic:1,customName:"Mirrored Hauberk",tier:5,level:95,type:"ARMOR"}
+HP: +<3370,3567>
+ARMOR: <16,17> - <18,19>
+ENERGY REGEN: +<7.13,7.31>/s
+DEX: +<275,300>
+VIT: +<275,300>
+REFLECT: +<5,6>%
+THORNS: +<7,8>%
+ELEMENTAL RESISTANCE: +<15,20>%
+
+[HEAD]
+type=GOLD_HELMET
+tag={customLore:"The energy from the crystals flows directly into your skull.",rarity:"EPIC",mythic:1,customName:"Crystalthorn Monocle",tier:5,level:95,type:"ARMOR"}
+HP: +<3370,3567>
+ARMOR: <16,17> - <18,19>
+ENERGY REGEN: +<7.13,7.31>/s
+DEX: +<275,300>
+VIT: +<275,300>
+REFLECT: +<5,6>%
+THORNS: +<7,8>%
+ELEMENTAL RESISTANCE: +<15,20>%

@@ -1,0 +1,53 @@
+// lvl 88, rare sword
+[HAND]
+type=GOLD_SWORD
+tag={customLore:"By the power of this weapon, those who are worthy can bend the sky to their will.",rarity:"RARE",mythic:1,customName:"The Stormweaver",tier:5,level:88,type:"WEAPON"}
+DMG: <283,298> - <298,314>
+PURE DMG: +<60,64>
+CRITICAL HIT: +<8,10>%
+EXECUTE: +<8,10>%
+PIERCING: +<12,15>
+
+[FEET]
+type=GOLD_BOOTS
+tag={customLore:"Orcish boots that emit a thunderous boom with every step.",rarity:"RARE",mythic:1,customName:"Storm Caller's Boots",tier:5,level:88,type:"ARMOR"}
+HP: +<2776,2960>
+ARMOR: <15,16> - <16,17>
+ENERGY REGEN: +<6.94,7.13>/s
+DEX: +<275,300>
+STR: +<275,300>
+ITEM FIND: +<7,8>%
+ELEMENTAL RESISTANCE: +<15,20>%
+
+[LEGS]
+type=GOLD_LEGGINGS
+tag={customLore:"Orcish leggings of incredible durability. They don't seem to have a single scratch on them.",rarity:"RARE",mythic:1,customName:"Storm Caller's Leggings",tier:5,level:88,type:"ARMOR"}
+HP: +<2776,2960>
+ARMOR: <15,16> - <16,17>
+ENERGY REGEN: +<6.94,7.13>/s
+DEX: +<275,300>
+STR: +<275,300>
+ITEM FIND: +<7,8>%
+ELEMENTAL RESISTANCE: +<15,20>%
+
+[CHEST]
+type=GOLD_CHESTPLATE
+tag={customLore:"An orcish platemail chestplate that has withstood many attacks from Renegade soldiers.",rarity:"RARE",mythic:1,customName:"Storm Caller's Platemail",tier:5,level:88,type:"ARMOR"}
+HP: +<2776,2960>
+ARMOR: <15,16> - <16,17>
+ENERGY REGEN: +<6.94,7.13>/s
+DEX: +<275,300>
+STR: +<275,300>
+ITEM FIND: +<7,8>%
+ELEMENTAL RESISTANCE: +<15,20>%
+
+[HEAD]
+type=GOLD_HELMET
+tag={customLore:"An orcish helm that channels the powers of the sky.",rarity:"RARE",mythic:1,customName:"Storm Caller's Helmet",tier:5,level:88,type:"ARMOR"}
+HP: +<2776,2960>
+ARMOR: <15,16> - <16,17>
+ENERGY REGEN: +<6.94,7.13>/s
+DEX: +<275,300>
+STR: +<275,300>
+ITEM FIND: +<7,8>%
+ELEMENTAL RESISTANCE: +<15,20>%

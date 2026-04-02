@@ -1,0 +1,52 @@
+// lvl 60, epic/legendary scythe
+[HAND]
+type=IRON_HOE
+tag={customLore:"The scythe of Rejuvenation.",rarity:"LEGENDARY",mythic:2,customName:"Sickened Restoration",tier:3,level:60,type:"WEAPON"}
+DMG: <91,95> - <95,100>
+POISON DMG: +<15,17>
+CRITICAL HIT: +<10,12>%
+LIFE STEAL: +<10,12>%
+
+[FEET]
+type=IRON_BOOTS
+tag={customLore:"The nimble boots of The High Priest.",rarity:"LEGENDARY",mythic:2,customName:"The High Priest's Boots",tier:3,level:60,type:"ARMOR"}
+HP: +<699,743>
+ARMOR: <9,10> - <10,11>
+ENERGY REGEN: +<5.35,5.54>/s
+INT: +<225,250>
+VIT: +<225,250>
+HEALING: +<3,4>%
+ELEMENTAL RESISTANCE: +<15,20>%
+
+[LEGS]
+type=IRON_LEGGINGS
+tag={customLore:"The enshrined belt of The High Priest.",rarity:"LEGENDARY",mythic:2,customName:"The High Priest's Belt",tier:3,level:60,type:"ARMOR"}
+HP: +<699,743>
+ARMOR: <9,10> - <10,11>
+ENERGY REGEN: +<5.35,5.54>/s
+INT: +<225,250>
+VIT: +<225,250>
+HEALING: +<3,4>%
+ELEMENTAL RESISTANCE: +<15,20>%
+
+[CHEST]
+type=IRON_CHESTPLATE
+tag={customLore:"Golden threads line The High Priest’s Robe.",rarity:"LEGENDARY",mythic:2,customName:"The High Priest's Gilded Robe",tier:3,level:60,type:"ARMOR"}
+HP: +<699,743>
+ARMOR: <9,10> - <10,11>
+ENERGY REGEN: +<5.35,5.54>/s
+INT: +<225,250>
+VIT: +<225,250>
+HEALING: +<3,4>%
+ELEMENTAL RESISTANCE: +<15,20>%
+
+[HEAD]
+type=IRON_HELMET
+tag={customLore:"Crafted through the absorption of his enemies.",rarity:"LEGENDARY",mythic:2,customName:"The High Priest's Dark Hood",tier:3,level:60,type:"ARMOR"}
+HP: +<699,743>
+ARMOR: <9,10> - <10,11>
+ENERGY REGEN: +<5.35,5.54>/s
+INT: +<225,250>
+VIT: +<225,250>
+HEALING: +<3,4>%
+ELEMENTAL RESISTANCE: +<15,20>%

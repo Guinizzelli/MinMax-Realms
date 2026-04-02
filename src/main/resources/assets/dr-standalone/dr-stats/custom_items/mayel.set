@@ -1,0 +1,52 @@
+// lvl 15, epic/legendary axe
+[HAND]
+type=WOOD_AXE
+tag={customLore:"A well made, sharpened hatchet, suited for a thieving captain.",rarity:"LEGENDARY",mythic:1,customName:"Mayel's Poisoned Hatchet",tier:1,level:15,type:"WEAPON"}
+DMG: <16,17> - <17,18>
+POISON DMG: +<4,5>
+CRITICAL HIT: +<5,6>%
+SHATTER: +<5,6>%
+
+[FEET]
+type=LEATHER_BOOTS
+tag={customLore:"Boots made for long treks in the Dead Peaks.",rarity:"LEGENDARY",mythic:1,customName:"Mayel's Mountain Boots",tier:1,level:15,type:"ARMOR"}
+HP: +<91,97>
+ARMOR: 5 - 5
+ENERGY REGEN: +<3.47,3.66>/s
+STR: +<175,200>
+DEX: +<175,200>
+BLOCK: +<3,4>%
+ITEM FIND: +<7,8>%
+
+[LEGS]
+type=LEATHER_LEGGINGS
+tag={customLore:"A pair of sturdy and well made leather leggings.",rarity:"LEGENDARY",mythic:1,customName:"Mayel's Reinforced Leggings",tier:1,level:15,type:"ARMOR"}
+HP: +<91,97>
+ARMOR: 5 - 5
+ENERGY REGEN: +<3.47,3.66>/s
+STR: +<175,200>
+DEX: +<175,200>
+BLOCK: +<3,4>%
+ITEM FIND: +<7,8>%
+
+[CHEST]
+type=LEATHER_CHESTPLATE
+tag={customLore:"Dented, battle-scarred, and yet highly protective platemail.",rarity:"LEGENDARY",mythic:1,customName:"Mayel's Battle Platemail",tier:1,level:15,type:"ARMOR"}
+HP: +<91,97>
+ARMOR: 5 - 5
+ENERGY REGEN: +<3.47,3.66>/s
+STR: +<175,200>
+DEX: +<175,200>
+BLOCK: +<3,4>%
+ITEM FIND: +<7,8>%
+
+[HEAD]
+type=LEATHER_HELMET
+tag={customLore:"A fashionable helmet, kept in quite good shape.",rarity:"LEGENDARY",mythic:1,customName:"Mayel's Pristine Bandit Hood",tier:1,level:15,type:"ARMOR"}
+HP: +<91,97>
+ARMOR: 5 - 5
+ENERGY REGEN: +<3.47,3.66>/s
+STR: +<175,200>
+DEX: +<175,200>
+BLOCK: +<3,4>%
+ITEM FIND: +<7,8>%

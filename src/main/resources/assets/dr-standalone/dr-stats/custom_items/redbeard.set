@@ -1,0 +1,52 @@
+// lvl 34, rare sword
+[HAND]
+type=STONE_SWORD
+tag={customLore:"The blade of Mayel's rival.",rarity:"RARE",mythic:1,customName:"The Rival's Saber",tier:2,level:34,type:"WEAPON"}
+DMG: <30,32> - <32,34>
+POISON DMG: +<7,8>
+EXECUTE: +<8,10>%
+PIERCING: +<8,10>
+
+[FEET]
+type=CHAINMAIL_BOOTS
+tag={customLore:"A small pair of boots to keep a pirate quick on his toes.",rarity:"RARE",mythic:1,customName:"Redbeard's Swift Chainmail Boots",tier:2,level:34,type:"ARMOR"}
+HP: +<203,220>
+ARMOR: 6 - 6
+ENERGY REGEN: +<4.13,4.31>/s
+DEX: +<200,225>
+STR: +<200,225>
+GEM FIND: +<14,16>%
+DODGE: +<3,4>%
+
+[LEGS]
+type=CHAINMAIL_LEGGINGS
+tag={customLore:"A valuable leather belt with a golden hue.",rarity:"RARE",mythic:1,customName:"The Sash of Thieves",tier:2,level:34,type:"ARMOR"}
+HP: +<203,220>
+ARMOR: 6 - 6
+ENERGY REGEN: +<4.13,4.31>/s
+DEX: +<200,225>
+STR: +<200,225>
+GEM FIND: +<14,16>%
+DODGE: +<3,4>%
+
+[CHEST]
+type=CHAINMAIL_CHESTPLATE
+tag={customLore:"A vest made of very thick and sturdy cloth.",rarity:"RARE",mythic:1,customName:"Hefty Cloth Vest",tier:2,level:34,type:"ARMOR"}
+HP: +<203,220>
+ARMOR: 6 - 6
+ENERGY REGEN: +<4.13,4.31>/s
+DEX: +<200,225>
+STR: +<200,225>
+GEM FIND: +<14,16>%
+DODGE: +<3,4>%
+
+[HEAD]
+type=CHAINMAIL_HELMET
+tag={customLore:"A worn-out hat, suited for a pirate captain.",rarity:"RARE",mythic:1,customName:"Redbeard's Captain Hat",tier:2,level:34,type:"ARMOR"}
+HP: +<203,220>
+ARMOR: 6 - 6
+ENERGY REGEN: +<4.13,4.31>/s
+DEX: +<200,225>
+STR: +<200,225>
+GEM FIND: +<14,16>%
+DODGE: +<3,4>%

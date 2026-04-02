@@ -1,0 +1,53 @@
+// lvl 95, rare axe
+[HAND]
+type=GOLD_AXE
+tag={customLore:"The butcher's bloody cleaver that can cut human bone in a single chop.",rarity:"RARE",mythic:1,customName:"The Butcher's Cleaver",tier:5,level:95,type:"WEAPON"}
+DMG: <333,352> - <352,370>
+FIRE DMG: +<65,70>
+vs. MONSTERS: +<10,12>%
+LIFE STEAL: +<7,8>%
+EXECUTE: +<10,12>%
+
+[FEET]
+type=GOLD_BOOTS
+tag={customLore:"Chunks of human meat are stuck to the soles.",rarity:"RARE",mythic:1,customName:"The Butcher's Boots",tier:5,level:95,type:"ARMOR"}
+HP: +<2974,3172>
+ARMOR: <15,16> - <17,18>
+ENERGY REGEN: +<6.94,7.13>/s
+STR: +<275,300>
+INT: +<275,300>
+BLOCK: +<5,6>%
+ELEMENTAL RESISTANCE: +<15,20>%
+
+[LEGS]
+type=GOLD_LEGGINGS
+tag={customLore:"The butcher's once white apron cannot be recognized anymore.",rarity:"RARE",mythic:1,customName:"The Butcher's Apron",tier:5,level:95,type:"ARMOR"}
+HP: +<2974,3172>
+ARMOR: <15,16> - <17,18>
+ENERGY REGEN: +<6.94,7.13>/s
+STR: +<275,300>
+INT: +<275,300>
+BLOCK: +<5,6>%
+ELEMENTAL RESISTANCE: +<15,20>%
+
+[CHEST]
+type=GOLD_CHESTPLATE
+tag={customLore:"The dented chestpiece of a ruthless killer.",rarity:"RARE",mythic:1,customName:"The Butcher's Platemail",tier:5,level:95,type:"ARMOR"}
+HP: +<2974,3172>
+ARMOR: <15,16> - <17,18>
+ENERGY REGEN: +<6.94,7.13>/s
+STR: +<275,300>
+INT: +<275,300>
+BLOCK: +<5,6>%
+ELEMENTAL RESISTANCE: +<15,20>%
+
+[HEAD]
+type=GOLD_HELMET
+tag={customLore:"The blood-splattered hood of a butcher.",rarity:"RARE",mythic:1,customName:"The Butcher's Hood",tier:5,level:95,type:"ARMOR"}
+HP: +<2974,3172>
+ARMOR: <15,16> - <17,18>
+ENERGY REGEN: +<6.94,7.13>/s
+STR: +<275,300>
+INT: +<275,300>
+BLOCK: +<5,6>%
+ELEMENTAL RESISTANCE: +<15,20>%

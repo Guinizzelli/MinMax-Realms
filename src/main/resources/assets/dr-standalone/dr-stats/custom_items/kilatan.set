@@ -1,0 +1,53 @@
+// lvl 96, epic scythe
+[HAND]
+type=GOLD_HOE
+tag={customLore:"Kiltan's most prized creation, imbued with the essence of the underworld.",rarity:"EPIC",mythic:1,customName:"Kilatan's Reaver of Destruction",tier:5,level:96,type:"WEAPON"}
+DMG: <357,375> - <375,392>
+FIRE DMG: +<64,68>
+CLEAVE: +<10,12>%
+LIFE STEAL: +<7,8>%
+vs. MONSTERS: +<10,12>%
+
+[FEET]
+type=GOLD_BOOTS
+tag={customLore:"Boots that carry the weight of the underworld.",rarity:"EPIC",mythic:1,customName:"Kilatan's Legendary Boots",tier:5,level:96,type:"ARMOR"}
+HP: +<3402,3601>
+ARMOR: <16,17> - <17,18>
+ENERGY REGEN: +<7.13,7.31>/s
+INT: +<275,300>
+STR: +<275,300>
+HEALING: +<4,5>%
+DODGE: +<5,6>%
+
+[LEGS]
+type=GOLD_LEGGINGS
+tag={customLore:"Plates that protect the foundation of Gorgath's empire.",rarity:"EPIC",mythic:1,customName:"Kilatan's Legendary Platelegs",tier:5,level:96,type:"ARMOR"}
+HP: +<3402,3601>
+ARMOR: <16,17> - <17,18>
+ENERGY REGEN: +<7.13,7.31>/s
+INT: +<275,300>
+STR: +<275,300>
+HEALING: +<4,5>%
+DODGE: +<5,6>%
+
+[CHEST]
+type=GOLD_CHESTPLATE
+tag={customLore:"How the mighty fall.",rarity:"EPIC",mythic:1,customName:"Kilatan's Legendary Platemail",tier:5,level:96,type:"ARMOR"}
+HP: +<3402,3601>
+ARMOR: <16,17> - <17,18>
+ENERGY REGEN: +<7.13,7.31>/s
+INT: +<275,300>
+STR: +<275,300>
+HEALING: +<4,5>%
+DODGE: +<5,6>%
+
+[HEAD]
+type=GOLD_HELMET
+tag={customLore:"A golden crown of tyranny and unrelenting power.",rarity:"EPIC",mythic:1,customName:"Kilatan's Deathcrown",tier:5,level:96,type:"ARMOR"}
+HP: +<3402,3601>
+ARMOR: <16,17> - <17,18>
+ENERGY REGEN: +<7.13,7.31>/s
+INT: +<275,300>
+STR: +<275,300>
+HEALING: +<4,5>%
+DODGE: +<5,6>%

@@ -1,0 +1,52 @@
+// lvl 13, rare scythe
+[HAND]
+type=WOOD_HOE
+tag={customLore:"The dull blade of a wheat farmer's scythe.",rarity:"RARE",mythic:1,customName:"The Scythe of Harvest",tier:1,level:13,type:"WEAPON"}
+DMG: <11,12> - <12,14>
+ICE DMG: +<3,4>
+CLEAVE: +<8,10>%
+vs. MONSTERS: +<12,15>%
+
+[FEET]
+type=LEATHER_BOOTS
+tag={customLore:"A wheat farmer's old boots that barely hold themselves together.",rarity:"RARE",mythic:1,customName:"Tattered Farmer's Boots",tier:1,level:13,type:"ARMOR"}
+HP: +<71,77>
+ARMOR: 4 - 4
+ENERGY REGEN: +<3.19,3.38>/s
+INT: +<175,200>
+VIT: +<175,200>
+HEALING: +<4,5>%
+ELEMENTAL RESISTANCE: +<15,20>%
+
+[LEGS]
+type=LEATHER_LEGGINGS
+tag={customLore:"A poor wheat farmer's worn out pants.",rarity:"RARE",mythic:1,customName:"Tattered Farmer's Jeans",tier:1,level:13,type:"ARMOR"}
+HP: +<71,77>
+ARMOR: 4 - 4
+ENERGY REGEN: +<3.19,3.38>/s
+INT: +<175,200>
+VIT: +<175,200>
+HEALING: +<4,5>%
+ELEMENTAL RESISTANCE: +<15,20>%
+
+[CHEST]
+type=LEATHER_CHESTPLATE
+tag={customLore:"A crazed wheat farmer's stained shirt covered in sweat.",rarity:"RARE",mythic:1,customName:"Tattered Farmer's Shirt",tier:1,level:13,type:"ARMOR"}
+HP: +<71,77>
+ARMOR: 4 - 4
+ENERGY REGEN: +<3.19,3.38>/s
+INT: +<175,200>
+VIT: +<175,200>
+HEALING: +<4,5>%
+ELEMENTAL RESISTANCE: +<15,20>%
+
+[HEAD]
+type=LEATHER_HELMET
+tag={customLore:"A wheat farmer's dirty, sun-stained cap.",rarity:"RARE",mythic:1,customName:"Tattered Farmer's Hat",tier:1,level:13,type:"ARMOR"}
+HP: +<71,77>
+ARMOR: 4 - 4
+ENERGY REGEN: +<3.19,3.38>/s
+INT: +<175,200>
+VIT: +<175,200>
+HEALING: +<4,5>%
+ELEMENTAL RESISTANCE: +<15,20>%

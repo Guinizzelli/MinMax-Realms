@@ -1,0 +1,53 @@
+// lvl 87, rare mace
+[HAND]
+type=GOLD_SPADE
+tag={customLore:"A brilliant golden glaive with an unbreakable crystal head.",rarity:"RARE",mythic:1,customName:"The Golden Glaive",tier:5,level:87,type:"WEAPON"}
+DMG: <322,340> - <340,358>
+PURE DMG: +<70,75>
+PIERCING: +<12,15>
+SHATTER: +<10,12>%
+CRUSHING: +<10,12>%
+
+[FEET]
+type=GOLD_BOOTS
+tag={customLore:"A pair of sheep skin boots enchanted to be harder than steel.",rarity:"RARE",mythic:1,customName:"Hardcover Boots",tier:5,level:87,type:"ARMOR"}
+HP: +<2748,2930>
+ARMOR: <15,16> - <16,17>
+ENERGY REGEN: +<6.94,7.13>/s
+VIT: +<275,300>
+STR: +<275,300>
+BLOCK: +<4,5>%
+GEM FIND: +<14,16>%
+
+[LEGS]
+type=GOLD_LEGGINGS
+tag={customLore:"Thin leather pants covered in elaborate runes to negate damage.",rarity:"RARE",mythic:1,customName:"Enchanted Paper Leggings",tier:5,level:87,type:"ARMOR"}
+HP: +<2748,2930>
+ARMOR: <15,16> - <16,17>
+ENERGY REGEN: +<6.94,7.13>/s
+VIT: +<275,300>
+STR: +<275,300>
+BLOCK: +<4,5>%
+GEM FIND: +<14,16>%
+
+[CHEST]
+type=GOLD_CHESTPLATE
+tag={customLore:"Armor fashioned out of enchanted books. It's really heavy, but impervious to most damage.",rarity:"RARE",mythic:1,customName:"Heavy Book Platemail",tier:5,level:87,type:"ARMOR"}
+HP: +<2748,2930>
+ARMOR: <15,16> - <16,17>
+ENERGY REGEN: +<6.94,7.13>/s
+VIT: +<275,300>
+STR: +<275,300>
+BLOCK: +<4,5>%
+GEM FIND: +<14,16>%
+
+[HEAD]
+type=GOLD_HELMET
+tag={customLore:"A warm cap from the northern library. Its durability is somewhat astounding.",rarity:"RARE",mythic:1,customName:"Fluffy Wool Cap",tier:5,level:87,type:"ARMOR"}
+HP: +<2748,2930>
+ARMOR: <15,16> - <16,17>
+ENERGY REGEN: +<6.94,7.13>/s
+VIT: +<275,300>
+STR: +<275,300>
+BLOCK: +<4,5>%
+GEM FIND: +<14,16>%

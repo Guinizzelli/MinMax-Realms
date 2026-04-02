@@ -1,0 +1,53 @@
+// lvl 12, rare/epic mace
+[HAND]
+type=WOOD_SPADE
+tag={customLore:"The well-used shovel of a wretched carrot farmer.",rarity:"EPIC",mythic:1,customName:"The Shovel of Harvest",tier:1,level:12,type:"WEAPON"}
+DMG: <14,15> - <15,16>
+POISON DMG: +<4,5>
+CRUSHING: +<20,25>%
+vs. PLAYERS: +<15,20>%
+PIERCING: +<3,5>
+
+[FEET]
+type=LEATHER_BOOTS
+tag={customLore:"The carrot farmer's old bloody boots. It's still wet.",rarity:"EPIC",mythic:1,customName:"Bloodstained Farmer's Boots",tier:1,level:12,type:"ARMOR"}
+HP: +<76,82>
+ARMOR: 4 - 5
+ENERGY REGEN: +<3.29,3.47>/s
+VIT: +<175,200>
+STR: +<175,200>
+THORNS: +<6,8>%
+BLOCK: +<3,4>%
+
+[LEGS]
+type=LEATHER_LEGGINGS
+tag={customLore:"The carrot farmer's jeans. His blood forever will remain.",rarity:"EPIC",mythic:1,customName:"Bloodstained Farmer's Jeans",tier:1,level:12,type:"ARMOR"}
+HP: +<76,82>
+ARMOR: 4 - 5
+ENERGY REGEN: +<3.29,3.47>/s
+VIT: +<175,200>
+STR: +<175,200>
+THORNS: +<6,8>%
+BLOCK: +<3,4>%
+
+[CHEST]
+type=LEATHER_CHESTPLATE
+tag={customLore:"The carrot farmer's shirt. Large, worn, yet still fits.",rarity:"EPIC",mythic:1,customName:"Bloodstained Farmer's Shirt",tier:1,level:12,type:"ARMOR"}
+HP: +<76,82>
+ARMOR: 4 - 5
+ENERGY REGEN: +<3.29,3.47>/s
+VIT: +<175,200>
+STR: +<175,200>
+THORNS: +<6,8>%
+BLOCK: +<3,4>%
+
+[HEAD]
+type=LEATHER_HELMET
+tag={customLore:"The carrot farmer's cap. Instead of sweat, blood drips from your cheek.",rarity:"EPIC",mythic:1,customName:"Bloodstained Farmer's Hat",tier:1,level:12,type:"ARMOR"}
+HP: +<76,82>
+ARMOR: 4 - 5
+ENERGY REGEN: +<3.29,3.47>/s
+VIT: +<175,200>
+STR: +<175,200>
+THORNS: +<6,8>%
+BLOCK: +<3,4>%

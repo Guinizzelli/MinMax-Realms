@@ -1,0 +1,54 @@
+// lvl 80, epic/legendary bow
+[HAND]
+type=BOW
+tag={customLore:"When an arrow is launched from this bow, you can hear a hawk's cry.",rarity:"LEGENDARY",mythic:2,customName:"Flamehawk",tier:4,level:80,type:"BOW"}
+DMG: <223,233> - <233,245>
+FIRE DMG: +<34,38>
+GLOWING: +<40,50>%
+EXECUTE: +<8,10>%
+ACCURACY: +<10,12>%
+BLEEDING: +<8,10>%
+
+[FEET]
+type=DIAMOND_BOOTS
+tag={customLore:"Boots crafted by magma of The Infernal Abyss.",rarity:"LEGENDARY",mythic:2,customName:"Magma Treads",tier:4,level:80,type:"ARMOR"}
+HP: +<1687,1788>
+ARMOR: <13,14> - <14,15>
+ENERGY REGEN: +<6.29,6.47>/s
+DEX: +<250,275>
+INT: +<250,275>
+DODGE: +<4,5>%
+REFLECT: +<3,4>%
+
+[LEGS]
+type=DIAMOND_LEGGINGS
+tag={customLore:"The fiery leggings of a greater demon.",rarity:"LEGENDARY",mythic:2,customName:"Blaze of Glory",tier:4,level:80,type:"ARMOR"}
+HP: +<1687,1788>
+ARMOR: <13,14> - <14,15>
+ENERGY REGEN: +<6.29,6.47>/s
+DEX: +<250,275>
+INT: +<250,275>
+DODGE: +<4,5>%
+REFLECT: +<3,4>%
+
+[CHEST]
+type=DIAMOND_CHESTPLATE
+tag={customLore:"The molten chestpiece of a greater demon.",rarity:"LEGENDARY",mythic:2,customName:"Molten Anguish",tier:4,level:80,type:"ARMOR"}
+HP: +<1687,1788>
+ARMOR: <13,14> - <14,15>
+ENERGY REGEN: +<6.29,6.47>/s
+DEX: +<250,275>
+INT: +<250,275>
+DODGE: +<4,5>%
+REFLECT: +<3,4>%
+
+[HEAD]
+type=DIAMOND_HELMET
+tag={customLore:"Volcanic crown encrusted with jewels forged by volcanic ember.",rarity:"LEGENDARY",mythic:2,customName:"Volcanic Ember",tier:4,level:80,type:"ARMOR"}
+HP: +<1687,1788>
+ARMOR: <13,14> - <14,15>
+ENERGY REGEN: +<6.29,6.47>/s
+DEX: +<250,275>
+INT: +<250,275>
+DODGE: +<4,5>%
+REFLECT: +<3,4>%

@@ -1,0 +1,53 @@
+// lvl 95, epic scythe
+[HAND]
+type=GOLD_HOE
+tag={customLore:"The chilling edge cuts through shadow just as well as flesh.",rarity:"EPIC",mythic:1,customName:"Frostbind",tier:5,level:95,type:"WEAPON"}
+DMG: <353,371> - <371,389>
+ICE DMG: +<65,70>
+EXECUTE: +<10,12>%
+CLEAVE: +<10,12>%
+vs. MONSTERS: +<10,12>%
+
+[FEET]
+type=GOLD_BOOTS
+tag={customLore:"Coated with ice, slipping with these boots results in more good than harm.",rarity:"EPIC",mythic:1,customName:"Glacial Sliders",tier:5,level:95,type:"ARMOR"}
+HP: +<3370,3567>
+ARMOR: <16,17> - <17,18>
+ENERGY REGEN: +<7.13,7.31>/s
+INT: +<275,300>
+VIT: +<275,300>
+DODGE: +<5,6>%
+HEALING: +<3,4>%
+
+[LEGS]
+type=GOLD_LEGGINGS
+tag={customLore:"The solid ice can cause even the sharpest blades to slip on its surface.",rarity:"EPIC",mythic:1,customName:"Glazed Leggings",tier:5,level:95,type:"ARMOR"}
+HP: +<3370,3567>
+ARMOR: <16,17> - <17,18>
+ENERGY REGEN: +<7.13,7.31>/s
+INT: +<275,300>
+VIT: +<275,300>
+DODGE: +<5,6>%
+HEALING: +<3,4>%
+
+[CHEST]
+type=GOLD_CHESTPLATE
+tag={customLore:"The wind flurries across the spines of ice that coat this chestplate.",rarity:"EPIC",mythic:1,customName:"Frosted Chest",tier:5,level:95,type:"ARMOR"}
+HP: +<3370,3567>
+ARMOR: <16,17> - <17,18>
+ENERGY REGEN: +<7.13,7.31>/s
+INT: +<275,300>
+VIT: +<275,300>
+DODGE: +<5,6>%
+HEALING: +<3,4>%
+
+[HEAD]
+type=GOLD_HELMET
+tag={customLore:"Brain Freeze doesn’t even begin to describe this helmet.",rarity:"EPIC",mythic:1,customName:"Frozen Sallet",tier:5,level:95,type:"ARMOR"}
+HP: +<3370,3567>
+ARMOR: <16,17> - <17,18>
+ENERGY REGEN: +<7.13,7.31>/s
+INT: +<275,300>
+VIT: +<275,300>
+DODGE: +<5,6>%
+HEALING: +<3,4>%

@@ -1,0 +1,53 @@
+// lvl 52, epic mace
+[HAND]
+type=IRON_SPADE
+tag={customLore:"A broad leeching mace once wielded by the King of Greed.",rarity:"EPIC",mythic:1,customName:"The Thieving Mace of Greed",tier:3,level:52,type:"WEAPON"}
+DMG: <87,92> - <92,97>
+FIRE DMG: +<16,18>
+CRITICAL HIT: +<8,10>%
+LIFE STEAL: +<8,10>%
+vs. MONSTERS: +<10,12>%
+
+[FEET]
+type=IRON_BOOTS
+tag={customLore:"A pair of goblin boots with rich leather binding.",rarity:"EPIC",mythic:1,customName:"The Boots of Greed",tier:3,level:52,type:"ARMOR"}
+HP: +<607,648>
+ARMOR: <9,10> - <10,11>
+ENERGY REGEN: +<5.25,5.44>/s
+VIT: +<225,250>
+DEX: +<225,250>
+ITEM FIND: +<7,8>%
+GEM FIND: +<14,16>%
+
+[LEGS]
+type=IRON_LEGGINGS
+tag={customLore:"The fine polished leggings of the Goblin King.",rarity:"EPIC",mythic:1,customName:"The Leggings of Greed",tier:3,level:52,type:"ARMOR"}
+HP: +<607,648>
+ARMOR: <9,10> - <10,11>
+ENERGY REGEN: +<5.25,5.44>/s
+VIT: +<225,250>
+DEX: +<225,250>
+ITEM FIND: +<7,8>%
+GEM FIND: +<14,16>%
+
+[CHEST]
+type=IRON_CHESTPLATE
+tag={customLore:"Gold and emerald lines run through this strong platemail.",rarity:"EPIC",mythic:1,customName:"The Platemail of Greed",tier:3,level:52,type:"ARMOR"}
+HP: +<607,648>
+ARMOR: <9,10> - <10,11>
+ENERGY REGEN: +<5.25,5.44>/s
+VIT: +<225,250>
+DEX: +<225,250>
+ITEM FIND: +<7,8>%
+GEM FIND: +<14,16>%
+
+[HEAD]
+type=IRON_HELMET
+tag={customLore:"The encrusted crown of the Goblin King.",rarity:"EPIC",mythic:1,customName:"The Crown of Greed",tier:3,level:52,type:"ARMOR"}
+HP: +<607,648>
+ARMOR: <9,10> - <10,11>
+ENERGY REGEN: +<5.25,5.44>/s
+VIT: +<225,250>
+DEX: +<225,250>
+ITEM FIND: +<7,8>%
+GEM FIND: +<14,16>%

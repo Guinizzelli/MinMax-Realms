@@ -1,0 +1,53 @@
+// lvl 96, epic sword
+[HAND]
+type=GOLD_SWORD
+tag={customLore:"A cold steel blade so sharp it can split snowflakes.",rarity:"EPIC",mythic:1,customName:"Priscilla's Frozen Longsword",tier:5,level:96,type:"WEAPON"}
+DMG: <340,357> - <357,374>
+ICE DMG: +<60,64>
+CRITICAL HIT: +<10,12>%
+ACCURACY: +<20,25>%
+EXECUTE: +<10,12>%
+
+[FEET]
+type=GOLD_BOOTS
+tag={customLore:"Boots made from the strong skin of polar bears in the north.",rarity:"EPIC",mythic:1,customName:"Bear Skin Boots",tier:5,level:96,type:"ARMOR"}
+HP: +<3402,3601>
+ARMOR: <16,17> - <17,18>
+ENERGY REGEN: +<7.13,7.31>/s
+DEX: +<275,300>
+INT: +<275,300>
+REFLECT: +<4,5>%
+DODGE: +<4,5>%
+
+[LEGS]
+type=GOLD_LEGGINGS
+tag={customLore:"A pair of incredibly soft pants made to keep Priscilla agile in the northern frost.",rarity:"EPIC",mythic:1,customName:"Frozen Silk Pants",tier:5,level:96,type:"ARMOR"}
+HP: +<3402,3601>
+ARMOR: <16,17> - <17,18>
+ENERGY REGEN: +<7.13,7.31>/s
+DEX: +<275,300>
+INT: +<275,300>
+REFLECT: +<4,5>%
+DODGE: +<4,5>%
+
+[CHEST]
+type=GOLD_CHESTPLATE
+tag={customLore:"A light cyan robe woven from the mystical snow of the north.",rarity:"EPIC",mythic:1,customName:"Robe of the Frozen North",tier:5,level:96,type:"ARMOR"}
+HP: +<3402,3601>
+ARMOR: <16,17> - <17,18>
+ENERGY REGEN: +<7.13,7.31>/s
+DEX: +<275,300>
+INT: +<275,300>
+REFLECT: +<4,5>%
+DODGE: +<4,5>%
+
+[HEAD]
+type=GOLD_HELMET
+tag={customLore:"A sturdy and lightweight tiara created from fragments of frozen crystals.",rarity:"EPIC",mythic:1,customName:"Priscilla's Crystal Tiara",tier:5,level:96,type:"ARMOR"}
+HP: +<3402,3601>
+ARMOR: <16,17> - <17,18>
+ENERGY REGEN: +<7.13,7.31>/s
+DEX: +<275,300>
+INT: +<275,300>
+REFLECT: +<4,5>%
+DODGE: +<4,5>%

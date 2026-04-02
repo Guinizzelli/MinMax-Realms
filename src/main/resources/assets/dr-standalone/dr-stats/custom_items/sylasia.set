@@ -1,0 +1,52 @@
+// lvl 72, rare scythe
+[HAND]
+type=DIAMOND_HOE
+tag={customLore:"A fabled scythe which manipulates growth and decay.",rarity:"RARE",mythic:1,customName:"The Earthweaver",tier:4,level:72,type:"WEAPON"}
+DMG: <153,162> - <162,172>
+PURE DMG: +<31,34>
+LIFE STEAL: +<10,12>%
+CLEAVE: +<10,12>%
+
+[FEET]
+type=DIAMOND_BOOTS
+tag={customLore:"Silkshroom enchanted boots, which have an extrodinary connection to the natural world.",rarity:"RARE",mythic:1,customName:"Fairysilk Boots",tier:4,level:72,type:"ARMOR"}
+HP: +<1285,1379>
+ARMOR: <11,12> - <13,14>
+ENERGY REGEN: +<6.0,6.19>/s
+INT: +<250,275>
+VIT: +<250,275>
+HEALING: +<4,5>%
+REFLECT: +<3,4>%
+
+[LEGS]
+type=DIAMOND_LEGGINGS
+tag={customLore:"A fine pair of druidic leggings, made with material from a rare fungus.",rarity:"RARE",mythic:1,customName:"Fairysilk Leggings",tier:4,level:72,type:"ARMOR"}
+HP: +<1285,1379>
+ARMOR: <11,12> - <13,14>
+ENERGY REGEN: +<6.0,6.19>/s
+INT: +<250,275>
+VIT: +<250,275>
+HEALING: +<4,5>%
+REFLECT: +<3,4>%
+
+[CHEST]
+type=DIAMOND_CHESTPLATE
+tag={customLore:"Radiant robes that give off a faint fluorescent glow, enriched by the essence of life.",rarity:"RARE",mythic:1,customName:"Fairysilk Robes",tier:4,level:72,type:"ARMOR"}
+HP: +<1285,1379>
+ARMOR: <11,12> - <13,14>
+ENERGY REGEN: +<6.0,6.19>/s
+INT: +<250,275>
+VIT: +<250,275>
+HEALING: +<4,5>%
+REFLECT: +<3,4>%
+
+[HEAD]
+type=DIAMOND_HELMET
+tag={customLore:"The coif of a nymph at one with nature, enchanted with a rare silk that cloaks the body comfortingly.",rarity:"RARE",mythic:1,customName:"Fairysilk Coif",tier:4,level:72,type:"ARMOR"}
+HP: +<1285,1379>
+ARMOR: <11,12> - <13,14>
+ENERGY REGEN: +<6.0,6.19>/s
+INT: +<250,275>
+VIT: +<250,275>
+HEALING: +<4,5>%
+REFLECT: +<3,4>%

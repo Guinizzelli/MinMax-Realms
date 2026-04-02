@@ -1,0 +1,53 @@
+// lvl 80, epic/legendary mace
+[HAND]
+type=DIAMOND_SPADE
+tag={customLore:"The mace aged through generations of a cruel war.",rarity:"LEGENDARY",mythic:2,customName:"Moarri",tier:4,level:80,type:"WEAPON"}
+DMG: <213,223> - <223,235>
+ICE DMG: +<33,37>
+SHATTER: +<10,12>%
+CRUSHING: +<10,12>%
+ACCURACY: +<12,15>%
+
+[FEET]
+type=DIAMOND_BOOTS
+tag={customLore:"The frost covered boots of a greater demon.",rarity:"LEGENDARY",mythic:2,customName:"Ice Lord's Boots",tier:4,level:80,type:"ARMOR"}
+HP: +<1687,1788>
+ARMOR: <13,14> - <14,15>
+ENERGY REGEN: +<6.29,6.47>/s
+VIT: +<250,275>
+STR: +<250,275>
+HEALING: +<3,4>%
+BLOCK: +<4,5>%
+
+[LEGS]
+type=DIAMOND_LEGGINGS
+tag={customLore:"The frozen leggings of a greater demon.",rarity:"LEGENDARY",mythic:2,customName:"Ice Lord's Frozen Leggings",tier:4,level:80,type:"ARMOR"}
+HP: +<1687,1788>
+ARMOR: <13,14> - <14,15>
+ENERGY REGEN: +<6.29,6.47>/s
+VIT: +<250,275>
+STR: +<250,275>
+HEALING: +<3,4>%
+BLOCK: +<4,5>%
+
+[CHEST]
+type=DIAMOND_CHESTPLATE
+tag={customLore:"The unbreakable icy chestpiece of a greater demon.",rarity:"LEGENDARY",mythic:2,customName:"Ice Lord's Unbreakable Chestpiece",tier:4,level:80,type:"ARMOR"}
+HP: +<1687,1788>
+ARMOR: <13,14> - <14,15>
+ENERGY REGEN: +<6.29,6.47>/s
+VIT: +<250,275>
+STR: +<250,275>
+HEALING: +<3,4>%
+BLOCK: +<4,5>%
+
+[HEAD]
+type=DIAMOND_HELMET
+tag={customLore:"The misty, royal crown of a greater demon.",rarity:"LEGENDARY",mythic:2,customName:"Frozen Crown",tier:4,level:80,type:"ARMOR"}
+HP: +<1687,1788>
+ARMOR: <13,14> - <14,15>
+ENERGY REGEN: +<6.29,6.47>/s
+VIT: +<250,275>
+STR: +<250,275>
+HEALING: +<3,4>%
+BLOCK: +<4,5>%

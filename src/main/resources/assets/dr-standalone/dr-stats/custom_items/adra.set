@@ -1,0 +1,52 @@
+// lvl 15, rare/epic axe
+[HAND]
+type=WOOD_AXE
+tag={customLore:"The magically infused axe of a naga shrine keeper.",rarity:"EPIC",mythic:1,customName:"Shrinekeeper",tier:1,level:15,type:"WEAPON"}
+DMG: <13,15> - <15,16>
+ICE DMG: +<3,4>
+PURE DMG: +<3,4>
+SHATTER: +<6,8>%
+
+[FEET]
+type=LEATHER_BOOTS
+tag={customLore:"A weathered pair of boots with an unusual shape.",rarity:"EPIC",mythic:1,customName:"Adra's Holy Boots",tier:1,level:15,type:"ARMOR"}
+HP: +<78,85>
+ARMOR: 4 - <4,5>
+ENERGY REGEN: +<3.29,3.47>/s
+STR: +<175,200>
+INT: +<175,200>
+ELEMENTAL RESISTANCE: +<12,15>%
+THORNS: +<4,5>%
+
+[LEGS]
+type=LEATHER_LEGGINGS
+tag={customLore:"A weathered cloak that appears to have water damage.",rarity:"EPIC",mythic:1,customName:"Adra's Cloak",tier:1,level:15,type:"ARMOR"}
+HP: +<78,85>
+ARMOR: 4 - <4,5>
+ENERGY REGEN: +<3.29,3.47>/s
+STR: +<175,200>
+INT: +<175,200>
+ELEMENTAL RESISTANCE: +<12,15>%
+THORNS: +<4,5>%
+
+[CHEST]
+type=LEATHER_CHESTPLATE
+tag={customLore:"A scaled platemail with a mysterious runic inscription.",rarity:"EPIC",mythic:1,customName:"Adra's Weathered Breastplate",tier:1,level:15,type:"ARMOR"}
+HP: +<78,85>
+ARMOR: 4 - <4,5>
+ENERGY REGEN: +<3.29,3.47>/s
+STR: +<175,200>
+INT: +<175,200>
+ELEMENTAL RESISTANCE: +<12,15>%
+THORNS: +<4,5>%
+
+[HEAD]
+type=LEATHER_HELMET
+tag={customLore:"A light and weathered hood fit for a naga.",rarity:"EPIC",mythic:1,customName:"Adra's Hood",tier:1,level:15,type:"ARMOR"}
+HP: +<78,85>
+ARMOR: 4 - <4,5>
+ENERGY REGEN: +<3.29,3.47>/s
+STR: +<175,200>
+INT: +<175,200>
+ELEMENTAL RESISTANCE: +<12,15>%
+THORNS: +<4,5>%

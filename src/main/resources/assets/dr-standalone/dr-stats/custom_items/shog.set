@@ -1,0 +1,52 @@
+// lvl 36, rare axe
+[HAND]
+type=STONE_AXE
+tag={customLore:"A waraxe faceted with marvelous gems mined by hundreds of lost souls.",rarity:"RARE",mythic:1,customName:"Overseer's Engraved Waraxe",tier:2,level:36,type:"WEAPON"}
+DMG: <33,36> - <36,38>
+FIRE DMG: +<8,9>
+CRITICAL HIT: +<7,8>%
+vs. MONSTERS: +<12,15>%
+
+[FEET]
+type=CHAINMAIL_BOOTS
+tag={customLore:"Heavy boots, fit for the Overseer.",rarity:"RARE",mythic:1,customName:"Overseer's Sabatons",tier:2,level:36,type:"ARMOR"}
+HP: +<207,224>
+ARMOR: 6 - 6
+ENERGY REGEN: +<4.13,4.31>/s
+STR: +<200,225>
+VIT: +<200,225>
+BLOCK: +<3,4>%
+ELEMENTAL RESISTANCE: +<12,15>%
+
+[LEGS]
+type=CHAINMAIL_LEGGINGS
+tag={customLore:"Plates structured for protection.",rarity:"RARE",mythic:1,customName:"Overseer's Tassets",tier:2,level:36,type:"ARMOR"}
+HP: +<207,224>
+ARMOR: 6 - 6
+ENERGY REGEN: +<4.13,4.31>/s
+STR: +<200,225>
+VIT: +<200,225>
+BLOCK: +<3,4>%
+ELEMENTAL RESISTANCE: +<12,15>%
+
+[CHEST]
+type=CHAINMAIL_CHESTPLATE
+tag={customLore:"An interweaved shirt of iron rings.",rarity:"RARE",mythic:1,customName:"Overseer's Hauberk",tier:2,level:36,type:"ARMOR"}
+HP: +<207,224>
+ARMOR: 6 - 6
+ENERGY REGEN: +<4.13,4.31>/s
+STR: +<200,225>
+VIT: +<200,225>
+BLOCK: +<3,4>%
+ELEMENTAL RESISTANCE: +<12,15>%
+
+[HEAD]
+type=CHAINMAIL_HELMET
+tag={customLore:"A mesh helmet with a vibrant emerald, pulled from the depths of Al Sahra.",rarity:"RARE",mythic:1,customName:"Miner's Helmet",tier:2,level:36,type:"ARMOR"}
+HP: +<207,224>
+ARMOR: 6 - 6
+ENERGY REGEN: +<4.13,4.31>/s
+STR: +<200,225>
+VIT: +<200,225>
+BLOCK: +<3,4>%
+ELEMENTAL RESISTANCE: +<12,15>%

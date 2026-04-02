@@ -1,0 +1,53 @@
+// lvl 58, epic bow
+[HAND]
+type=BOW
+tag={customLore:"The chilled longbow of a secluded bandit.",rarity:"EPIC",mythic:1,customName:"Redeye's Frigid Longbow",tier:3,level:58,type:"BOW"}
+DMG: <97,102> - <102,107>
+ICE DMG: +<17,19>
+BLINDING: +<10,12>%
+SLOW: +<10,12>%
+CRITICAL HIT: +<8,10>%
+
+[FEET]
+type=IRON_BOOTS
+tag={customLore:"Four shiny coins are glued onto one boot, all facing heads.",rarity:"EPIC",mythic:1,customName:"Redeye's Lucky Boots",tier:3,level:58,type:"ARMOR"}
+HP: +<643,686>
+ARMOR: 9 - 10
+ENERGY REGEN: +<5.25,5.44>/s
+INT: +<225,250>
+DEX: +<225,250>
+ITEM FIND: +<7,8>%
+DODGE: +<4,5>%
+
+[LEGS]
+type=IRON_LEGGINGS
+tag={customLore:"The warmth of these wooly pants keep the legs warm for running.",rarity:"EPIC",mythic:1,customName:"Redeye's Leggings of Rejuvenation",tier:3,level:58,type:"ARMOR"}
+HP: +<643,686>
+ARMOR: 9 - 10
+ENERGY REGEN: +<5.25,5.44>/s
+INT: +<225,250>
+DEX: +<225,250>
+ITEM FIND: +<7,8>%
+DODGE: +<4,5>%
+
+[CHEST]
+type=IRON_CHESTPLATE
+tag={customLore:"A frosty platemail with Priscilla's Crest.",rarity:"EPIC",mythic:1,customName:"Redeye's Plate of the North",tier:3,level:58,type:"ARMOR"}
+HP: +<643,686>
+ARMOR: 9 - 10
+ENERGY REGEN: +<5.25,5.44>/s
+INT: +<225,250>
+DEX: +<225,250>
+ITEM FIND: +<7,8>%
+DODGE: +<4,5>%
+
+[HEAD]
+type=IRON_HELMET
+tag={customLore:"The frigid helmet of an exiled bandit.",rarity:"EPIC",mythic:1,customName:"Redeye's Glacial Helm",tier:3,level:58,type:"ARMOR"}
+HP: +<643,686>
+ARMOR: 9 - 10
+ENERGY REGEN: +<5.25,5.44>/s
+INT: +<225,250>
+DEX: +<225,250>
+ITEM FIND: +<7,8>%
+DODGE: +<4,5>%

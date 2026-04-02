@@ -1,0 +1,53 @@
+// lvl 78, epic axe
+[HAND]
+type=DIAMOND_AXE
+tag={customLore:"An axe with the face of the cursed Blayshan carved into it.",rarity:"EPIC",mythic:1,customName:"Blayshan's Wicked Axe",tier:4,level:78,type:"WEAPON"}
+DMG: <191,200> - <200,210>
+ICE DMG: +<30,32>
+PURE DMG: +<30,32>
+SHATTER: +<5,6>%
+CRITICAL HIT: +<5,6>%
+
+[FEET]
+type=DIAMOND_BOOTS
+tag={customLore:"A pair of boots forged by the scales of nagas.",rarity:"EPIC",mythic:1,customName:"Blayshan's Scaled Platemail",tier:4,level:78,type:"ARMOR"}
+HP: +<1558,1657>
+ARMOR: <12,13> - <14,15>
+ENERGY REGEN: +<6.19,6.38>/s
+STR: +<250,275>
+INT: +<250,275>
+THORNS: +<5,6>%
+ELEMENTAL RESISTANCE: +<10,15>%
+
+[LEGS]
+type=DIAMOND_LEGGINGS
+tag={customLore:"Thorny leggings with graceful vitality from the great tree of dreadwood.",rarity:"EPIC",mythic:1,customName:"Blayshan's Thorned Leggings",tier:4,level:78,type:"ARMOR"}
+HP: +<1558,1657>
+ARMOR: <12,13> - <14,15>
+ENERGY REGEN: +<6.19,6.38>/s
+STR: +<250,275>
+INT: +<250,275>
+THORNS: +<5,6>%
+ELEMENTAL RESISTANCE: +<10,15>%
+
+[CHEST]
+type=DIAMOND_CHESTPLATE
+tag={customLore:"A light chestplate, studded with thorny horns.",rarity:"EPIC",mythic:1,customName:"Blayshan's Horned Platemail",tier:4,level:78,type:"ARMOR"}
+HP: +<1558,1657>
+ARMOR: <12,13> - <14,15>
+ENERGY REGEN: +<6.19,6.38>/s
+STR: +<250,275>
+INT: +<250,275>
+THORNS: +<5,6>%
+ELEMENTAL RESISTANCE: +<10,15>%
+
+[HEAD]
+type=DIAMOND_HELMET
+tag={customLore:"A crown of thorns, which emits a strange deep purple.",rarity:"EPIC",mythic:1,customName:"Blayshan's Accursed Helmet",tier:4,level:78,type:"ARMOR"}
+HP: +<1558,1657>
+ARMOR: <12,13> - <14,15>
+ENERGY REGEN: +<6.19,6.38>/s
+STR: +<250,275>
+INT: +<250,275>
+THORNS: +<5,6>%
+ELEMENTAL RESISTANCE: +<10,15>%

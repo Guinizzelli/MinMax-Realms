@@ -1,0 +1,53 @@
+// lvl 50, rare axe
+[HAND]
+type=IRON_AXE
+tag={customLore:"A molten axe which never seems to cool.",rarity:"RARE",mythic:1,customName:"Pyro Bandit's Molten Axe",tier:3,level:50,type:"WEAPON"}
+DMG: <72,78> - <78,82>
+FIRE DMG: +<16,18>
+CRITICAL HIT: +<12,15>%
+vs. MONSTERS: +<10,12>%
+GLOWING: +100%
+
+[FEET]
+type=IRON_BOOTS
+tag={customLore:"Warm, explosive ash can be felt tucked in the toe caps.",rarity:"RARE",mythic:1,customName:"Pyro's Ash-Filled Boots",tier:3,level:50,type:"ARMOR"}
+HP: +<516,556>
+ARMOR: 8 - 9
+ENERGY REGEN: +<5.06,5.25>/s
+STR: +<225,250>
+INT: +<225,250>
+ELEMENTAL RESISTANCE: +<15,20>%
+REFLECT: +<3,4>%
+
+[LEGS]
+type=IRON_LEGGINGS
+tag={customLore:"Each pocket has some sort of explosive remnant patched inside.",rarity:"RARE",mythic:1,customName:"Pyro's Loaded Leggings",tier:3,level:50,type:"ARMOR"}
+HP: +<516,556>
+ARMOR: 8 - 9
+ENERGY REGEN: +<5.06,5.25>/s
+STR: +<225,250>
+INT: +<225,250>
+ELEMENTAL RESISTANCE: +<15,20>%
+REFLECT: +<3,4>%
+
+[CHEST]
+type=IRON_CHESTPLATE
+tag={customLore:"It's a miracle this tunic has survived this long.",rarity:"RARE",mythic:1,customName:"Pyro's Everlasting Tunic",tier:3,level:50,type:"ARMOR"}
+HP: +<516,556>
+ARMOR: 8 - 9
+ENERGY REGEN: +<5.06,5.25>/s
+STR: +<225,250>
+INT: +<225,250>
+ELEMENTAL RESISTANCE: +<15,20>%
+REFLECT: +<3,4>%
+
+[HEAD]
+type=IRON_HELMET
+tag={customLore:"It still looks new, disregarding some dents on the side.",rarity:"RARE",mythic:1,customName:"Pyro's Sturdy Helmet",tier:3,level:50,type:"ARMOR"}
+HP: +<516,556>
+ARMOR: 8 - 9
+ENERGY REGEN: +<5.06,5.25>/s
+STR: +<225,250>
+INT: +<225,250>
+ELEMENTAL RESISTANCE: +<15,20>%
+REFLECT: +<3,4>%

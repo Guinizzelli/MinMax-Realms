@@ -1,0 +1,53 @@
+// lvl 48, rare mace
+[HAND]
+type=IRON_SPADE
+tag={customLore:"Wielded by the great Ragnar. This mace has ended many that dared to question him.",rarity:"RARE",mythic:1,customName:"Fearstriker",tier:3,level:48,type:"WEAPON"}
+DMG: <74,80> - <80,84>
+POISON DMG: +<16,18>
+ACCURACY: +<12,15>%
+CRUSHING: +<12,15>%
+vs. PLAYERS: +<15,20>%
+
+[FEET]
+type=IRON_BOOTS
+tag={customLore:"These boots offer a sturdy foundation to tread across the entire savannah.",rarity:"RARE",mythic:1,customName:"Ironclad Walkers",tier:3,level:48,type:"ARMOR"}
+HP: +<505,544>
+ARMOR: 9 - 10
+ENERGY REGEN: +<5.06,5.25>/s
+VIT: +<225,250>
+STR: +<225,250>
+BLOCK: +<4,5>%
+REFLECT: +<3,4>%
+
+[LEGS]
+type=IRON_LEGGINGS
+tag={customLore:"Although worn throughout countless battles, not even a scratch can be seen on these fortified leggings.",rarity:"RARE",mythic:1,customName:"Ironclad Leggings",tier:3,level:48,type:"ARMOR"}
+HP: +<505,544>
+ARMOR: 9 - 10
+ENERGY REGEN: +<5.06,5.25>/s
+VIT: +<225,250>
+STR: +<225,250>
+BLOCK: +<4,5>%
+REFLECT: +<3,4>%
+
+[CHEST]
+type=IRON_CHESTPLATE
+tag={customLore:"Not even the mightiest of attacks have been capable of fully penetrating through this reinforced breastplate.",rarity:"RARE",mythic:1,customName:"Ironclad Breastplate",tier:3,level:48,type:"ARMOR"}
+HP: +<505,544>
+ARMOR: 9 - 10
+ENERGY REGEN: +<5.06,5.25>/s
+VIT: +<225,250>
+STR: +<225,250>
+BLOCK: +<4,5>%
+REFLECT: +<3,4>%
+
+[HEAD]
+type=IRON_HELMET
+tag={customLore:"The durability of this headpiece is said to rival that of the great golems of Avalon.",rarity:"RARE",mythic:1,customName:"Ironclad Headguard",tier:3,level:48,type:"ARMOR"}
+HP: +<505,544>
+ARMOR: 9 - 10
+ENERGY REGEN: +<5.06,5.25>/s
+VIT: +<225,250>
+STR: +<225,250>
+BLOCK: +<4,5>%
+REFLECT: +<3,4>%

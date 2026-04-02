@@ -1,0 +1,52 @@
+// lvl 70, rare sword
+[HAND]
+type=DIAMOND_SWORD
+tag={customLore:"The legendary sword which led in the seige of Avalon.",rarity:"RARE",mythic:1,customName:"Impa's Dreaded Longsword",tier:4,level:70,type:"WEAPON"}
+DMG: <143,152> - <152,161>
+FIRE DMG: +<30,32>
+ACCURACY: +<15,20>%
+PIERCING: +<15,20>
+
+[FEET]
+type=DIAMOND_BOOTS
+tag={customLore:"The boots with which Impa stood among the throne of the underworld.",rarity:"RARE",mythic:1,customName:"Skeletal Death Walkers",tier:4,level:70,type:"ARMOR"}
+HP: +<1260,1352>
+ARMOR: <11,12> - <13,14>
+ENERGY REGEN: +<6.0,6.19>/s
+DEX: +<250,275>
+VIT: +<250,275>
+DODGE: +<4,5>%
+ELEMENTAL RESISTANCE: +<12,15>%
+
+[LEGS]
+type=DIAMOND_LEGGINGS
+tag={customLore:"Forged from the bones of fallen dwarves and imbued with the power of Avalon.",rarity:"RARE",mythic:1,customName:"Warding Skeletal Leggings",tier:4,level:70,type:"ARMOR"}
+HP: +<1260,1352>
+ARMOR: <11,12> - <13,14>
+ENERGY REGEN: +<6.0,6.19>/s
+DEX: +<250,275>
+VIT: +<250,275>
+DODGE: +<4,5>%
+ELEMENTAL RESISTANCE: +<12,15>%
+
+[CHEST]
+type=DIAMOND_CHESTPLATE
+tag={customLore:"A breastplate with the feared symbol of Impa's army carved into it.",rarity:"RARE",mythic:1,customName:"Haunting Platemail of Avalon's Fright",tier:4,level:70,type:"ARMOR"}
+HP: +<1260,1352>
+ARMOR: <11,12> - <13,14>
+ENERGY REGEN: +<6.0,6.19>/s
+DEX: +<250,275>
+VIT: +<250,275>
+DODGE: +<4,5>%
+ELEMENTAL RESISTANCE: +<12,15>%
+
+[HEAD]
+type=DIAMOND_HELMET
+tag={customLore:"The ominous black mask, worn by an impish general as a symbol of dark ages.",rarity:"RARE",mythic:1,customName:"Crooked Battle Mask",tier:4,level:70,type:"ARMOR"}
+HP: +<1260,1352>
+ARMOR: <11,12> - <13,14>
+ENERGY REGEN: +<6.0,6.19>/s
+DEX: +<250,275>
+VIT: +<250,275>
+DODGE: +<4,5>%
+ELEMENTAL RESISTANCE: +<12,15>%

@@ -1,0 +1,52 @@
+// lvl 38, epic axe
+[HAND]
+type=STONE_AXE
+tag={customLore:"The axe made to unite Dark Oak.",rarity:"EPIC",mythic:1,customName:"Cop'Jaks Deadly War Axe",tier:2,level:38,type:"WEAPON"}
+DMG: <39,40> - <40,42>
+SHATTER: +<10,12>%
+CRITICAL HIT: +<10,12>%
+CRUSHING: +<10,12>%
+
+[FEET]
+type=CHAINMAIL_BOOTS
+tag={customLore:"Spiked trollish chainmail boots.",rarity:"EPIC",mythic:1,customName:"Cop'Jak's Chainmail Boots",tier:2,level:38,type:"ARMOR"}
+HP: +<246,263>
+ARMOR: 6 - 7
+ENERGY REGEN: +<4.31,4.5>/s
+STR: +<200,225>
+VIT: +<200,225>
+THORNS: +<5,6>%
+BLOCK: +<3,4>%
+
+[LEGS]
+type=CHAINMAIL_LEGGINGS
+tag={customLore:"Large leggings that have been worn in many wars.",rarity:"EPIC",mythic:1,customName:"Cop'Jak's Chainlinked Leggings",tier:2,level:38,type:"ARMOR"}
+HP: +<246,263>
+ARMOR: 6 - 7
+ENERGY REGEN: +<4.31,4.5>/s
+STR: +<200,225>
+VIT: +<200,225>
+THORNS: +<5,6>%
+BLOCK: +<3,4>%
+
+[CHEST]
+type=CHAINMAIL_CHESTPLATE
+tag={customLore:"A bad fit, made for the broad chests of trolls.",rarity:"EPIC",mythic:1,customName:"Cop'Jak's Heavy Chainmail Chestpiece",tier:2,level:38,type:"ARMOR"}
+HP: +<246,263>
+ARMOR: 6 - 7
+ENERGY REGEN: +<4.31,4.5>/s
+STR: +<200,225>
+VIT: +<200,225>
+THORNS: +<5,6>%
+BLOCK: +<3,4>%
+
+[HEAD]
+type=CHAINMAIL_HELMET
+tag={customLore:"Cop'Jak's attempt of a royal crown.",rarity:"EPIC",mythic:1,customName:"Cop'Jak's Crude Crown",tier:2,level:38,type:"ARMOR"}
+HP: +<246,263>
+ARMOR: 6 - 7
+ENERGY REGEN: +<4.31,4.5>/s
+STR: +<200,225>
+VIT: +<200,225>
+THORNS: +<5,6>%
+BLOCK: +<3,4>%

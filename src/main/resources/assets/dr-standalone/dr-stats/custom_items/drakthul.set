@@ -1,0 +1,53 @@
+// lvl 70, rare/epic axe
+[HAND]
+type=DIAMOND_AXE
+tag={customLore:"A flaming cleaver forged from the great hellfires of the underworld.",rarity:"EPIC",mythic:1,customName:"Cleaver of Abaddon",tier:4,level:70,type:"WEAPON"}
+DMG: <167,176> - <176,185>
+FIRE DMG: +<32,35>
+CRITICAL HIT: +<10,12>%
+SHATTER: +<8,10>%
+
+[FEET]
+type=DIAMOND_BOOTS
+tag={customLore:"With every step taken, the ground trembles in fear of immense power.",rarity:"EPIC",mythic:1,customName:"Hellfire Stompers",tier:4,level:70,type:"ARMOR"}
+HP: +<1351,1443>
+ARMOR: <11,12> - <13,14>
+ENERGY REGEN: +<6.1,6.29>/s
+STR: +<250,275>
+INT: +<250,275>
+BLOCK: +<3,4>%
+ELEMENTAL RESISTANCE: +<15,20>%
+
+[LEGS]
+type=DIAMOND_LEGGINGS
+tag={customLore:"The embers of hell that emanate from these greaves distort the air around them.",rarity:"EPIC",mythic:1,customName:"Hellfire Greaves",tier:4,level:70,type:"ARMOR"}
+HP: +<1351,1443>
+ARMOR: <11,12> - <13,14>
+ENERGY REGEN: +<6.1,6.29>/s
+STR: +<250,275>
+INT: +<250,275>
+BLOCK: +<3,4>%
+ELEMENTAL RESISTANCE: +<15,20>%
+
+[CHEST]
+type=DIAMOND_CHESTPLATE
+tag={customLore:"A sigil of the Daemon Lord, a haunting reminder of dominance over all who dwell this earth.",rarity:"EPIC",mythic:1,customName:"Hellfire Chestpiece",tier:4,level:70,type:"ARMOR"}
+HP: +<1351,1443>
+ARMOR: <11,12> - <13,14>
+ENERGY REGEN: +<6.1,6.29>/s
+STR: +<250,275>
+INT: +<250,275>
+BLOCK: +<3,4>%
+ELEMENTAL RESISTANCE: +<15,20>%
+
+[HEAD]
+type=DIAMOND_HELMET
+tag={customLore:"Flames of hell protrude through this helmet, shaped like the horns of a Daemon Lord.",rarity:"EPIC",mythic:1,customName:"Hellfire Helmet",tier:4,level:70,type:"ARMOR"}
+HP: +<1351,1443>
+ARMOR: <11,12> - <13,14>
+ENERGY REGEN: +<6.1,6.29>/s
+STR: +<250,275>
+INT: +<250,275>
+BLOCK: +<3,4>%
+ELEMENTAL RESISTANCE: +<15,20>%
+

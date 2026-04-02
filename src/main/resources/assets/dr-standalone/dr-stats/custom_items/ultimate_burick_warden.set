@@ -1,0 +1,53 @@
+// lvl 60, epic/legendary mace
+[HAND]
+type=IRON_SPADE
+tag={customLore:"Forged with malevolent energy, leaving victims in a state of despair.",rarity:"LEGENDARY",mythic:2,customName:"Mace of Malice",tier:3,level:60,type:"WEAPON"}
+DMG: <99,104> - <104,110>
+PURE DMG: +<16,18>
+ICE DMG: +<16,18>
+SHATTER: +<6,8>%
+CRUSHING: +<6,8>%
+
+[FEET]
+type=IRON_BOOTS
+tag={customLore:"Imbued with sinister energies of the Varenglade.",rarity:"LEGENDARY",mythic:2,customName:"Warden's Stide",tier:3,level:60,type:"ARMOR"}
+HP: +<699,743>
+ARMOR: <9,10> - <10,11>
+ENERGY REGEN: +<5.35,5.54>/s
+VIT: +<225,250>
+STR: +<225,250>
+BLOCK: +<3,4>%
+ELEMENTAL RESISTANCE: +<15,20>%
+
+[LEGS]
+type=IRON_LEGGINGS
+tag={customLore:"Unstoppable resilience against those dwelling.",rarity:"LEGENDARY",mythic:2,customName:"Warden's Legguards",tier:3,level:60,type:"ARMOR"}
+HP: +<699,743>
+ARMOR: <9,10> - <10,11>
+ENERGY REGEN: +<5.35,5.54>/s
+VIT: +<225,250>
+STR: +<225,250>
+BLOCK: +<3,4>%
+ELEMENTAL RESISTANCE: +<15,20>%
+
+[CHEST]
+type=IRON_CHESTPLATE
+tag={customLore:"Stained with the essense of brutality.",rarity:"LEGENDARY",mythic:2,customName:"Warden's Cruel Carapace",tier:3,level:60,type:"ARMOR"}
+HP: +<699,743>
+ARMOR: <9,10> - <10,11>
+ENERGY REGEN: +<5.35,5.54>/s
+VIT: +<225,250>
+STR: +<225,250>
+BLOCK: +<3,4>%
+ELEMENTAL RESISTANCE: +<15,20>%
+
+[HEAD]
+type=IRON_HELMET
+tag={customLore:"A glimspe of the suffering caused by the Warden.",rarity:"LEGENDARY",mythic:2,customName:"Helm of Despair",tier:3,level:60,type:"ARMOR"}
+HP: +<699,743>
+ARMOR: <9,10> - <10,11>
+ENERGY REGEN: +<5.35,5.54>/s
+VIT: +<225,250>
+STR: +<225,250>
+BLOCK: +<3,4>%
+ELEMENTAL RESISTANCE: +<15,20>%

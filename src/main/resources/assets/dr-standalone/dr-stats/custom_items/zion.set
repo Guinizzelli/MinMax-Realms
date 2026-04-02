@@ -1,0 +1,52 @@
+// lvl 57, rare/epic sword
+[HAND]
+type=IRON_SWORD
+tag={customLore:"A powerful sword enhanced with the soul of the Skeleton King.",rarity:"EPIC",mythic:1,customName:"Zion's Sword of Banishment",tier:3,level:57,type:"WEAPON"}
+DMG: <74,80> - <80,84>
+PURE DMG: +<14,16>
+PIERCING: +<8,10>
+LIFE STEAL: +<10,12>%
+
+[FEET]
+type=IRON_BOOTS
+tag={customLore:"The shining boots of an undead king.",rarity:"EPIC",mythic:1,customName:"Zion's Radiant Boots",tier:3,level:57,type:"ARMOR"}
+HP: +<594,637>
+ARMOR: 9 - <9,10>
+ENERGY REGEN: +<5.15,5.35>/s
+DEX: +<225,250>
+VIT: +<225,250>
+DODGE: +<3,4>%
+HEALING: +<4,5>%
+
+[LEGS]
+type=IRON_LEGGINGS
+tag={customLore:"Resistant to the most powerful of strikes.",rarity:"EPIC",mythic:1,customName:"Zion's Spiritual Leggings",tier:3,level:57,type:"ARMOR"}
+HP: +<594,637>
+ARMOR: 9 - <9,10>
+ENERGY REGEN: +<5.15,5.35>/s
+DEX: +<225,250>
+VIT: +<225,250>
+DODGE: +<3,4>%
+HEALING: +<4,5>%
+
+[CHEST]
+type=IRON_CHESTPLATE
+tag={customLore:"Armor possessed with the spirits of the Skeleton King's servants.",rarity:"EPIC",mythic:1,customName:"Zion's Soul-Fused Armor",tier:3,level:57,type:"ARMOR"}
+HP: +<594,637>
+ARMOR: 9 - <9,10>
+ENERGY REGEN: +<5.15,5.35>/s
+DEX: +<225,250>
+VIT: +<225,250>
+DODGE: +<3,4>%
+HEALING: +<4,5>%
+
+[HEAD]
+type=IRON_HELMET
+tag={customLore:"A shadowy transparent crown.",rarity:"EPIC",mythic:1,customName:"The Soul Crown",tier:3,level:57,type:"ARMOR"}
+HP: +<594,637>
+ARMOR: 9 - <9,10>
+ENERGY REGEN: +<5.15,5.35>/s
+DEX: +<225,250>
+VIT: +<225,250>
+DODGE: +<3,4>%
+HEALING: +<4,5>%

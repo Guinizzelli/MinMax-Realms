@@ -1,0 +1,52 @@
+// lvl 35, epic/legendary scythe
+[HAND]
+type=STONE_HOE
+tag={customLore:"A scorched scythe etched with sapping runes.",rarity:"LEGENDARY",mythic:1,customName:"Gladia Sangura",tier:2,level:35,type:"WEAPON"}
+DMG: <37,39> - <39,41>
+FIRE DMG: +<8,9>
+CLEAVE: +<7,8>%
+LIFE STEAL: +<10,12>%
+
+[FEET]
+type=CHAINMAIL_BOOTS
+tag={customLore:"Searing boots that melt the ground they touch.",rarity:"LEGENDARY",mythic:1,customName:"Lady Rihker's Blackened Treads",tier:2,level:35,type:"ARMOR"}
+HP: +<256,273>
+ARMOR: 7 - 7
+ENERGY REGEN: +<4.4,4.6>/s
+INT: +<200,225>
+STR: +<200,225>
+REFLECT: +<3,4>%
+HEALING: +<4,5>%
+
+[LEGS]
+type=CHAINMAIL_LEGGINGS
+tag={customLore:"Thick enchanted robes scorched black and coated with ashes.",rarity:"LEGENDARY",mythic:1,customName:"Lady Rihker's Ritual Robes",tier:2,level:35,type:"ARMOR"}
+HP: +<256,273>
+ARMOR: 7 - 7
+ENERGY REGEN: +<4.4,4.6>/s
+INT: +<200,225>
+STR: +<200,225>
+REFLECT: +<3,4>%
+HEALING: +<4,5>%
+
+[CHEST]
+type=CHAINMAIL_CHESTPLATE
+tag={customLore:"A silken cloak whose fine trim is preserved with black magic.",rarity:"LEGENDARY",mythic:1,customName:"Lady Rihker's Ritual Cloak",tier:2,level:35,type:"ARMOR"}
+HP: +<256,273>
+ARMOR: 7 - 7
+ENERGY REGEN: +<4.4,4.6>/s
+INT: +<200,225>
+STR: +<200,225>
+REFLECT: +<3,4>%
+HEALING: +<4,5>%
+
+[HEAD]
+type=CHAINMAIL_HELMET
+tag={customLore:"An intricate iron diadem whose metal is persistently red-hot.",rarity:"LEGENDARY",mythic:1,customName:"Lady Rihker's Blistering Crown",tier:2,level:35,type:"ARMOR"}
+HP: +<256,273>
+ARMOR: 7 - 7
+ENERGY REGEN: +<4.4,4.6>/s
+INT: +<200,225>
+STR: +<200,225>
+REFLECT: +<3,4>%
+HEALING: +<4,5>%

@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "id": "minmaxrealms",
+  "version": "${version}",
+  "name": "MinMax Realms",
+  "description": "DungeonRealms helper mod with Item Rolls, DPS Meter and Gem Meter.",
+  "authors": ["matte", "Codex"],
+  "license": "All-Rights-Reserved",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "net.matte.drstandalone.DrStandaloneMod"
+    ]
+  },
+  "depends": {
+    "java": ">=21",
+    "minecraft": ["${minecraft_version}"],
+    "fabricloader": ">=${loader_version}",
+    "fabric-api": "*"
+  }
+}

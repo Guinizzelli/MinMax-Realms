@@ -1,0 +1,53 @@
+// lvl 76, epic mace
+[HAND]
+type=DIAMOND_SPADE
+tag={customLore:"Duranor's sledge of slavery, forged at the heart of Avalon.",rarity:"EPIC",mythic:1,customName:"Duranor's Mace of Torture",tier:4,level:76,type:"WEAPON"}
+DMG: <196,206> - <206,215>
+FIRE DMG: +<32,35>
+PURE DMG: +<32,35>
+CRUSHING: +<5,6>%
+CRITICAL HIT: +<5,6>%
+
+[FEET]
+type=DIAMOND_BOOTS
+tag={customLore:"Well-worn boots, scorched by traversing the treacherous depths of magma.",rarity:"EPIC",mythic:1,customName:"Duranor's Searing Boots",tier:4,level:76,type:"ARMOR"}
+HP: +<1529,1627>
+ARMOR: <12,13> - <14,15>
+ENERGY REGEN: +<6.19,6.38>/s
+VIT: +<250,275>
+STR: +<250,275>
+BLOCK: +<4,5>%
+HEALING: +<3,4>%
+
+[LEGS]
+type=DIAMOND_LEGGINGS
+tag={customLore:"The magma-scorched leggings of a merciless tyrant.",rarity:"EPIC",mythic:1,customName:"Duranor's Magma Infused Leggings",tier:4,level:76,type:"ARMOR"}
+HP: +<1529,1627>
+ARMOR: <12,13> - <14,15>
+ENERGY REGEN: +<6.19,6.38>/s
+VIT: +<250,275>
+STR: +<250,275>
+BLOCK: +<4,5>%
+HEALING: +<3,4>%
+
+[CHEST]
+type=DIAMOND_CHESTPLATE
+tag={customLore:"The hardened chestpiece of a once reveled master of Avalon.",rarity:"EPIC",mythic:1,customName:"Duranor's Scorched Platemail",tier:4,level:76,type:"ARMOR"}
+HP: +<1529,1627>
+ARMOR: <12,13> - <14,15>
+ENERGY REGEN: +<6.19,6.38>/s
+VIT: +<250,275>
+STR: +<250,275>
+BLOCK: +<4,5>%
+HEALING: +<3,4>%
+
+[HEAD]
+type=DIAMOND_HELMET
+tag={customLore:"A shimmering crown that strikes great fear upon Avalon.",rarity:"EPIC",mythic:1,customName:"Duranor's Robust Crown",tier:4,level:76,type:"ARMOR"}
+HP: +<1529,1627>
+ARMOR: <12,13> - <14,15>
+ENERGY REGEN: +<6.19,6.38>/s
+VIT: +<250,275>
+STR: +<250,275>
+BLOCK: +<4,5>%
+HEALING: +<3,4>%

@@ -1,0 +1,52 @@
+// lvl 72, rare/epic scythe
+[HAND]
+type=DIAMOND_HOE
+tag={customLore:"A prismatic silver scythe infused with the magic of a powerful mage.",rarity:"EPIC",mythic:1,customName:"Zephyr's Arcane Scythe",tier:4,level:72,type:"WEAPON"}
+DMG: <162,171> - <171,180>
+ICE DMG: +<30,33>
+FIRE DMG: +<30,33>
+POISON DMG: +<30,33>
+
+[FEET]
+type=DIAMOND_BOOTS
+tag={customLore:"Finely crafted boots which emanate a strange energy.",rarity:"EPIC",mythic:1,customName:"Zephyr's Magical Boots",tier:4,level:72,type:"ARMOR"}
+HP: +<1378,1471>
+ARMOR: <12,13> - <13,14>
+ENERGY REGEN: +<6.1,6.29>/s
+INT: +<250,275>
+DEX: +<250,275>
+REFLECT: +<4,5>%
+DODGE: +<3,4>%
+
+[LEGS]
+type=DIAMOND_LEGGINGS
+tag={customLore:"Filthy breeches that have been exposed to many concoctions of magic.",rarity:"EPIC",mythic:1,customName:"Zephyr's Silken Leggings",tier:4,level:72,type:"ARMOR"}
+HP: +<1378,1471>
+ARMOR: <12,13> - <13,14>
+ENERGY REGEN: +<6.1,6.29>/s
+INT: +<250,275>
+DEX: +<250,275>
+REFLECT: +<4,5>%
+DODGE: +<3,4>%
+
+[CHEST]
+type=DIAMOND_CHESTPLATE
+tag={customLore:"A mystical robe with the power to possess its host.",rarity:"EPIC",mythic:1,customName:"Zephyr's Mythical Robe",tier:4,level:72,type:"ARMOR"}
+HP: +<1378,1471>
+ARMOR: <12,13> - <13,14>
+ENERGY REGEN: +<6.1,6.29>/s
+INT: +<250,275>
+DEX: +<250,275>
+REFLECT: +<4,5>%
+DODGE: +<3,4>%
+
+[HEAD]
+type=DIAMOND_HELMET
+tag={customLore:"Zephyr's relic, aiding in the work of dark magic.",rarity:"EPIC",mythic:1,customName:"Zephyr's Hood of Illusion",tier:4,level:72,type:"ARMOR"}
+HP: +<1378,1471>
+ARMOR: <12,13> - <13,14>
+ENERGY REGEN: +<6.1,6.29>/s
+INT: +<250,275>
+DEX: +<250,275>
+REFLECT: +<4,5>%
+DODGE: +<3,4>%

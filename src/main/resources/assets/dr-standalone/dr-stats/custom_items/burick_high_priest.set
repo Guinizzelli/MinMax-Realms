@@ -1,0 +1,52 @@
+// lvl 55, epic scythe
+[HAND]
+type=IRON_HOE
+tag={customLore:"The scythe of Rejuvenation.",rarity:"EPIC",mythic:1,customName:"Sickened Restoration",tier:3,level:55,type:"WEAPON"}
+DMG: <82,87> - <87,91>
+POISON DMG: +<15,17>
+CRITICAL HIT: +<10,12>%
+LIFE STEAL: +<10,12>%
+
+[FEET]
+type=IRON_BOOTS
+tag={customLore:"The nimble boots of The High Priest.",rarity:"EPIC",mythic:1,customName:"The High Priest's Boots",tier:3,level:55,type:"ARMOR"}
+HP: +<625,667>
+ARMOR: <9,10> - <10,11>
+ENERGY REGEN: +<5.25,5.44>/s
+INT: +<225,250>
+VIT: +<225,250>
+HEALING: +<3,4>%
+ELEMENTAL RESISTANCE: +<15,20>%
+
+[LEGS]
+type=IRON_LEGGINGS
+tag={customLore:"The enshrined belt of The High Priest.",rarity:"EPIC",mythic:1,customName:"The High Priest's Belt",tier:3,level:55,type:"ARMOR"}
+HP: +<625,667>
+ARMOR: <9,10> - <10,11>
+ENERGY REGEN: +<5.25,5.44>/s
+INT: +<225,250>
+VIT: +<225,250>
+HEALING: +<3,4>%
+ELEMENTAL RESISTANCE: +<15,20>%
+
+[CHEST]
+type=IRON_CHESTPLATE
+tag={customLore:"Golden threads line The High Priest’s Robe.",rarity:"EPIC",mythic:1,customName:"The High Priest's Gilded Robe",tier:3,level:55,type:"ARMOR"}
+HP: +<625,667>
+ARMOR: <9,10> - <10,11>
+ENERGY REGEN: +<5.25,5.44>/s
+INT: +<225,250>
+VIT: +<225,250>
+HEALING: +<3,4>%
+ELEMENTAL RESISTANCE: +<15,20>%
+
+[HEAD]
+type=IRON_HELMET
+tag={customLore:"Crafted through the absorption of his enemies.",rarity:"EPIC",mythic:1,customName:"The High Priest's Dark Hood",tier:3,level:55,type:"ARMOR"}
+HP: +<625,667>
+ARMOR: <9,10> - <10,11>
+ENERGY REGEN: +<5.25,5.44>/s
+INT: +<225,250>
+VIT: +<225,250>
+HEALING: +<3,4>%
+ELEMENTAL RESISTANCE: +<15,20>%

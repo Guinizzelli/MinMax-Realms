@@ -1,0 +1,53 @@
+// lvl 90, rare scythe
+[HAND]
+type=GOLD_HOE
+tag={customLore:"A scythe covered in mushrooms from the harvest of years long past.",rarity:"RARE",mythic:1,customName:"The Harvester",tier:5,level:90,type:"WEAPON"}
+DMG: <303,320> - <320,337>
+POISON DMG: +<64,68>
+CRITICAL HIT: +<10,12>%
+PIERCING: +<12,15>
+CLEAVE: +<10,12>%
+
+[FEET]
+type=GOLD_BOOTS
+tag={customLore:"Small sandals that were a gift from a thoughtful guardian.",rarity:"RARE",mythic:1,customName:"Fungi Sandals",tier:5,level:90,type:"ARMOR"}
+HP: +<2833,3021>
+ARMOR: <15,16> - <17,18>
+ENERGY REGEN: +<6.94,7.13>/s
+INT: +<275,300>
+VIT: +<275,300>
+THORNS: +<7,8>%
+HEALING: +<3,4>%
+
+[LEGS]
+type=GOLD_LEGGINGS
+tag={customLore:"A loose fitting garment made of moven mushrooms.",rarity:"RARE",mythic:1,customName:"Woven Pants",tier:5,level:90,type:"ARMOR"}
+HP: +<2833,3021>
+ARMOR: <15,16> - <17,18>
+ENERGY REGEN: +<6.94,7.13>/s
+INT: +<275,300>
+VIT: +<275,300>
+THORNS: +<7,8>%
+HEALING: +<3,4>%
+
+[CHEST]
+type=GOLD_CHESTPLATE
+tag={customLore:"A vibrant cloth robe, made of resilient and colorful shrooms.",rarity:"RARE",mythic:1,customName:"Fungi Robe",tier:5,level:90,type:"ARMOR"}
+HP: +<2833,3021>
+ARMOR: <15,16> - <17,18>
+ENERGY REGEN: +<6.94,7.13>/s
+INT: +<275,300>
+VIT: +<275,300>
+THORNS: +<7,8>%
+HEALING: +<3,4>%
+
+[HEAD]
+type=GOLD_HELMET
+tag={customLore:"A shroom fit for the Empress' head, covered in fungi.",rarity:"RARE",mythic:1,customName:"Empress' Pileus",tier:5,level:90,type:"ARMOR"}
+HP: +<2833,3021>
+ARMOR: <15,16> - <17,18>
+ENERGY REGEN: +<6.94,7.13>/s
+INT: +<275,300>
+VIT: +<275,300>
+THORNS: +<7,8>%
+HEALING: +<3,4>%

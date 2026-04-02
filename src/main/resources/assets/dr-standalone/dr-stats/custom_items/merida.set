@@ -1,0 +1,53 @@
+// lvl 36, rare/epic bow
+[HAND]
+type=BOW
+tag={customLore:"The accurate, deadly bow of Merida.",rarity:"EPIC",mythic:1,customName:"Death's Whisper",tier:2,level:36,type:"BOW"}
+DMG: <39,40> - <40,43>
+POISON DMG: +<9,10>
+EXECUTE: +<8,10>%
+PIERCING: +<8,10>
+BLEEDING: +<8,10>%
+
+[FEET]
+type=CHAINMAIL_BOOTS
+tag={customLore:"A punishment to insubordinate bandits.",rarity:"EPIC",mythic:1,customName:"Merida's Thorned Slippers",tier:2,level:36,type:"ARMOR"}
+HP: +<224,241>
+ARMOR: <6,7> - <7,8>
+ENERGY REGEN: +<4.22,4.4>/s
+DEX: +<200,225>
+VIT: +<200,225>
+DODGE: +<3,4>%
+ITEM FIND: +<7,8>%
+
+[LEGS]
+type=CHAINMAIL_LEGGINGS
+tag={customLore:"The glowing Knickerbockers of Merida.",rarity:"EPIC",mythic:1,customName:"Merida's Fruitful Knickerbockers",tier:2,level:36,type:"ARMOR"}
+HP: +<224,241>
+ARMOR: <6,7> - <7,8>
+ENERGY REGEN: +<4.22,4.4>/s
+DEX: +<200,225>
+VIT: +<200,225>
+DODGE: +<3,4>%
+ITEM FIND: +<7,8>%
+
+[CHEST]
+type=CHAINMAIL_CHESTPLATE
+tag={customLore:"The bushy yet fabled blouse of the wrathful.",rarity:"EPIC",mythic:1,customName:"Merida's Overgrown Blouse",tier:2,level:36,type:"ARMOR"}
+HP: +<224,241>
+ARMOR: <6,7> - <7,8>
+ENERGY REGEN: +<4.22,4.4>/s
+DEX: +<200,225>
+VIT: +<200,225>
+DODGE: +<3,4>%
+ITEM FIND: +<7,8>%
+
+[HEAD]
+type=CHAINMAIL_HELMET
+tag={customLore:"The face of wrath.",rarity:"EPIC",mythic:1,customName:"Merida's Stealth Mask",tier:2,level:36,type:"ARMOR"}
+HP: +<224,241>
+ARMOR: <6,7> - <7,8>
+ENERGY REGEN: +<4.22,4.4>/s
+DEX: +<200,225>
+VIT: +<200,225>
+DODGE: +<3,4>%
+ITEM FIND: +<7,8>%

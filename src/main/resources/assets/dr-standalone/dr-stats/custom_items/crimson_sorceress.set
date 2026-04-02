@@ -1,0 +1,52 @@
+// lvl 28, rare/epic sword
+[HAND]
+type=STONE_SWORD
+tag={customLore:"The symbols engraved on this blade glow a deep red, fueled by its enemies' flesh.",rarity:"EPIC",mythic:1,customName:"Vindicta Requia",tier:2,level:32,type:"WEAPON"}
+DMG: <31,32> - <32,34>
+PURE DMG: +<7,8>
+CLEAVE: +<8,10>%
+LIFE STEAL: +<12,15>%
+
+[FEET]
+type=CHAINMAIL_BOOTS
+tag={customLore:"These boots, although light to carry, seem as if they are sinking into the earth.",rarity:"EPIC",mythic:1,customName:"Boots of the Dead",tier:2,level:32,type:"ARMOR"}
+HP: +<216,232>
+ARMOR: 6 - <6,7>
+ENERGY REGEN: +<4.22,4.4>/s
+INT: +<200,225>
+DEX: +<200,225>
+ELEMENTAL RESISTANCE: +<12,15>%
+REFLECT: +<3,4>%
+
+[LEGS]
+type=CHAINMAIL_LEGGINGS
+tag={customLore:"An eerie feeling lingers throughout the body while wearing these leggings.",rarity:"EPIC",mythic:1,customName:"Breeches of the Departed",tier:2,level:32,type:"ARMOR"}
+HP: +<216,232>
+ARMOR: 6 - <6,7>
+ENERGY REGEN: +<4.22,4.4>/s
+INT: +<200,225>
+DEX: +<200,225>
+ELEMENTAL RESISTANCE: +<12,15>%
+REFLECT: +<3,4>%
+
+[CHEST]
+type=CHAINMAIL_CHESTPLATE
+tag={customLore:"Even though they easily fit over the body, these robes feel slightly suffocating to wear.",rarity:"EPIC",mythic:1,customName:"Robes of the Deceased",tier:2,level:32,type:"ARMOR"}
+HP: +<216,232>
+ARMOR: 6 - <6,7>
+ENERGY REGEN: +<4.22,4.4>/s
+INT: +<200,225>
+DEX: +<200,225>
+ELEMENTAL RESISTANCE: +<12,15>%
+REFLECT: +<3,4>%
+
+[HEAD]
+type=CHAINMAIL_HELMET
+tag={customLore:"A strange noble whisper can occasionally be heard emanating from this headwear.",rarity:"EPIC",mythic:1,customName:"Coif of the Demised",tier:2,level:32,type:"ARMOR"}
+HP: +<216,232>
+ARMOR: 6 - <6,7>
+ENERGY REGEN: +<4.22,4.4>/s
+INT: +<200,225>
+DEX: +<200,225>
+ELEMENTAL RESISTANCE: +<12,15>%
+REFLECT: +<3,4>%

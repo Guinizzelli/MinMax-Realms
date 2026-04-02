@@ -1,0 +1,53 @@
+// lvl 75, epic/legendary scythe
+[HAND]
+type=DIAMOND_HOE
+tag={customLore:"The great scythe of The Infernal Abyss.",rarity:"LEGENDARY",mythic:1,customName:"Abyssal Accursed Scythe",tier:4,level:75,type:"WEAPON"}
+DMG: <186,195> - <195,205>
+FIRE DMG: +<34,36>
+CRITICAL HIT: +<8,10>%
+CLEAVE: +<8,10>%
+EXECUTE: +<8,10>%
+
+[FEET]
+type=DIAMOND_BOOTS
+tag={customLore:"The studded boots of The Infernal Abyss.",rarity:"LEGENDARY",mythic:1,customName:"Abyssal Accursed Boots",tier:4,level:75,type:"ARMOR"}
+HP: +<1610,1707>
+ARMOR: <13,14> - <14,15>
+ENERGY REGEN: +<6.29,6.47>/s
+INT: +<250,275>
+STR: +<250,275>
+ELEMENTAL RESISTANCE: +<15,20>%
+REFLECT: +<4,5>%
+
+[LEGS]
+type=DIAMOND_LEGGINGS
+tag={customLore:"The fiery leggings of The Infernal Abyss.",rarity:"LEGENDARY",mythic:1,customName:"Abyssal Accursed Leggings",tier:4,level:75,type:"ARMOR"}
+HP: +<1610,1707>
+ARMOR: <13,14> - <14,15>
+ENERGY REGEN: +<6.29,6.47>/s
+INT: +<250,275>
+STR: +<250,275>
+ELEMENTAL RESISTANCE: +<15,20>%
+REFLECT: +<4,5>%
+
+[CHEST]
+type=DIAMOND_CHESTPLATE
+tag={customLore:"The accursed chestpiece of The Infernal Abyss.",rarity:"LEGENDARY",mythic:1,customName:"Abyssal Accursed Chestpiece",tier:4,level:75,type:"ARMOR"}
+HP: +<1610,1707>
+ARMOR: <13,14> - <14,15>
+ENERGY REGEN: +<6.29,6.47>/s
+INT: +<250,275>
+STR: +<250,275>
+ELEMENTAL RESISTANCE: +<15,20>%
+REFLECT: +<4,5>%
+
+[HEAD]
+type=DIAMOND_HELMET
+tag={customLore:"The burning helmet of The Infernal Abyss.",rarity:"LEGENDARY",mythic:1,customName:"Abyssal Accursed Helmet",tier:4,level:75,type:"ARMOR"}
+HP: +<1610,1707>
+ARMOR: <13,14> - <14,15>
+ENERGY REGEN: +<6.29,6.47>/s
+INT: +<250,275>
+STR: +<250,275>
+ELEMENTAL RESISTANCE: +<15,20>%
+REFLECT: +<4,5>%

@@ -1,0 +1,53 @@
+// lvl 95, epic axe
+[HAND]
+type=GOLD_AXE
+tag={customLore:"Radiant energy pulses off the head of the axe. The only safe part is the hilt.",rarity:"EPIC",mythic:1,customName:"Flamebind",tier:5,level:95,type:"WEAPON"}
+DMG: <370,389> - <389,407>
+FIRE DMG: +<70,75>
+SHATTER: +<10,12>%
+CRITICAL HIT: +<10,12>%
+vs. PLAYERS: +<12,15>%
+
+[FEET]
+type=GOLD_BOOTS
+tag={customLore:"The grit that covers these boots traces back to the Al Sahra Savannah.",rarity:"EPIC",mythic:1,customName:"Sandstone Boots",tier:5,level:95,type:"ARMOR"}
+HP: +<3370,3567>
+ARMOR: <16,17> - <17,18>
+ENERGY REGEN: +<7.13,7.31>/s
+STR: +<275,300>
+VIT: +<275,300>
+BLOCK: +<3,4>%
+REFLECT: +<3,4>%
+
+[LEGS]
+type=GOLD_LEGGINGS
+tag={customLore:"The scales of these leggings reflect all manner of light.",rarity:"EPIC",mythic:1,customName:"Scaled Legs",tier:5,level:95,type:"ARMOR"}
+HP: +<3370,3567>
+ARMOR: <16,17> - <17,18>
+ENERGY REGEN: +<7.13,7.31>/s
+STR: +<275,300>
+VIT: +<275,300>
+BLOCK: +<3,4>%
+REFLECT: +<3,4>%
+
+[CHEST]
+type=GOLD_CHESTPLATE
+tag={customLore:"Halas likes to bang his axe against it, so all challengers will hear him.",rarity:"EPIC",mythic:1,customName:"Nadiri's Revenge",tier:5,level:95,type:"ARMOR"}
+HP: +<3370,3567>
+ARMOR: <16,17> - <17,18>
+ENERGY REGEN: +<7.13,7.31>/s
+STR: +<275,300>
+VIT: +<275,300>
+BLOCK: +<3,4>%
+REFLECT: +<3,4>%
+
+[HEAD]
+type=GOLD_HELMET
+tag={customLore:"A sunhat that protects against heat.",rarity:"EPIC",mythic:1,customName:"Sunshade",tier:5,level:95,type:"ARMOR"}
+HP: +<3370,3567>
+ARMOR: <16,17> - <17,18>
+ENERGY REGEN: +<7.13,7.31>/s
+STR: +<275,300>
+VIT: +<275,300>
+BLOCK: +<3,4>%
+REFLECT: +<3,4>%

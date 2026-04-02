@@ -1,0 +1,54 @@
+// lvl 88, rare bow
+[HAND]
+type=BOW
+tag={customLore:"An ancient weapon rumored to devour the soul of any being pierced by its arrow.",rarity:"RARE",mythic:1,customName:"Weaver of Shadows",tier:5,level:88,type:"BOW"}
+DMG: <339,358> - <358,377>
+ICE DMG: +<70,77>
+CRITICAL HIT: +<10,12>%
+vs. MONSTERS: +<15,20>%
+SLOW: +<10,12>%
+PIERCING: +<12,15>
+
+[FEET]
+type=GOLD_BOOTS
+tag={customLore:"These boots seem to float over open space, if only for a moment.",rarity:"RARE",mythic:1,customName:"Void Striders",tier:5,level:88,type:"ARMOR"}
+HP: +<2776,2960>
+ARMOR: <15,16> - <16,17>
+ENERGY REGEN: +<6.94,7.13>/s
+DEX: +<275,300>
+INT: +<275,300>
+DODGE: +<5,6>%
+ITEM FIND: +<7,8>%
+
+[LEGS]
+type=GOLD_LEGGINGS
+tag={customLore:"The full moon's light reflects off these shiny leggings.",rarity:"RARE",mythic:1,customName:"Lunar Legplates",tier:5,level:88,type:"ARMOR"}
+HP: +<2776,2960>
+ARMOR: <15,16> - <16,17>
+ENERGY REGEN: +<6.94,7.13>/s
+DEX: +<275,300>
+INT: +<275,300>
+DODGE: +<5,6>%
+ITEM FIND: +<7,8>%
+
+[CHEST]
+type=GOLD_CHESTPLATE
+tag={customLore:"Blend into the shadows of the night.",rarity:"RARE",mythic:1,customName:"Cloak of Darkness",tier:5,level:88,type:"ARMOR"}
+HP: +<2776,2960>
+ARMOR: <15,16> - <16,17>
+ENERGY REGEN: +<6.94,7.13>/s
+DEX: +<275,300>
+INT: +<275,300>
+DODGE: +<5,6>%
+ITEM FIND: +<7,8>%
+
+[HEAD]
+type=GOLD_HELMET
+tag={customLore:"The world seems... quieter somehow.",rarity:"RARE",mythic:1,customName:"Coif of Nullification",tier:5,level:88,type:"ARMOR"}
+HP: +<2776,2960>
+ARMOR: <15,16> - <16,17>
+ENERGY REGEN: +<6.94,7.13>/s
+DEX: +<275,300>
+INT: +<275,300>
+DODGE: +<5,6>%
+ITEM FIND: +<7,8>%

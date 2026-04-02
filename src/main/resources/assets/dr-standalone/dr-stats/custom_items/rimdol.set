@@ -1,0 +1,52 @@
+// lvl 75, rare/epic sword
+[HAND]
+type=DIAMOND_SWORD
+tag={customLore:"A Corroded Blade infused with both disease and famine.",rarity:"EPIC",mythic:1,customName:"Rim'Dol's Decaying Blight Blade",tier:4,level:75,type:"WEAPON"}
+DMG: <159,168> - <168,177>
+POISON DMG: +<30,32>
+EXECUTE: +<10,12>%
+LIFE STEAL: +<10,12>%
+
+[FEET]
+type=DIAMOND_BOOTS
+tag={customLore:"A lightweight pair of ornate boots, dyed to a deep crimson.",rarity:"EPIC",mythic:1,customName:"Rim'Dol's Ritualistic Boots",tier:4,level:75,type:"ARMOR"}
+HP: +<1418,1515>
+ARMOR: <12,13> - <13,14>
+ENERGY REGEN: +<6.1,6.29>/s
+DEX: +<250,275>
+VIT: +<250,275>
+BLOCK: +<4,5>%
+THORNS: +<4,5>%
+
+[LEGS]
+type=DIAMOND_LEGGINGS
+tag={customLore:"An adorned pair of legguards emanating a feeling of sickness.",rarity:"EPIC",mythic:1,customName:"Rim'Dol's Sacramental Legguards",tier:4,level:75,type:"ARMOR"}
+HP: +<1418,1515>
+ARMOR: <12,13> - <13,14>
+ENERGY REGEN: +<6.1,6.29>/s
+DEX: +<250,275>
+VIT: +<250,275>
+BLOCK: +<4,5>%
+THORNS: +<4,5>%
+
+[CHEST]
+type=DIAMOND_CHESTPLATE
+tag={customLore:"Exquisitely decorated robes woven from a tough steel fiber and fine silk.",rarity:"EPIC",mythic:1,customName:"Rim'Dol's Darksteel Robes",tier:4,level:75,type:"ARMOR"}
+HP: +<1418,1515>
+ARMOR: <12,13> - <13,14>
+ENERGY REGEN: +<6.1,6.29>/s
+DEX: +<250,275>
+VIT: +<250,275>
+BLOCK: +<4,5>%
+THORNS: +<4,5>%
+
+[HEAD]
+type=DIAMOND_HELMET
+tag={customLore:"An intricate ceremonial headdress embedded with a variety of carved bones.",rarity:"EPIC",mythic:1,customName:"Rim'Dol's Barbed Headdress",tier:4,level:75,type:"ARMOR"}
+HP: +<1418,1515>
+ARMOR: <12,13> - <13,14>
+ENERGY REGEN: +<6.1,6.29>/s
+DEX: +<250,275>
+VIT: +<250,275>
+BLOCK: +<4,5>%
+THORNS: +<4,5>%
