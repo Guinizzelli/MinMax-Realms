@@ -173,12 +173,6 @@ public class DrCodexWikiScreen extends Screen {
     }
 
     @Override
-    public void tick() {
-        super.tick();
-        if (searchField != null) searchField.tick();
-    }
-
-    @Override
     public boolean charTyped(char chr, int modifiers) {
         if (selectedView == View.Codex && searchField != null && searchField.charTyped(chr, modifiers)) return true;
         return super.charTyped(chr, modifiers);

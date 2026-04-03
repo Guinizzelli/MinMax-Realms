@@ -6,7 +6,7 @@ plugins {
 base {
     archivesName = properties["archives_base_name"] as String
     group = properties["maven_group"] as String
-    version = (properties["minecraft_version"] as String) + "-local"
+    version = (properties["mod_version"] as String) + "-mc" + (properties["minecraft_version"] as String)
 }
 
 repositories {
@@ -43,6 +43,11 @@ java {
     targetCompatibility = JavaVersion.VERSION_21
 }
 
+val prismLauncherModsDir = File(
+    System.getProperty("user.home"),
+    "AppData/Roaming/PrismLauncher/instances/1.21.5/minecraft/mods"
+)
+
 tasks.register<Copy>("exportJarToWorkspace") {
     group = "build"
     dependsOn("remapJar")
@@ -50,6 +55,13 @@ tasks.register<Copy>("exportJarToWorkspace") {
     into(projectDir.parentFile.resolve("build"))
 }
 
+tasks.register<Copy>("exportJarToPrismLauncherMods") {
+    group = "build"
+    dependsOn("remapJar")
+    from(layout.buildDirectory.file("libs/${base.archivesName.get()}-${project.version}.jar"))
+    into(prismLauncherModsDir)
+}
+
 tasks.build {
-    finalizedBy("exportJarToWorkspace")
+    finalizedBy("exportJarToWorkspace", "exportJarToPrismLauncherMods")
 }

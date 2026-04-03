@@ -12,6 +12,9 @@ import java.util.List;
 import java.util.Locale;
 
 public final class DrItemRollsFeature {
+    public record TooltipSnapshot(List<Text> cleanedLines, DrRarityHelper.TooltipTheme rarity, DrStatsDatabase.TooltipAnalysis analysis) {
+    }
+
     private DrItemRollsFeature() {
     }
 
@@ -26,14 +29,23 @@ public final class DrItemRollsFeature {
         DrRarityHelper.queue(stack, lines);
         if (!config.itemRollsEnabled) return;
 
-        cleanTooltip(lines, config);
-
-        DrRarityHelper.TooltipTheme rarity = DrRarityHelper.resolve(stack, lines);
-        DrStatsDatabase.TooltipAnalysis analysis = DrStatsDatabase.get().analyze(stack, lines, rarity);
+        TooltipSnapshot snapshot = inspectTooltip(stack, lines, config);
+        List<Text> cleaned = snapshot.cleanedLines();
+        DrStatsDatabase.TooltipAnalysis analysis = snapshot.analysis();
         if (analysis == null) return;
 
+        lines.clear();
+        lines.addAll(cleaned);
         if (config.showOverallOnLevel) injectOverallRoll(lines, analysis);
         if (config.statBreakdown) injectStatBreakdown(lines, analysis, config);
+    }
+
+    public static TooltipSnapshot inspectTooltip(ItemStack stack, List<Text> sourceLines, DrStandaloneConfig config) {
+        List<Text> cleaned = new java.util.ArrayList<>(sourceLines);
+        cleanTooltip(cleaned, config);
+        DrRarityHelper.TooltipTheme rarity = DrRarityHelper.resolve(stack, cleaned);
+        DrStatsDatabase.TooltipAnalysis analysis = DrStatsDatabase.get().analyze(stack, cleaned, rarity);
+        return new TooltipSnapshot(List.copyOf(cleaned), rarity, analysis);
     }
 
     private static void cleanTooltip(List<Text> lines, DrStandaloneConfig config) {

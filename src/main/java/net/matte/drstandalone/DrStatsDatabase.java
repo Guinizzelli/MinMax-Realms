@@ -365,7 +365,7 @@ public class DrStatsDatabase {
         ValueRange hpRegenRange = new ValueRange(Math.floor(healthRange.min / 2d), Math.ceil(healthRange.max / 2d));
         ValueRange energyRange = ARMOR_ENERGY_RANGES[tier - 1][rarityIndex];
 
-        templates.add(GenericStatTemplate.singleRangeWithAliases("ARMOR", exactRange(armorBaseValue(armorKind, tier)), "ARMOR"));
+        templates.add(GenericStatTemplate.doubleRangeWithAliases("ARMOR", armorRangeForTier(tier), armorRangeForTier(tier), "ARMOR", "DMG REDUCTION"));
         templates.add(GenericStatTemplate.singleRangeWithAliases("HP", healthRange, "HP", "HEALTH"));
         templates.add(GenericStatTemplate.singleRangeWithAliases("HP REGEN", hpRegenRange, "HP REGEN", "HP/S", "HP REGEN/S"));
         templates.add(GenericStatTemplate.singleRangeWithAliases("ENERGY REGEN", energyRange, "ENERGY REGEN", "ENERGY/S", "ENERGY REGEN/S"));
@@ -486,7 +486,7 @@ public class DrStatsDatabase {
         return new ValueRange(Math.floor(scaledMin), Math.ceil(scaledMax));
     }
 
-    private static final Pattern LEVEL_LINE = Pattern.compile("^LEVEL\\s*:\\s*(\\d+)$", Pattern.CASE_INSENSITIVE);
+    private static final Pattern LEVEL_LINE = Pattern.compile(".*LEVEL\\s*:\\s*(\\d+).*", Pattern.CASE_INSENSITIVE);
     private static final int[] TIER_MEDIAN_LEVELS = {10, 30, 50, 70, 90};
     private static final DamageProfile[][] DAMAGE_PROFILES = {
         {
@@ -563,6 +563,16 @@ public class DrStatsDatabase {
 
     private static ValueRange exactRange(double value) {
         return new ValueRange(value, value);
+    }
+
+    private static ValueRange armorRangeForTier(int tier) {
+        return switch (tier) {
+            case 1 -> new ValueRange(3, 5);
+            case 2 -> new ValueRange(4, 6);
+            case 3 -> new ValueRange(5, 7);
+            case 4 -> new ValueRange(6, 8);
+            default -> new ValueRange(7, 9);
+        };
     }
 
     private static double armorBaseValue(ArmorKind armorKind, int tier) {
@@ -878,21 +888,25 @@ public class DrStatsDatabase {
     }
 
     private static class GenericStatTemplate {
+        private static final Pattern NUMBER_PATTERN = Pattern.compile("([+-]?\\d+(?:\\.\\d+)?)");
         private final String label;
         private final Pattern pattern;
         private final List<ValueRange> ranges;
+        private final List<String> aliases;
 
-        private GenericStatTemplate(String label, Pattern pattern, List<ValueRange> ranges) {
+        private GenericStatTemplate(String label, Pattern pattern, List<ValueRange> ranges, List<String> aliases) {
             this.label = label;
             this.pattern = pattern;
             this.ranges = ranges;
+            this.aliases = aliases;
         }
 
         public static GenericStatTemplate singleRange(String label, String prefix, ValueRange range) {
             return new GenericStatTemplate(
                 label,
                 Pattern.compile("^" + Pattern.quote(prefix) + "\\s*:\\s*\\+?([+-]?\\d+(?:\\.\\d+)?)%?$", Pattern.CASE_INSENSITIVE),
-                List.of(range)
+                List.of(range),
+                List.of(normalizeAlias(prefix))
             );
         }
 
@@ -905,8 +919,9 @@ public class DrStatsDatabase {
 
             return new GenericStatTemplate(
                 label,
-                Pattern.compile("^(?:" + prefixRegex + ")\\s*:\\s*\\+?([+-]?\\d+(?:\\.\\d+)?)%?(?:\\s*HP/s)?$", Pattern.CASE_INSENSITIVE),
-                List.of(range)
+                Pattern.compile("^(?:" + prefixRegex + ")\\s*:\\s*\\+?([+-]?\\d+(?:\\.\\d+)?)(?:%|/s|\\s*HP/s)?$", Pattern.CASE_INSENSITIVE),
+                List.of(range),
+                normalizedAliases(prefixes)
             );
         }
 
@@ -914,7 +929,23 @@ public class DrStatsDatabase {
             return new GenericStatTemplate(
                 label,
                 Pattern.compile("^" + Pattern.quote(prefix) + "\\s*:\\s*\\+?([+-]?\\d+(?:\\.\\d+)?)\\s*-\\s*([+-]?\\d+(?:\\.\\d+)?)$", Pattern.CASE_INSENSITIVE),
-                List.of(first, second)
+                List.of(first, second),
+                List.of(normalizeAlias(prefix))
+            );
+        }
+
+        public static GenericStatTemplate doubleRangeWithAliases(String label, ValueRange first, ValueRange second, String... prefixes) {
+            StringBuilder prefixRegex = new StringBuilder();
+            for (int i = 0; i < prefixes.length; i++) {
+                if (i > 0) prefixRegex.append("|");
+                prefixRegex.append(Pattern.quote(prefixes[i]));
+            }
+
+            return new GenericStatTemplate(
+                label,
+                Pattern.compile("^(?:" + prefixRegex + ")\\s*:\\s*\\+?([+-]?\\d+(?:\\.\\d+)?)\\s*-\\s*([+-]?\\d+(?:\\.\\d+)?)(?:%|/s)?$", Pattern.CASE_INSENSITIVE),
+                List.of(first, second),
+                normalizedAliases(prefixes)
             );
         }
 
@@ -928,9 +959,16 @@ public class DrStatsDatabase {
         }
 
         private @Nullable StatMatch match(String tooltipLine) {
-            Matcher matcher = pattern.matcher(cleanLine(tooltipLine));
-            if (!matcher.matches() || matcher.groupCount() != ranges.size()) return null;
+            String cleaned = cleanLine(tooltipLine);
+            Matcher matcher = pattern.matcher(cleaned);
+            if (matcher.matches() && matcher.groupCount() == ranges.size()) {
+                return buildMatch(tooltipLine, matcher);
+            }
 
+            return matchLoose(tooltipLine, cleaned);
+        }
+
+        private @Nullable StatMatch buildMatch(String tooltipLine, Matcher matcher) {
             double percentTotal = 0;
             boolean overcap = false;
             for (int i = 0; i < ranges.size(); i++) {
@@ -939,6 +977,30 @@ public class DrStatsDatabase {
                 if (ranges.get(i).isOvercap(current)) overcap = true;
             }
 
+            return new StatMatch(label, tooltipLine, percentTotal / ranges.size(), buildRangeText(), overcap);
+        }
+
+        private @Nullable StatMatch matchLoose(String tooltipLine, String cleaned) {
+            int colon = cleaned.indexOf(':');
+            if (colon <= 0) return null;
+
+            String rawLabel = normalizeAlias(cleaned.substring(0, colon));
+            if (!aliases.contains(rawLabel)) return null;
+
+            List<Double> values = new ArrayList<>();
+            Matcher numbers = NUMBER_PATTERN.matcher(cleaned.substring(colon + 1));
+            while (numbers.find() && values.size() < ranges.size()) {
+                values.add(Double.parseDouble(numbers.group(1)));
+            }
+            if (values.size() != ranges.size()) return null;
+
+            double percentTotal = 0;
+            boolean overcap = false;
+            for (int i = 0; i < ranges.size(); i++) {
+                double current = values.get(i);
+                percentTotal += ranges.get(i).percent(current);
+                if (ranges.get(i).isOvercap(current)) overcap = true;
+            }
             return new StatMatch(label, tooltipLine, percentTotal / ranges.size(), buildRangeText(), overcap);
         }
 
@@ -963,6 +1025,18 @@ public class DrStatsDatabase {
             }
 
             return String.format(Locale.ROOT, "%.2f", value).replaceAll("0+$", "").replaceAll("\\.$", "");
+        }
+
+        private static List<String> normalizedAliases(String... prefixes) {
+            List<String> normalized = new ArrayList<>(prefixes.length);
+            for (String prefix : prefixes) {
+                normalized.add(normalizeAlias(prefix));
+            }
+            return List.copyOf(normalized);
+        }
+
+        private static String normalizeAlias(String value) {
+            return cleanLine(value).toUpperCase(Locale.ROOT).replaceAll("\\s+", " ");
         }
     }
 }
