@@ -28,7 +28,15 @@ If something feels off, awkward, or unclear, please do not hesitate to leave fee
 
 ### DPS Meter
 
-![DPS Meter](docs/screenshots/dps-meter-ui.png)
+![DPS Meter](docs/screenshots/dps-meter-ui.webp)
+
+### DR Item Rolls
+
+![DR Item Rolls](docs/screenshots/dr-rolls.webp)
+
+### Gem Meter
+
+![Gem Meter](docs/screenshots/gem-meter.png)
 
 ## Controls
 
