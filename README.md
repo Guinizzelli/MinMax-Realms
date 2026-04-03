@@ -60,6 +60,10 @@ If something feels off, awkward, or unclear, please do not hesitate to leave fee
 
 ![Build Optimizer](docs/screenshots/build-optimizer-ui.png)
 
+### Build Optimizer Scan
+
+![Build Optimizer Scan](docs/screenshots/build-optimizer-scan.png)
+
 ### HTML Export File
 
 ![HTML Export File](docs/screenshots/html-export-file.png)
