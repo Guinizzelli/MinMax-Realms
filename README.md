@@ -74,8 +74,6 @@ The config is stored in:
 
 You can configure feature toggles, HUD placement, DPS simulation settings, item roll display style, tooltip cleanup options, optimizer advisor mode, and codex access.
 
-Security note: optimizer API keys are session-only and are not persisted to disk.
-
 ## Build
 
 ```powershell
