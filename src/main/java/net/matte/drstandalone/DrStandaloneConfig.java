@@ -41,6 +41,19 @@ public class DrStandaloneConfig {
     public double mobArmorScale = 1.0;
     public double mobAvoidanceScale = 1.0;
     public double elementalReduction = 0.05;
+    public boolean warriorBerserk = true;
+    public int warriorCombatStacks = 5;
+    public boolean warriorArmorCondition = true;
+    public boolean rogueTargetPoisoned = true;
+    public boolean rogueFirstSeconds = true;
+    public String rogueOpeningDpsModel = "Flat";
+    public boolean rogueDashBonus = false;
+    public boolean rogueAbility = false;
+    public int rogueAbilityStacks = 0;
+    public boolean rogueExecuteMod = true;
+    public boolean roguePiercingMod = true;
+    public boolean paladinAbility = false;
+    public boolean paladinPureMod = true;
 
     public int gemHudX = 8;
     public int gemHudY = 8;

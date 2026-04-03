@@ -4,7 +4,7 @@
   "version": "${version}",
   "name": "MinMax Realms",
   "description": "DungeonRealms helper mod with Item Rolls, DPS Meter and Gem Meter.",
-  "authors": ["matte", "Codex"],
+  "authors": ["matte"],
   "license": "All-Rights-Reserved",
   "environment": "client",
   "entrypoints": {
@@ -12,6 +12,9 @@
       "net.matte.drstandalone.DrStandaloneMod"
     ]
   },
+  "mixins": [
+    "minmaxrealms.mixins.json"
+  ],
   "depends": {
     "java": ">=21",
     "minecraft": ["${minecraft_version}"],

@@ -42,8 +42,8 @@ public final class DpsMeterFeature {
 
         Simulation sim = simulate(config);
         double scale = config.dpsHudScale;
-        int width = sim == null ? 180 : 320;
-        int height = sim == null ? 50 : 122;
+        int width = sim == null ? 180 : 328;
+        int height = sim == null ? 50 : 138;
         int x = config.dpsHudX;
         int y = config.dpsHudY;
 
@@ -94,23 +94,72 @@ public final class DpsMeterFeature {
         int damageColor = 0xFFE5983A;
         int apsColor = 0xFF3FC1C9;
         int ttkColor = 0xFFE5B73E;
-        int subColor = 0xFFE0E0E0;
+        int white = 0xFFE6E6E6;
 
-        context.drawText(mc.textRenderer, Text.literal("DPS: " + format(sim.dps)), 8, 8, dpsColor, false);
-        context.drawText(mc.textRenderer, Text.literal("Damage: " + sim.damageRange), 8, 22, damageColor, false);
+        context.drawText(mc.textRenderer, Text.literal(sim.weaponName).formatted(sim.weaponFormatting), 14, 10, 0xFFFFFFFF, false);
 
-        String apsText = "APS: " + format(sim.aps);
-        String ttkText = "TTK: " + formatSeconds(sim.ttk);
-        context.drawText(mc.textRenderer, Text.literal(apsText), width - 8 - mc.textRenderer.getWidth(apsText), 8, apsColor, false);
-        context.drawText(mc.textRenderer, Text.literal(ttkText), width - 8 - mc.textRenderer.getWidth(ttkText), 22, ttkColor, false);
+        context.drawText(mc.textRenderer, Text.literal("✦ DPS: " + format(sim.dps)), 14, 26, dpsColor, false);
+        context.drawText(mc.textRenderer, Text.literal("※ Damage: " + sim.damageRange), 86, 26, damageColor, false);
 
-        context.drawText(mc.textRenderer, Text.literal(sim.weaponName).formatted(sim.weaponFormatting), 8, 46, 0xFFFFFFFF, false);
-        context.drawText(mc.textRenderer, Text.literal("Class: " + sim.classProfile + "   Tier: " + sim.targetTier + "   HP: " + format(sim.targetHp) + "%"), 8, 60, subColor, false);
-        context.fill(8, 75, width - 8, 76, 0xFF666666);
+        String ttkText = "Ⅱ TTK: " + formatSeconds(sim.ttk);
+        String apsText = "➤ APS: " + format(sim.aps);
+        context.drawText(mc.textRenderer, Text.literal(ttkText), width - 14 - mc.textRenderer.getWidth(ttkText), 26, ttkColor, false);
+        context.drawText(mc.textRenderer, Text.literal(apsText), width - 14 - mc.textRenderer.getWidth(apsText), 40, apsColor, false);
 
-        context.drawText(mc.textRenderer, Text.literal("Acc " + format(sim.accuracy) + " | Pier " + format(sim.piercing) + " | Shatter " + format(sim.shatter) + "%"), 8, 82, 0xFF8EE26B, false);
-        context.drawText(mc.textRenderer, Text.literal("Exec " + format(sim.execute) + "% | Crush " + format(sim.crushing) + "% | Crit " + format(sim.critChance) + "% x" + format(sim.critMult)), 8, 94, 0xFFFFC857, false);
-        context.drawText(mc.textRenderer, Text.literal("STR " + format(sim.str) + " | DEX " + format(sim.dex) + " | VIT " + format(sim.vit) + " | INT " + format(sim.intelligence)), 8, 106, 0xFFD7D7D7, false);
+        context.drawText(mc.textRenderer, Text.literal("⚑ " + sim.classProfile + " ☠ " + sim.targetTier + " ❤ " + format(sim.targetHp) + "%"), 14, 40, white, false);
+        context.fill(14, 56, width - 14, 57, 0xFF666666);
+
+        drawThreeCols(context, 14, 66,
+            chip("◉ Accuracy: " + format(sim.accuracy), 0xFFB6E63E),
+            chip("➤ Piercing: " + format(sim.piercing), 0xFF50D6F2),
+            chip("☀ Shatter: " + format(sim.shatter) + "%", 0xFFE7A341)
+        );
+        drawThreeCols(context, 14, 80,
+            chip("✦ Execute: " + format(sim.execute) + "%", 0xFFFF5B57),
+            chip("✺ Crushing: " + format(sim.crushing) + "%", 0xFFF2C94C),
+            chip("✧ Crit: " + format(sim.critChance) + "%", 0xFFEDEDED)
+        );
+        drawFourCols(context, 14, 94,
+            chip("⚒ STR: " + format(sim.str), 0xFFE89C3D),
+            chip("☘ DEX: " + format(sim.dex), 0xFFB6E63E),
+            chip("♥ VIT: " + format(sim.vit), 0xFFFF8B47),
+            chip("❄ INT: " + format(sim.intelligence), 0xFF64D8F6)
+        );
+        drawThreeCols(context, 14, 108,
+            chip("✶ Elemental: " + format(sim.elemental), 0xFFB768F6),
+            chip("✧ Pure: " + format(sim.pure), 0xFFEDEDED),
+            chip("✷ Crit Mul: x" + format(sim.critMult), 0xFFEDEDED)
+        );
+        drawTwoCols(context, 14, 122,
+            chip("⚡ Energy Regen: " + format(sim.energyRegen) + "/s", 0xFF5D8BFF),
+            chip("❤ HP Regen: " + format(sim.hpRegen) + "/s", 0xFFFF8A8A)
+        );
+    }
+
+    private static void drawThreeCols(DrawContext context, int x, int y, StatChip a, StatChip b, StatChip c) {
+        drawChip(context, a, x, y);
+        drawChip(context, b, x + 110, y);
+        drawChip(context, c, x + 220, y);
+    }
+
+    private static void drawFourCols(DrawContext context, int x, int y, StatChip a, StatChip b, StatChip c, StatChip d) {
+        drawChip(context, a, x, y);
+        drawChip(context, b, x + 78, y);
+        drawChip(context, c, x + 156, y);
+        drawChip(context, d, x + 234, y);
+    }
+
+    private static void drawTwoCols(DrawContext context, int x, int y, StatChip a, StatChip b) {
+        drawChip(context, a, x, y);
+        drawChip(context, b, x + 170, y);
+    }
+
+    private static void drawChip(DrawContext context, StatChip chip, int x, int y) {
+        context.drawText(mc.textRenderer, Text.literal(chip.text), x, y, chip.color, false);
+    }
+
+    private static StatChip chip(String text, int color) {
+        return new StatChip(text, color);
     }
 
     private static @Nullable Simulation simulate(DrStandaloneConfig config) {
@@ -140,7 +189,7 @@ public final class DpsMeterFeature {
         double enemyDodge = AVG_MOB_DODGE[tier.ordinal()] * config.mobAvoidanceScale;
         double enemyBlock = AVG_MOB_BLOCK[tier.ordinal()] * config.mobAvoidanceScale;
 
-        applyClassRules(stats, profile, kind, tier);
+        applyClassRules(stats, profile, kind, tier, config, enemyArmor, enemyHp);
 
         double effectiveAccuracy = stats.accuracy;
         double effectivePiercing = stats.piercing;
@@ -202,26 +251,64 @@ public final class DpsMeterFeature {
             stats.str,
             stats.dex,
             stats.vit,
-            stats.intelligence
+            stats.intelligence,
+            stats.fireDamage + stats.iceDamage + stats.poisonDamage,
+            stats.pureDamage,
+            stats.energyRegen,
+            stats.hpRegen
         );
     }
 
-    private static void applyClassRules(Stats stats, ClassProfile profile, WeaponKind kind, TargetTier tier) {
+    private static void applyClassRules(Stats stats, ClassProfile profile, WeaponKind kind, TargetTier tier, DrStandaloneConfig config, double enemyArmor, double enemyHp) {
         switch (profile) {
             case Warrior -> {
                 stats.fireDamage += tier.classDamage;
-                if (kind == WeaponKind.Axe) stats.shatter += 5;
+                if (kind == WeaponKind.Axe) {
+                    stats.shatter += 5;
+                    if (config.warriorArmorCondition) {
+                        double playerArmor = stats.str * 0.01;
+                        int stacks = Math.max(0, Math.min(config.warriorCombatStacks, 10));
+                        playerArmor += stacks;
+                        playerArmor *= 1 + (Math.min(stacks, 5) * 0.02);
+                        if (playerArmor > enemyArmor) stats.shatter += 10;
+                    }
+                }
+                if (config.warriorBerserk) stats.critChance += 12;
             }
             case Rogue -> {
                 stats.poisonDamage += tier.classDamage;
                 if (kind == WeaponKind.Sword) stats.execute += 5;
+                double convertible = stats.fireDamage + stats.iceDamage + stats.pureDamage;
+                stats.fireDamage *= 0.5;
+                stats.iceDamage *= 0.5;
+                stats.pureDamage *= 0.5;
+                stats.poisonDamage += convertible * 0.5;
+
+                if (config.rogueTargetPoisoned) stats.avgDamage *= 1.15;
+                if (config.rogueDashBonus) stats.vsMonsters += 10;
+
                 stats.accuracy += 10;
+                if (config.rogueFirstSeconds) {
+                    stats.critChance += 10;
+                    stats.accuracy += 20;
+                }
+                if (config.rogueAbility) {
+                    stats.avgDamage *= 1 + (Math.min(config.rogueAbilityStacks, 10) * 0.05);
+                    if (config.rogueExecuteMod) stats.execute += 15;
+                    if (config.roguePiercingMod) stats.piercing += 15;
+                }
             }
             case Paladin -> {
                 stats.pureDamage += tier.classDamage;
                 stats.vsMonsters += 5;
                 stats.pureDamage *= 1.10;
+                double elemental = stats.fireDamage + stats.iceDamage + stats.poisonDamage;
+                stats.fireDamage *= 0.5;
+                stats.iceDamage *= 0.5;
+                stats.poisonDamage *= 0.5;
+                stats.pureDamage += elemental * 0.5;
                 if (kind == WeaponKind.Mace) stats.crushing += 5;
+                if (config.paladinAbility && config.paladinPureMod) stats.pureDamage *= 1.25;
             }
             case None -> {
             }
@@ -271,6 +358,7 @@ public final class DpsMeterFeature {
                 case "VIT", "VITALITY" -> stats.vit += value;
                 case "INT", "INTELLECT", "INTELLIGENCE" -> stats.intelligence += value;
                 case "ENERGY REGEN", "ENERGY/S", "ENERGY REGEN/S" -> stats.energyRegen += value;
+                case "HP REGEN", "HP/S", "HEALTH REGEN", "HEALTH/S" -> stats.hpRegen += value;
             }
         }
         return stats;
@@ -294,6 +382,7 @@ public final class DpsMeterFeature {
         into.vit += from.vit;
         into.intelligence += from.intelligence;
         into.energyRegen += from.energyRegen;
+        into.hpRegen += from.hpRegen;
     }
 
     private static String sanitizeTooltipLine(String value) {
@@ -392,6 +481,7 @@ public final class DpsMeterFeature {
         double vit;
         double intelligence;
         double energyRegen;
+        double hpRegen;
     }
 
     private record Simulation(
@@ -414,7 +504,14 @@ public final class DpsMeterFeature {
         double str,
         double dex,
         double vit,
-        double intelligence
+        double intelligence,
+        double elemental,
+        double pure,
+        double energyRegen,
+        double hpRegen
     ) {
+    }
+
+    private record StatChip(String text, int color) {
     }
 }

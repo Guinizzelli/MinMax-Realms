@@ -2,14 +2,12 @@
 
 Client-side Fabric mod for Minecraft `1.21.5` focused on DungeonRealms quality-of-life and theorycrafting.
 
-This standalone version contains only the DR-specific features and does not depend on Meteor Client.
-
 ## Features
 
 - `DR Item Rolls`
   - Detects item rarity from the visible tooltip
   - Shows roll quality inline for supported weapon and armor stats
-  - Can hide clutter such as durability, item id, and components line
+  - Can clean up durability, item id, and component lines
 
 - `DR DPS Meter`
   - Simulates theoretical DPS from your weapon, gear, class, and target tier
@@ -20,7 +18,7 @@ This standalone version contains only the DR-specific features and does not depe
 
 ## Controls
 
-The mod registers a `dr_standalone` category in Minecraft `Controls`.
+The mod registers a dedicated category in Minecraft `Controls`.
 
 Default keys:
 
@@ -33,13 +31,7 @@ The config is stored in:
 
 `config/dr-standalone.json`
 
-You can configure:
-
-- feature toggles
-- HUD position and scale
-- DPS simulation class and tier
-- item roll display style
-- tooltip cleanup options
+You can configure feature toggles, HUD placement, DPS simulation settings, item roll display style, and tooltip cleanup options.
 
 ## Build
 

@@ -21,7 +21,10 @@ public final class DrItemRollsFeature {
 
     private static void onTooltip(ItemStack stack, Item.TooltipContext context, TooltipType type, List<Text> lines) {
         DrStandaloneConfig config = DrStandaloneMod.config();
-        if (!config.itemRollsEnabled || lines.isEmpty()) return;
+        if (lines.isEmpty()) return;
+
+        DrRarityHelper.queue(stack, lines);
+        if (!config.itemRollsEnabled) return;
 
         cleanTooltip(lines, config);
 
