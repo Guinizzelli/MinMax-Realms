@@ -22,6 +22,7 @@ public class DrStatsDatabase {
 
     private final Map<String, List<CustomItemDefinition>> definitionsByName = new HashMap<>();
     private final List<CustomItemDefinition> definitions = new ArrayList<>();
+    private List<CodexEntry> codexEntriesCache = List.of();
 
     private boolean loaded;
     private boolean loadFailed;
@@ -63,6 +64,33 @@ public class DrStatsDatabase {
         return analyzeGenericArmor(stack, tooltipLines, displayName, rarity);
     }
 
+
+    public synchronized List<CodexEntry> getCodexEntries() {
+        ensureLoaded();
+        if (loadFailed || definitions.isEmpty()) return List.of();
+        if (!codexEntriesCache.isEmpty()) return codexEntriesCache;
+
+        List<CodexEntry> entries = new ArrayList<>();
+        for (CustomItemDefinition definition : definitions) {
+            entries.add(new CodexEntry(
+                definition.name,
+                definition.slot,
+                definition.itemType,
+                definition.rarity,
+                definition.tier,
+                definition.level,
+                definition.mythic,
+                definition.statTemplates.size(),
+                definition.sourceId
+            ));
+        }
+
+        entries.sort(Comparator.comparing((CodexEntry entry) -> entry.name.toLowerCase(Locale.ROOT))
+            .thenComparing(entry -> entry.slot.toLowerCase(Locale.ROOT)));
+        codexEntriesCache = List.copyOf(entries);
+        return codexEntriesCache;
+    }
+
     private void ensureLoaded() {
         if (loaded || loadFailed) return;
 
@@ -76,6 +104,10 @@ public class DrStatsDatabase {
     }
 
     private void loadDefinitions() throws IOException {
+        definitions.clear();
+        definitionsByName.clear();
+        codexEntriesCache = List.of();
+
         for (String fileName : readIndex()) {
             String resourcePath = CUSTOM_ITEMS_ROOT + "/" + fileName;
             try (InputStream stream = getClass().getClassLoader().getResourceAsStream(resourcePath)) {
@@ -564,6 +596,30 @@ public class DrStatsDatabase {
                 default -> 8;
             };
         };
+    }
+
+    public static class CodexEntry {
+        public final String name;
+        public final String slot;
+        public final String itemType;
+        public final String rarity;
+        public final int tier;
+        public final int level;
+        public final boolean mythic;
+        public final int statCount;
+        public final String sourceId;
+
+        public CodexEntry(String name, String slot, String itemType, String rarity, int tier, int level, boolean mythic, int statCount, String sourceId) {
+            this.name = name;
+            this.slot = slot;
+            this.itemType = itemType;
+            this.rarity = rarity;
+            this.tier = tier;
+            this.level = level;
+            this.mythic = mythic;
+            this.statCount = statCount;
+            this.sourceId = sourceId;
+        }
     }
 
     public static class TooltipAnalysis {

@@ -162,6 +162,21 @@ public final class DpsMeterFeature {
         return new StatChip(text, color);
     }
 
+
+    public static @Nullable BuildScore evaluateCurrentBuildForClass(String classProfile) {
+        DrStandaloneConfig base = DrStandaloneMod.config();
+        DrStandaloneConfig local = base.copy();
+        local.classProfile = classProfile;
+
+        try {
+            Simulation simulation = simulate(local);
+            if (simulation == null) return null;
+            return new BuildScore(simulation.classProfile, simulation.dps, simulation.ttk, simulation.aps);
+        } catch (IllegalArgumentException ignored) {
+            return null;
+        }
+    }
+
     private static @Nullable Simulation simulate(DrStandaloneConfig config) {
         if (mc.player == null) return null;
 
@@ -510,6 +525,9 @@ public final class DpsMeterFeature {
         double energyRegen,
         double hpRegen
     ) {
+    }
+
+    public record BuildScore(String classProfile, double dps, double ttk, double aps) {
     }
 
     private record StatChip(String text, int color) {
