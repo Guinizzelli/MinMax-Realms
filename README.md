@@ -52,6 +52,22 @@ If something feels off, awkward, or unclear, please do not hesitate to leave fee
 
 ![Gem Meter](docs/screenshots/gem-meter.png)
 
+### Module Config
+
+![Module Config](docs/screenshots/module-config.png)
+
+### Build Optimizer
+
+![Build Optimizer](docs/screenshots/build-optimizer-ui.png)
+
+### HTML Export File
+
+![HTML Export File](docs/screenshots/html-export-file.png)
+
+### HTML Export Preview
+
+![HTML Export Preview](docs/screenshots/html-export-preview.png)
+
 ### Build Optimizer / Codex
 
 The optimizer and codex screens are available in-game from the config screen.
