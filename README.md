@@ -2,6 +2,14 @@
 
 Client-side Fabric mod for Minecraft `1.21.5` focused on DungeonRealms quality-of-life and theorycrafting.
 
+## Beta Notice
+
+MinMax Realms is still in beta.
+
+Some parts of the mod are already very usable, but a few systems are still being refined, especially the stamina / energy-side assumptions used by the DPS simulator. I am still validating how stamina behaves in practice so the formulas and options will become smoother over time.
+
+If something feels off, awkward, or unclear, please do not hesitate to leave feedback.
+
 ## Features
 
 - `DR Item Rolls`
@@ -15,6 +23,12 @@ Client-side Fabric mod for Minecraft `1.21.5` focused on DungeonRealms quality-o
 
 - `Gem Meter`
   - Tracks gems with a lightweight HUD
+
+## Screenshots
+
+### DPS Meter
+
+![DPS Meter](docs/screenshots/dps-meter-ui.png)
 
 ## Controls
 
@@ -52,3 +66,4 @@ Exported workspace jar:
 - This is a client helper mod, not a hacked client
 - The DPS meter is a theorycraft tool, not a live combat parser
 - Roll detection is based on visible tooltip text plus bundled DR datasets
+- The stamina model is still being tuned and verified in beta
