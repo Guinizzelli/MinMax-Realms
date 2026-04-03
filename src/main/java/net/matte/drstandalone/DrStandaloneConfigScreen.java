@@ -40,6 +40,11 @@ public class DrStandaloneConfigScreen extends Screen {
         }
 
         int bottomY = this.height - 44;
+        addDrawableChild(ButtonWidget.builder(Text.literal("Build Optimizer"), button -> this.client.setScreen(new DrBuildOptimizerScreen(this)))
+            .dimensions(this.width / 2 - 170, bottomY - 24, 340, 20)
+            .tooltip(Tooltip.of(Text.literal("Analyze your gear and suggest DPS optimizations")))
+            .build());
+
         addDrawableChild(ButtonWidget.builder(Text.literal("Reset HUD"), button -> {
             resetHud(config);
             refresh();
@@ -148,6 +153,13 @@ public class DrStandaloneConfigScreen extends Screen {
         y += 24;
         addDrawableChild(toggleButton(left, y, 166, "Hide Components", () -> config.hideComponentsLine, v -> config.hideComponentsLine = v));
         addDrawableChild(stepButton(right, y, 166, () -> "Max Stats: " + config.maxStats, -1, 1, v -> config.maxStats = (int) clamp(config.maxStats + v, 1, 20)));
+        y += 28;
+        addDrawableChild(ButtonWidget.builder(Text.literal("Open Item Codex"), button -> this.client.setScreen(new DrCodexWikiScreen(this, DrCodexWikiScreen.View.Codex, 0, 0)))
+            .dimensions(left, y, 166, 20)
+            .build());
+        addDrawableChild(ButtonWidget.builder(Text.literal("Open Stats Wiki"), button -> this.client.setScreen(new DrCodexWikiScreen(this, DrCodexWikiScreen.View.Wiki, 0, 0)))
+            .dimensions(right, y, 166, 20)
+            .build());
     }
 
     private void buildGemSection(DrStandaloneConfig config, int panelLeft, int top) {
@@ -272,7 +284,7 @@ public class DrStandaloneConfigScreen extends Screen {
         context.drawTextWithShadow(this.textRenderer, Text.literal("Module config"), left + panelWidth - 92, top + 8, 0xFF97A7BA);
 
         super.render(context, mouseX, mouseY, delta);
-        context.drawCenteredTextWithShadow(this.textRenderer, Text.literal("Utilise Controls pour changer la touche d'ouverture."), this.width / 2, this.height - 18, 0xFF9AA0AA);
+        context.drawCenteredTextWithShadow(this.textRenderer, Text.literal("Use Controls to change the open keybind."), this.width / 2, this.height - 18, 0xFF9AA0AA);
     }
 
     private enum Section {

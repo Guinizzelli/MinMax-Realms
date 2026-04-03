@@ -14,6 +14,7 @@ public final class DrKeybinds {
     private static KeyBinding toggleDps;
     private static KeyBinding toggleGems;
     private static KeyBinding toggleRolls;
+    private static KeyBinding openCodex;
 
     private DrKeybinds() {
     }
@@ -43,6 +44,12 @@ public final class DrKeybinds {
             GLFW.GLFW_KEY_UNKNOWN,
             CATEGORY
         ));
+        openCodex = KeyBindingHelper.registerKeyBinding(new KeyBinding(
+            "key.dr_standalone.open_codex",
+            InputUtil.Type.KEYSYM,
+            GLFW.GLFW_KEY_K,
+            CATEGORY
+        ));
 
         ClientTickEvents.END_CLIENT_TICK.register(DrKeybinds::onTick);
     }
@@ -68,6 +75,10 @@ public final class DrKeybinds {
             DrStandaloneConfig config = DrStandaloneMod.config();
             config.itemRollsEnabled = !config.itemRollsEnabled;
             config.save();
+        }
+
+        while (openCodex.wasPressed()) {
+            client.setScreen(new DrCodexWikiScreen(client.currentScreen));
         }
     }
 }

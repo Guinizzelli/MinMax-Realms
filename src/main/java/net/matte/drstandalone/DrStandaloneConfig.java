@@ -62,6 +62,15 @@ public class DrStandaloneConfig {
     public boolean gemChatSource = true;
     public boolean gemActionBarSource = false;
 
+    public boolean optimizerCloudAdvisorEnabled = false;
+    // Session-only secret: never persisted to disk.
+    public transient String optimizerApiKey = "";
+    public String optimizerApiEndpoint = "";
+
+    public DrStandaloneConfig copy() {
+        return GSON.fromJson(GSON.toJson(this), DrStandaloneConfig.class);
+    }
+
     public static DrStandaloneConfig load() {
         try {
             if (Files.exists(PATH)) {

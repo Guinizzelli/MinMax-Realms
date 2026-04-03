@@ -24,6 +24,20 @@ If something feels off, awkward, or unclear, please do not hesitate to leave fee
 - `Gem Meter`
   - Tracks gems with a lightweight HUD
 
+- `Build Optimizer`
+  - Scans your equipped gear and compares simulated DPS across class profiles
+  - Highlights weak gear slots, recommends stat focus, and summarizes upgrade direction
+  - Includes optional cloud advisor settings with session-only API key handling
+
+- `Codex + Stats Wiki`
+  - Browse indexed DR custom items from the bundled stats database
+  - Search and filter by name, slot, and rarity
+  - Includes a built-in wiki explaining roll quality and stat categories
+
+- `HTML Export`
+  - Export optimizer analysis to a standalone HTML report
+  - Saves reports under `config/dr-standalone/exports` for easy sharing
+
 ## Screenshots
 
 ### DPS Meter
@@ -38,6 +52,10 @@ If something feels off, awkward, or unclear, please do not hesitate to leave fee
 
 ![Gem Meter](docs/screenshots/gem-meter.png)
 
+### Build Optimizer / Codex
+
+The optimizer and codex screens are available in-game from the config screen.
+
 ## Controls
 
 The mod registers a dedicated category in Minecraft `Controls`.
@@ -45,6 +63,7 @@ The mod registers a dedicated category in Minecraft `Controls`.
 Default keys:
 
 - `O` opens the config screen
+- `K` opens the `Codex + Stats Wiki` screen
 - extra toggle keys for `DPS Meter`, `Gem Meter`, and `Item Rolls` can be set in `Controls`
 
 ## Config
@@ -53,7 +72,9 @@ The config is stored in:
 
 `config/dr-standalone.json`
 
-You can configure feature toggles, HUD placement, DPS simulation settings, item roll display style, and tooltip cleanup options.
+You can configure feature toggles, HUD placement, DPS simulation settings, item roll display style, tooltip cleanup options, optimizer advisor mode, and codex access.
+
+Security note: optimizer API keys are session-only and are not persisted to disk.
 
 ## Build
 
