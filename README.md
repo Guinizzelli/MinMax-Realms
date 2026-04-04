@@ -14,11 +14,15 @@ If something feels off, awkward, or unclear, please do not hesitate to leave fee
 
 - `DR Item Rolls`
   - Detects item rarity from the visible tooltip
-  - Shows roll quality inline for supported weapon and armor stats
+  - Shows roll quality inline for supported weapon, armor, shield, and many custom set stats
+  - Handles enchant-added stat suffixes without breaking roll quality detection
+  - Supports special rarity handling such as `Transmuted`
   - Can clean up durability, item id, and component lines
 
 - `DR DPS Meter`
-  - Simulates theoretical DPS from your weapon, gear, class, and target tier
+  - Simulates DPS from your weapon, gear, class, and target tier
+  - Uses tier-scaled stamina cost by weapon family
+  - Includes a melee session model with configurable `Melee APS`
   - Includes DungeonRealms-specific stats such as crit, shatter, execute, crushing, piercing, and energy sustain
 
 - `Gem Meter`
@@ -26,8 +30,8 @@ If something feels off, awkward, or unclear, please do not hesitate to leave fee
 
 - `Build Optimizer`
   - Scans your equipped gear and compares simulated DPS across class profiles
-  - Highlights weak gear slots, recommends stat focus, and summarizes upgrade direction
-  - Includes optional cloud advisor settings with session-only API key handling
+  - Exports a standalone HTML build sheet with player snapshot, item cards, and grouped stats
+  - Keeps the in-game flow simple with `Scan current gear` and `Export HTML`
 
 - `Codex + Stats Wiki`
   - Browse indexed DR custom items from the bundled stats database
@@ -36,7 +40,8 @@ If something feels off, awkward, or unclear, please do not hesitate to leave fee
 
 - `HTML Export`
   - Export optimizer analysis to a standalone HTML report
-  - Saves reports under `config/dr-standalone/exports` for easy sharing
+  - Saves reports directly to `Downloads`
+  - Still updates `build-latest.html` under `config/dr-standalone/exports` for quick reuse/testing
 
 ## Screenshots
 
@@ -88,7 +93,7 @@ The config is stored in:
 
 `config/dr-standalone.json`
 
-You can configure feature toggles, HUD placement, DPS simulation settings, item roll display style, tooltip cleanup options, optimizer advisor mode, and codex access.
+You can configure feature toggles, HUD placement, DPS simulation settings, melee session APS, item roll display style, tooltip cleanup options, and codex access.
 
 ## Build
 
@@ -98,15 +103,15 @@ You can configure feature toggles, HUD placement, DPS simulation settings, item 
 
 Built jar:
 
-`build/libs/minmax-realms-1.21.5-local.jar`
+`build/libs/minmax-realms-v0.4.0-mc1.21.5.jar`
 
 Exported workspace jar:
 
-`../build/minmax-realms-1.21.5-local.jar`
+`../build/minmax-realms-v0.4.0-mc1.21.5.jar`
 
 ## Notes
 
 - This is a client helper mod, not a hacked client
 - The DPS meter is a theorycraft tool, not a live combat parser
 - Roll detection is based on visible tooltip text plus bundled DR datasets
-- The stamina model is still being tuned and verified in beta
+- Melee DPS now uses a session-style stamina model; bow behavior still needs a dedicated cadence model
