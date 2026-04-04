@@ -10,9 +10,12 @@ import net.minecraft.util.Formatting;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.regex.Pattern;
 
 public final class DrItemRollsFeature {
-    public record TooltipSnapshot(List<Text> cleanedLines, DrRarityHelper.TooltipTheme rarity, DrStatsDatabase.TooltipAnalysis analysis) {
+    private static final Pattern ENCHANT_BONUS_SUFFIX = Pattern.compile("\\s*\\([+-]?\\d+(?:\\.\\d+)?\\)\\s*$");
+
+    public record TooltipSnapshot(List<Text> cleanedLines, DrRarityHelper.TooltipTheme rarity, boolean transmuted, DrStatsDatabase.TooltipAnalysis analysis) {
     }
 
     private DrItemRollsFeature() {
@@ -44,8 +47,9 @@ public final class DrItemRollsFeature {
         List<Text> cleaned = new java.util.ArrayList<>(sourceLines);
         cleanTooltip(cleaned, config);
         DrRarityHelper.TooltipTheme rarity = DrRarityHelper.resolve(stack, cleaned);
+        boolean transmuted = DrRarityHelper.isTransmuted(cleaned);
         DrStatsDatabase.TooltipAnalysis analysis = DrStatsDatabase.get().analyze(stack, cleaned, rarity);
-        return new TooltipSnapshot(List.copyOf(cleaned), rarity, analysis);
+        return new TooltipSnapshot(List.copyOf(cleaned), rarity, transmuted, analysis);
     }
 
     private static void cleanTooltip(List<Text> lines, DrStandaloneConfig config) {
@@ -116,10 +120,16 @@ public final class DrItemRollsFeature {
     }
 
     private static String sanitize(String value) {
-        return value
+        String sanitized = value
             .replace('\u00A0', ' ')
             .replaceAll("\\s+\\[(?:MIN|MAX|OVERCAP|ROLLS\\s+\\d+(?:\\.\\d+)?%|\\d+(?:\\.\\d+)?%|\\d+(?:\\.\\d+)?-\\d+(?:\\.\\d+)?(?:\\s*/\\s*\\d+(?:\\.\\d+)?-\\d+(?:\\.\\d+)?)?)\\]\\s*$", "")
             .trim();
+        String previous;
+        do {
+            previous = sanitized;
+            sanitized = ENCHANT_BONUS_SUFFIX.matcher(sanitized).replaceFirst("").trim();
+        } while (!sanitized.equals(previous));
+        return sanitized;
     }
 
     private static String formatPercent(double percent) {

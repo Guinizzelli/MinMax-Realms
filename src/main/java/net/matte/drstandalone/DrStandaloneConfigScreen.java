@@ -78,10 +78,13 @@ public class DrStandaloneConfigScreen extends Screen {
                 addDrawableChild(stepButton(right, y, 166, () -> "Target HP: " + format(config.targetHpPercent) + "%", -10, 10, v -> config.targetHpPercent = clamp(config.targetHpPercent + v, 0, 100)));
                 y += 24;
                 addDrawableChild(stepButton(left, y, 166, () -> "Passive Regen: " + format(config.basePassiveEnergyRegen), -0.5, 0.5, v -> config.basePassiveEnergyRegen = clamp(config.basePassiveEnergyRegen + v, 0, 20)));
-                addDrawableChild(stepButton(right, y, 166, () -> "Attack Cap: " + format(config.practicalAttackCap), -0.25, 0.25, v -> config.practicalAttackCap = clamp(config.practicalAttackCap + v, 0.5, 8)));
+                addDrawableChild(stepButton(right, y, 166, () -> "Melee APS: " + format(config.meleeSessionAps), -0.1, 0.1, v -> config.meleeSessionAps = clamp(config.meleeSessionAps + v, 0.5, 8)));
                 y += 24;
                 addDrawableChild(stepButton(left, y, 166, () -> "Mob HP Scale: " + format(config.mobHealthScale), -0.1, 0.1, v -> config.mobHealthScale = clamp(config.mobHealthScale + v, 0.1, 3)));
                 addDrawableChild(stepButton(right, y, 166, () -> "Mob Armor Scale: " + format(config.mobArmorScale), -0.1, 0.1, v -> config.mobArmorScale = clamp(config.mobArmorScale + v, 0, 3)));
+                y += 24;
+                addDrawableChild(stepButton(left, y, 166, () -> "Bow APS Cap: " + format(config.practicalAttackCap), -0.25, 0.25, v -> config.practicalAttackCap = clamp(config.practicalAttackCap + v, 0.5, 8)));
+                addDrawableChild(labelButton(right, y, 166, "Melee uses session APS"));
             }
             case Class -> {
                 String helper = switch (config.classProfile) {

@@ -28,6 +28,8 @@ public final class DrBuildOptimizerService {
     private static final Pattern SINGLE_STAT_PATTERN = Pattern.compile("^([A-Z ./]+?)\\s*:\\s*\\+?([+-]?\\d+(?:\\.\\d+)?)(?:%|/s| HP/s)?$", Pattern.CASE_INSENSITIVE);
     private static final Pattern ITEM_LEVEL_PATTERN = Pattern.compile(".*LEVEL\\s*:?\\s*(\\d+).*", Pattern.CASE_INSENSITIVE);
     private static final Pattern DR_STATUS_PATTERN = Pattern.compile("LV\\s*(\\d+)\\s+([A-Z]+)\\s*-\\s*HP\\s*(\\d+(?:\\.\\d+)?)\\s*-\\s*XP\\s*(\\d+(?:\\.\\d+)?)%", Pattern.CASE_INSENSITIVE);
+    private static final Pattern ENCHANT_BONUS_SUFFIX = Pattern.compile("\\s*\\([+-]?\\d+(?:\\.\\d+)?\\)\\s*$");
+    private static final Pattern ENCHANT_BONUS_CAPTURE = Pattern.compile("\\(([+-]?\\d+(?:\\.\\d+)?)\\)");
     private static String sessionApiKey = "";
 
     private DrBuildOptimizerService() {
@@ -156,27 +158,35 @@ public final class DrBuildOptimizerService {
         String itemId = Registries.ITEM.getId(stack.getItem()).toString();
         List<Text> tooltip = stack.getTooltip(Item.TooltipContext.DEFAULT, mc.player, TooltipType.BASIC);
         DrItemRollsFeature.TooltipSnapshot snapshot = DrItemRollsFeature.inspectTooltip(stack, tooltip, DrStandaloneMod.config());
+        List<String> displayTooltipLines = tooltip.stream().map(Text::getString).map(DrBuildOptimizerService::stripRollAnnotations).filter(line -> !line.isBlank()).toList();
         List<String> tooltipLines = sanitizeTooltip(snapshot.cleanedLines());
-        String fallbackRarity = formatRarity(snapshot.rarity());
+        String fallbackRarity = formatRarity(snapshot.rarity(), snapshot.transmuted());
         int fallbackTier = detectTierFromMaterial(stack);
-        int fallbackLevel = detectItemLevel(tooltipLines);
+        int fallbackLevel = detectItemLevel(displayTooltipLines);
         String fallbackItemType = detectItemType(stack);
         String fallbackMaterial = detectMaterialLabel(stack);
         DrStatsDatabase.TooltipAnalysis analysis = snapshot.analysis();
-        List<StatLine> parsedStats = parseTooltipStats(tooltipLines);
+        List<StatLine> parsedStats = parseTooltipStats(displayTooltipLines);
         if (analysis == null) {
             DrStandaloneMod.LOG.info("Build Optimizer [{}]: no DB/generic match for '{}' | rarity='{}' tier={} level={} type='{}' material='{}' | tooltip={}",
                 slot, stack.getName().getString(), fallbackRarity, fallbackTier, fallbackLevel, fallbackItemType, fallbackMaterial, tooltipLines);
             return new ItemCheck(slot, stack.getName().getString(), itemId, fallbackRarity, fallbackItemType, fallbackMaterial, fallbackTier, fallbackLevel, false, -1, parsedStats.size(), parsedStats, tooltipLines);
         }
 
+        Map<String, StatLine> parsedByLabel = new LinkedHashMap<>();
+        for (StatLine parsed : parsedStats) {
+            parsedByLabel.putIfAbsent(parsed.label(), parsed);
+        }
+
         List<StatLine> statLines = new ArrayList<>();
         for (DrStatsDatabase.StatMatch match : analysis.matches) {
-            String cleanValueText = sanitizeTooltipLine(match.valueText);
+            String normalizedLabel = normalizeStatLabel(match.label);
+            StatLine enriched = parsedByLabel.get(normalizedLabel);
+            String cleanValueText = enriched != null ? enriched.valueText() : sanitizeTooltipLine(match.valueText);
             statLines.add(new StatLine(
-                normalizeStatLabel(match.label),
+                normalizedLabel,
                 cleanValueText,
-                statValue(cleanValueText, match.label),
+                enriched != null ? enriched.numericValue() : statValue(cleanValueText, match.label),
                 statCategory(match.label),
                 match.percent,
                 match.rangeText,
@@ -271,7 +281,8 @@ public final class DrBuildOptimizerService {
     private static List<StatLine> parseTooltipStats(List<String> tooltipLines) {
         List<StatLine> stats = new ArrayList<>();
         for (String line : tooltipLines) {
-            Matcher dmg = DMG_PATTERN.matcher(line);
+            String matchableLine = sanitizeTooltipLine(line);
+            Matcher dmg = DMG_PATTERN.matcher(matchableLine);
             if (dmg.matches()) {
                 double low = parseDouble(dmg.group(1));
                 double high = parseDouble(dmg.group(2));
@@ -279,11 +290,11 @@ public final class DrBuildOptimizerService {
                 continue;
             }
 
-            Matcher single = SINGLE_STAT_PATTERN.matcher(line);
+            Matcher single = SINGLE_STAT_PATTERN.matcher(matchableLine);
             if (!single.matches()) continue;
             String label = normalizeStatLabel(single.group(1));
             if ("LEVEL".equals(label)) continue;
-            double value = parseDouble(single.group(2));
+            double value = parseDouble(single.group(2)) + extractEnchantBonus(line);
             stats.add(new StatLine(label, line, value, statCategory(label), -1, "", false));
         }
         return stats;
@@ -302,9 +313,10 @@ public final class DrBuildOptimizerService {
             return (parseDouble(dmg.group(1)) + parseDouble(dmg.group(2))) / 2d;
         }
 
-        Matcher single = SINGLE_STAT_PATTERN.matcher(sanitizeTooltipLine(valueText));
+        String sanitized = sanitizeTooltipLine(valueText);
+        Matcher single = SINGLE_STAT_PATTERN.matcher(sanitized);
         if (single.matches()) {
-            return parseDouble(single.group(2));
+            return parseDouble(single.group(2)) + extractEnchantBonus(valueText);
         }
 
         return Double.NaN;
@@ -318,7 +330,7 @@ public final class DrBuildOptimizerService {
             case "VITALITY" -> "VIT";
             case "INTELLECT", "INTELLIGENCE" -> "INT";
             case "HEALTH" -> "HP";
-            case "HEALTH REGEN", "HEALTH/S", "HP/S", "HP REGEN/S" -> "HP REGEN";
+            case "HEALTH REGEN", "HEALTH/S", "HP/S", "HP REGEN/S", "HP RECOVERY" -> "HP REGEN";
             case "ENERGY/S", "ENERGY REGEN/S" -> "ENERGY REGEN";
             case "DMG REDUCTION" -> "ARMOR";
             case "FIRE RESISTANCE" -> "FIRE RESIST";
@@ -334,9 +346,10 @@ public final class DrBuildOptimizerService {
     private static String statCategory(String label) {
         return switch (normalizeStatLabel(label)) {
             case "DMG", "VS. MONSTERS", "VS. PLAYERS", "CRITICAL HIT", "PURE DMG", "FIRE DMG", "ICE DMG", "POISON DMG",
-                "PIERCING", "ACCURACY", "SHATTER", "EXECUTE", "CRUSHING", "BLEEDING", "CLEAVE", "LIFE STEAL" -> "Offense";
+                "PIERCING", "ACCURACY", "SHATTER", "EXECUTE", "CRUSHING", "BLEEDING", "CLEAVE", "LIFE STEAL",
+                "GLOWING", "BLINDING", "SLOWNESS" -> "Offense";
             case "HP", "ARMOR", "HP REGEN", "ENERGY REGEN", "THORNS", "REFLECT", "BLOCK", "DODGE",
-                "FIRE RESIST", "ICE RESIST", "POISON RESIST", "PURE RESIST", "ELEMENTAL RESIST" -> "Defense";
+                "FIRE RESIST", "ICE RESIST", "POISON RESIST", "PURE RESIST", "ELEMENTAL RESIST", "ABSORPTION" -> "Defense";
             case "STR", "DEX", "VIT", "INT" -> "Attributes";
             default -> "Utility";
         };
@@ -368,6 +381,12 @@ public final class DrBuildOptimizerService {
             case "CRUSHING" -> 12;
             case "ENERGY REGEN" -> 13;
             case "HP REGEN" -> 14;
+            case "COOLDOWN RECOVERY" -> 15;
+            case "HEALING" -> 16;
+            case "ENERGY DRAIN" -> 17;
+            case "ABSORPTION" -> 18;
+            case "HP RECOVERY" -> 19;
+            case "KEY FIND" -> 20;
             default -> 100;
         };
     }
@@ -378,10 +397,31 @@ public final class DrBuildOptimizerService {
         do {
             previous = sanitized;
             sanitized = sanitized
+                .replaceAll("\\s*\\([+-]?\\d+(?:\\.\\d+)?\\)\\s*$", "")
                 .replaceAll("\\s+\\[(?:MIN|MAX|OVERCAP|Overcap|\\d+(?:\\.\\d+)?%|\\d+(?:\\.\\d+)?-\\d+(?:\\.\\d+)?(?:\\s*/\\s*\\d+(?:\\.\\d+)?-\\d+(?:\\.\\d+)?)?)\\]\\s*$", "")
                 .trim();
         } while (!sanitized.equals(previous));
         return sanitized;
+    }
+
+    private static String stripRollAnnotations(String value) {
+        String sanitized = value.replace('\u00A0', ' ').trim();
+        String previous;
+        do {
+            previous = sanitized;
+            sanitized = sanitized
+                .replaceAll("\\s+\\[(?:MIN|MAX|OVERCAP|Overcap|\\d+(?:\\.\\d+)?%|\\d+(?:\\.\\d+)?-\\d+(?:\\.\\d+)?(?:\\s*/\\s*\\d+(?:\\.\\d+)?-\\d+(?:\\.\\d+)?)?)\\]\\s*$", "")
+                .trim();
+        } while (!sanitized.equals(previous));
+        return sanitized;
+    }
+
+    private static double extractEnchantBonus(String value) {
+        Matcher matcher = ENCHANT_BONUS_CAPTURE.matcher(value);
+        if (matcher.find()) {
+            return parseDouble(matcher.group(1));
+        }
+        return 0d;
     }
 
     private static int detectItemLevel(List<String> tooltipLines) {
@@ -398,9 +438,9 @@ public final class DrBuildOptimizerService {
         return 0;
     }
 
-    private static String formatRarity(DrRarityHelper.TooltipTheme rarity) {
+    private static String formatRarity(DrRarityHelper.TooltipTheme rarity, boolean transmuted) {
         if (rarity == null) return "";
-        return switch (rarity) {
+        String base = switch (rarity) {
             case Common -> "Common";
             case Uncommon -> "Uncommon";
             case Rare -> "Rare";
@@ -408,6 +448,7 @@ public final class DrBuildOptimizerService {
             case Legendary -> "Legendary";
             case Mythic -> "Mythic";
         };
+        return transmuted ? "Transmuted " + base : base;
     }
 
     private static int detectTierFromMaterial(ItemStack stack) {

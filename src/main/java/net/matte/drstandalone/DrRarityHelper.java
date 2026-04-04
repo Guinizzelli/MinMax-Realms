@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Locale;
 
 public final class DrRarityHelper {
+    private static final String TRANSMUTED_TOKEN = "TRANSMUTED";
     private static final Identifier COMMON_TEXTURE = Identifier.ofVanilla("common");
     private static final Identifier UNCOMMON_TEXTURE = Identifier.ofVanilla("uncommon");
     private static final Identifier RARE_TEXTURE = Identifier.ofVanilla("rare");
@@ -24,17 +25,23 @@ public final class DrRarityHelper {
     }
 
     public static TooltipTheme resolve(ItemStack stack, List<Text> tooltip) {
+        TooltipTheme transmutedBase = findTransmutedBaseTheme(tooltip);
+        if (transmutedBase != null) return transmutedBase;
+
         for (Text line : tooltip) {
-            String text = line.getString().trim().toUpperCase(Locale.ROOT);
-            if (text.equals("COMMON")) return TooltipTheme.Common;
-            if (text.equals("UNCOMMON")) return TooltipTheme.Uncommon;
-            if (text.equals("RARE")) return TooltipTheme.Rare;
-            if (text.equals("EPIC")) return TooltipTheme.Epic;
-            if (text.equals("LEGENDARY")) return TooltipTheme.Legendary;
-            if (text.equals("MYTHIC")) return TooltipTheme.Mythic;
+            TooltipTheme theme = detectTheme(line.getString());
+            if (theme != null) return theme;
         }
 
         return resolveFromNameColor(stack.getName().getStyle());
+    }
+
+    public static boolean isTransmuted(List<Text> tooltip) {
+        for (Text line : tooltip) {
+            String text = line.getString().trim().toUpperCase(Locale.ROOT);
+            if (text.contains(TRANSMUTED_TOKEN)) return true;
+        }
+        return false;
     }
 
     public static void queue(ItemStack stack, List<Text> tooltip) {
@@ -61,6 +68,29 @@ public final class DrRarityHelper {
         if (matches(rgb, Formatting.GREEN, Formatting.DARK_GREEN)) return TooltipTheme.Uncommon;
         if (matches(rgb, Formatting.AQUA, Formatting.BLUE, Formatting.DARK_AQUA, Formatting.DARK_BLUE)) return TooltipTheme.Rare;
         if (matches(rgb, Formatting.WHITE, Formatting.GRAY)) return TooltipTheme.Common;
+        return null;
+    }
+
+    private static @Nullable TooltipTheme findTransmutedBaseTheme(List<Text> tooltip) {
+        for (Text line : tooltip) {
+            String text = line.getString().trim().toUpperCase(Locale.ROOT);
+            if (!text.contains(TRANSMUTED_TOKEN)) continue;
+
+            TooltipTheme embedded = detectTheme(text.replace(TRANSMUTED_TOKEN, "").trim());
+            if (embedded != null) return embedded;
+        }
+
+        return null;
+    }
+
+    private static @Nullable TooltipTheme detectTheme(String rawText) {
+        String text = rawText == null ? "" : rawText.trim().toUpperCase(Locale.ROOT);
+        if (text.equals("COMMON") || text.contains(" COMMON")) return TooltipTheme.Common;
+        if (text.equals("UNCOMMON") || text.contains(" UNCOMMON")) return TooltipTheme.Uncommon;
+        if (text.equals("RARE") || text.contains(" RARE")) return TooltipTheme.Rare;
+        if (text.equals("EPIC") || text.contains(" EPIC")) return TooltipTheme.Epic;
+        if (text.equals("LEGENDARY") || text.contains(" LEGENDARY")) return TooltipTheme.Legendary;
+        if (text.equals("MYTHIC") || text.contains(" MYTHIC")) return TooltipTheme.Mythic;
         return null;
     }
 

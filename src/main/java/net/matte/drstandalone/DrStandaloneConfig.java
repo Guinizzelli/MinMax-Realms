@@ -33,6 +33,7 @@ public class DrStandaloneConfig {
     public String targetTier = "T3";
     public double targetHpPercent = 100.0;
     public double basePassiveEnergyRegen = 5.5;
+    public double meleeSessionAps = 4.0;
     public double practicalAttackCap = 4.0;
     public double attackSpeed = 1.5;
     public double baseCritBonus = 0.5;

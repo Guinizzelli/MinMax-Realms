@@ -22,12 +22,17 @@ public final class DpsMeterFeature {
     private static final MinecraftClient mc = MinecraftClient.getInstance();
 
     private static final double[] AVG_MOB_HP = {85, 250, 700, 1750, 3800};
-    private static final double[] AVG_MOB_ARMOR = {4, 10, 18, 28, 40};
+    // Median armor point estimate per tier based on 4 armor pieces (shield excluded),
+    // using the mid non-mythic generic armor ranges as the simulated mob baseline.
+    private static final double[] AVG_MOB_ARMOR = {17, 25, 37, 50, 66};
     private static final double[] AVG_MOB_DODGE = {2, 4, 6, 8, 10};
     private static final double[] AVG_MOB_BLOCK = {1, 3, 5, 7, 9};
 
     private static final Pattern DMG_PATTERN = Pattern.compile("^DMG\\s*:\\s*\\+?(\\d+(?:\\.\\d+)?)\\s*-\\s*(\\d+(?:\\.\\d+)?)$", Pattern.CASE_INSENSITIVE);
     private static final Pattern SINGLE_STAT_PATTERN = Pattern.compile("^([A-Z ./]+?)\\s*:\\s*\\+?(\\d+(?:\\.\\d+)?)(?:%|/s)?$", Pattern.CASE_INSENSITIVE);
+    private static final Pattern LEVEL_LINE = Pattern.compile(".*LEVEL\\s*:\\s*(\\d+).*", Pattern.CASE_INSENSITIVE);
+    private static final Pattern ENCHANT_BONUS_SUFFIX = Pattern.compile("\\s*\\([+-]?\\d+(?:\\.\\d+)?\\)\\s*$");
+    private static final Pattern ENCHANT_BONUS_CAPTURE = Pattern.compile("\\(([+-]?\\d+(?:\\.\\d+)?)\\)");
 
     private DpsMeterFeature() {
     }
@@ -93,7 +98,7 @@ public final class DpsMeterFeature {
         int dpsColor = 0xFFA4D037;
         int damageColor = 0xFFE5983A;
         int apsColor = 0xFF3FC1C9;
-        int ttkColor = 0xFFE5B73E;
+        int sessionColor = 0xFFE5B73E;
         int white = 0xFFE6E6E6;
 
         context.drawText(mc.textRenderer, Text.literal(sim.weaponName).formatted(sim.weaponFormatting), 14, 10, 0xFFFFFFFF, false);
@@ -101,9 +106,8 @@ public final class DpsMeterFeature {
         context.drawText(mc.textRenderer, Text.literal("✦ DPS: " + format(sim.dps)), 14, 26, dpsColor, false);
         context.drawText(mc.textRenderer, Text.literal("※ Damage: " + sim.damageRange), 86, 26, damageColor, false);
 
-        String ttkText = "Ⅱ TTK: " + formatSeconds(sim.ttk);
         String apsText = "➤ APS: " + format(sim.aps);
-        context.drawText(mc.textRenderer, Text.literal(ttkText), width - 14 - mc.textRenderer.getWidth(ttkText), 26, ttkColor, false);
+        context.drawText(mc.textRenderer, Text.literal(sim.sessionLabel), width - 14 - mc.textRenderer.getWidth(sim.sessionLabel), 26, sessionColor, false);
         context.drawText(mc.textRenderer, Text.literal(apsText), width - 14 - mc.textRenderer.getWidth(apsText), 40, apsColor, false);
 
         context.drawText(mc.textRenderer, Text.literal("⚑ " + sim.classProfile + " ☠ " + sim.targetTier + " ❤ " + format(sim.targetHp) + "%"), 14, 40, white, false);
@@ -184,9 +188,11 @@ public final class DpsMeterFeature {
         if (weaponStack.isEmpty()) return null;
         WeaponKind kind = WeaponKind.from(weaponStack.getItem());
         if (kind == null) return null;
+        List<String> weaponTooltip = getTooltipLines(weaponStack);
+        int weaponTier = resolveWeaponTier(weaponStack, weaponTooltip);
 
         Stats stats = new Stats();
-        merge(stats, parseStats(getTooltipLines(weaponStack), true));
+        merge(stats, parseStats(weaponTooltip, true));
         merge(stats, parseStats(getTooltipLines(mc.player.getEquippedStack(EquipmentSlot.FEET)), false));
         merge(stats, parseStats(getTooltipLines(mc.player.getEquippedStack(EquipmentSlot.LEGS)), false));
         merge(stats, parseStats(getTooltipLines(mc.player.getEquippedStack(EquipmentSlot.CHEST)), false));
@@ -222,6 +228,7 @@ public final class DpsMeterFeature {
         if (kind == WeaponKind.Axe) weaponPrimaryBonus += stats.str * 0.0002;
         if (kind == WeaponKind.Sword) weaponPrimaryBonus += stats.dex * 0.0002;
         if (kind == WeaponKind.Mace) weaponPrimaryBonus += stats.vit * 0.0002;
+        if (kind == WeaponKind.Scythe) weaponPrimaryBonus += stats.intelligence * 0.0002;
 
         double physicalBase = stats.avgDamage * weaponPrimaryBonus;
         double mobMultiplier = 1 + (stats.vsMonsters / 100d);
@@ -238,7 +245,11 @@ public final class DpsMeterFeature {
 
         double regenPerSecond = config.basePassiveEnergyRegen + stats.energyRegen;
         regenPerSecond *= 1 + (stats.vit * 0.00006d);
-        double aps = Math.min(config.practicalAttackCap, regenPerSecond / kind.energyCost);
+        double weaponEnergyCost = kind.energyCostForTier(weaponTier);
+        AttackWindow attackWindow = isMelee(kind)
+            ? simulateMeleeSession(Math.max(0.1d, config.meleeSessionAps), regenPerSecond, weaponEnergyCost)
+            : sustainedWindow(Math.min(config.practicalAttackCap, regenPerSecond / weaponEnergyCost), regenPerSecond, weaponEnergyCost, config.attackSpeed);
+        double aps = attackWindow.aps();
         if (aps <= 0) aps = config.attackSpeed;
 
         double dps = totalPerHit * aps;
@@ -256,6 +267,7 @@ public final class DpsMeterFeature {
             dps,
             aps,
             ttk,
+            attackWindow.sessionLabel(),
             effectiveAccuracy,
             effectivePiercing,
             stats.shatter,
@@ -334,7 +346,7 @@ public final class DpsMeterFeature {
         if (stack.isEmpty()) return List.of();
         List<String> lines = new ArrayList<>();
         for (Text line : stack.getTooltip(Item.TooltipContext.DEFAULT, mc.player, TooltipType.BASIC)) {
-            String text = sanitizeTooltipLine(line.getString());
+            String text = stripRollAnnotations(line.getString());
             if (!text.isBlank()) lines.add(text);
         }
         return lines;
@@ -343,18 +355,19 @@ public final class DpsMeterFeature {
     private static Stats parseStats(List<String> tooltip, boolean allowBaseDamage) {
         Stats stats = new Stats();
         for (String line : tooltip) {
+            String matchableLine = sanitizeTooltipLine(line);
             if (allowBaseDamage) {
-                Matcher dmg = DMG_PATTERN.matcher(line);
+                Matcher dmg = DMG_PATTERN.matcher(matchableLine);
                 if (dmg.matches()) {
                     stats.avgDamage = (parseDouble(dmg.group(1)) + parseDouble(dmg.group(2))) / 2d;
                     continue;
                 }
             }
 
-            Matcher single = SINGLE_STAT_PATTERN.matcher(line);
+            Matcher single = SINGLE_STAT_PATTERN.matcher(matchableLine);
             if (!single.matches()) continue;
             String key = single.group(1).trim().toUpperCase(Locale.ROOT);
-            double value = parseDouble(single.group(2));
+            double value = parseDouble(single.group(2)) + extractEnchantBonus(line);
 
             switch (key) {
                 case "VS. MONSTERS" -> stats.vsMonsters += value;
@@ -379,6 +392,41 @@ public final class DpsMeterFeature {
         return stats;
     }
 
+    private static int resolveWeaponTier(ItemStack stack, List<String> tooltipLines) {
+        String path = Registries.ITEM.getId(stack.getItem()).getPath();
+        if (path.startsWith("wooden_")) return 1;
+        if (path.startsWith("stone_")) return 2;
+        if (path.startsWith("iron_")) return 3;
+        if (path.startsWith("diamond_")) return 4;
+        if (path.startsWith("golden_")) return 5;
+
+        if (path.equals("bow") || path.equals("crossbow")) {
+            int level = parseTooltipLevel(tooltipLines);
+            if (level <= 0) return 1;
+            if (level < 20) return 1;
+            if (level < 40) return 2;
+            if (level < 60) return 3;
+            if (level < 80) return 4;
+            return 5;
+        }
+
+        return 1;
+    }
+
+    private static int parseTooltipLevel(List<String> tooltipLines) {
+        for (String line : tooltipLines) {
+            Matcher matcher = LEVEL_LINE.matcher(line);
+            if (matcher.matches()) {
+                try {
+                    return Integer.parseInt(matcher.group(1));
+                } catch (NumberFormatException ignored) {
+                    return 0;
+                }
+            }
+        }
+        return 0;
+    }
+
     private static void merge(Stats into, Stats from) {
         into.avgDamage += from.avgDamage;
         into.vsMonsters += from.vsMonsters;
@@ -401,9 +449,36 @@ public final class DpsMeterFeature {
     }
 
     private static String sanitizeTooltipLine(String value) {
-        return value.replace('\u00A0', ' ')
-            .replaceAll("\\s+\\[(?:MIN|MAX|OVERCAP|Overcap|\\d+(?:\\.\\d+)?%|\\d+(?:\\.\\d+)?-\\d+(?:\\.\\d+)?(?:\\s*/\\s*\\d+(?:\\.\\d+)?-\\d+(?:\\.\\d+)?)?)\\]\\s*$", "")
-            .trim();
+        String sanitized = value.replace('\u00A0', ' ').trim();
+        String previous;
+        do {
+            previous = sanitized;
+            sanitized = sanitized
+                .replaceAll("\\s+\\[(?:MIN|MAX|OVERCAP|Overcap|\\d+(?:\\.\\d+)?%|\\d+(?:\\.\\d+)?-\\d+(?:\\.\\d+)?(?:\\s*/\\s*\\d+(?:\\.\\d+)?-\\d+(?:\\.\\d+)?)?)\\]\\s*$", "")
+                .trim();
+            sanitized = ENCHANT_BONUS_SUFFIX.matcher(sanitized).replaceFirst("").trim();
+        } while (!sanitized.equals(previous));
+        return sanitized;
+    }
+
+    private static String stripRollAnnotations(String value) {
+        String sanitized = value.replace('\u00A0', ' ').trim();
+        String previous;
+        do {
+            previous = sanitized;
+            sanitized = sanitized
+                .replaceAll("\\s+\\[(?:MIN|MAX|OVERCAP|Overcap|\\d+(?:\\.\\d+)?%|\\d+(?:\\.\\d+)?-\\d+(?:\\.\\d+)?(?:\\s*/\\s*\\d+(?:\\.\\d+)?-\\d+(?:\\.\\d+)?)?)\\]\\s*$", "")
+                .trim();
+        } while (!sanitized.equals(previous));
+        return sanitized;
+    }
+
+    private static double extractEnchantBonus(String value) {
+        Matcher matcher = ENCHANT_BONUS_CAPTURE.matcher(value);
+        if (matcher.find()) {
+            return parseDouble(matcher.group(1));
+        }
+        return 0d;
     }
 
     private static double parseDouble(String value) {
@@ -450,6 +525,40 @@ public final class DpsMeterFeature {
         };
     }
 
+    private static boolean isMelee(WeaponKind kind) {
+        return kind != WeaponKind.Bow;
+    }
+
+    private static AttackWindow simulateMeleeSession(double aps, double regenPerSecond, double costPerHit) {
+        double safeAps = Math.max(0.1d, aps);
+        double stamina = 100d;
+        double dt = 1d / safeAps;
+        int hits = 0;
+        final double epsilon = 1.0E-6;
+
+        while (hits < 10000 && stamina + epsilon >= costPerHit) {
+            stamina -= costPerHit;
+            hits++;
+            stamina = Math.min(100d, stamina + (regenPerSecond * dt));
+        }
+
+        if (hits <= 0) {
+            return new AttackWindow(safeAps, 0, 0, "Ⅱ 0.0s at " + format(safeAps) + " APS");
+        }
+
+        double stopSeconds = hits / safeAps;
+        return new AttackWindow(safeAps, hits, stopSeconds, "Ⅱ " + formatSeconds(stopSeconds) + " at " + format(safeAps) + " APS");
+    }
+
+    private static AttackWindow sustainedWindow(double aps, double regenPerSecond, double costPerHit, double fallbackAps) {
+        double safeAps = aps > 0 ? aps : fallbackAps;
+        double breakEven = costPerHit > 0 ? regenPerSecond / costPerHit : safeAps;
+        String label = safeAps <= breakEven + 1.0E-6
+            ? "Ⅱ Infinite at " + format(safeAps) + " APS"
+            : "Ⅱ Sustained " + format(safeAps) + " APS";
+        return new AttackWindow(safeAps, Integer.MAX_VALUE, Double.POSITIVE_INFINITY, label);
+    }
+
     private enum ClassProfile {
         None,
         Warrior,
@@ -467,6 +576,10 @@ public final class DpsMeterFeature {
         Sword(8.0), Scythe(8.4), Axe(8.8), Mace(9.2), Bow(9.6);
         final double energyCost;
         WeaponKind(double energyCost) { this.energyCost = energyCost; }
+        double energyCostForTier(int tier) {
+            int safeTier = Math.max(1, Math.min(5, tier));
+            return energyCost * (1d + (0.2d * (safeTier - 1)));
+        }
         static @Nullable WeaponKind from(Item item) {
             String path = Registries.ITEM.getId(item).getPath();
             if (path.endsWith("_sword")) return Sword;
@@ -509,6 +622,7 @@ public final class DpsMeterFeature {
         double dps,
         double aps,
         double ttk,
+        String sessionLabel,
         double accuracy,
         double piercing,
         double shatter,
@@ -531,5 +645,8 @@ public final class DpsMeterFeature {
     }
 
     private record StatChip(String text, int color) {
+    }
+
+    private record AttackWindow(double aps, int hits, double stopSeconds, String sessionLabel) {
     }
 }

@@ -17,6 +17,10 @@ public class DrStatsDatabase {
     private static final String CUSTOM_ITEMS_INDEX = CUSTOM_ITEMS_ROOT + "/index.txt";
     private static final Pattern BRACKET_PREFIX = Pattern.compile("^\\[[^\\]]+]\\s*");
     private static final Pattern TAG_ENTRY = Pattern.compile("(\\w+):(?:\"([^\"]*)\"|([^,}]+))");
+    private static final Pattern ENCHANT_BONUS_SUFFIX = Pattern.compile("\\s*\\([+-]?\\d+(?:\\.\\d+)?\\)\\s*$");
+    private static final Pattern UPGRADE_LEVEL_PREFIX = Pattern.compile("^\\[\\+(\\d+)]\\s*");
+    private static final Pattern RANGE_TEXT_PART = Pattern.compile("([+-]?\\d+(?:\\.\\d+)?)\\s*-\\s*([+-]?\\d+(?:\\.\\d+)?)");
+    private static final Pattern NUMBER_CAPTURE_PATTERN = Pattern.compile("([+-]?\\d+(?:\\.\\d+)?)");
 
     private static DrStatsDatabase INSTANCE;
 
@@ -58,10 +62,25 @@ public class DrStatsDatabase {
             if (best == null || match.score > best.score) best = match;
         }
 
-        if (best != null && !best.matches.isEmpty()) return new TooltipAnalysis(best.definition, best.matches);
         TooltipAnalysis genericWeapon = analyzeGenericWeapon(stack, tooltipLines, displayName, rarity);
-        if (genericWeapon != null) return genericWeapon;
-        return analyzeGenericArmor(stack, tooltipLines, displayName, rarity);
+        TooltipAnalysis genericArmor = analyzeGenericArmor(stack, tooltipLines, displayName, rarity);
+        TooltipAnalysis generic = genericWeapon != null ? genericWeapon : genericArmor;
+
+        if (best != null && !best.matches.isEmpty()) {
+            TooltipAnalysis custom = new TooltipAnalysis(best.definition, best.matches);
+            if (isDefinitionCompatibleWithStack(best.definition, stack, tooltipLines)) {
+                return applyUpgradeAdjustment(stack, custom);
+            }
+            DrStandaloneMod.LOG.info(
+                "DR stats DB: rejected custom match '{}' (type='{}' tier={}) for stack '{}' and falling back to generic analysis.",
+                best.definition.name,
+                best.definition.itemType,
+                best.definition.tier,
+                Registries.ITEM.getId(stack.getItem())
+            );
+        }
+
+        return applyUpgradeAdjustment(stack, generic);
     }
 
 
@@ -214,7 +233,7 @@ public class DrStatsDatabase {
 
         List<CustomItemDefinition> fuzzy = new ArrayList<>();
         for (CustomItemDefinition definition : definitions) {
-            if (normalized.contains(definition.normalizedName) || definition.normalizedName.contains(normalized)) {
+            if (isSafeFuzzyNameMatch(normalized, definition.normalizedName)) {
                 fuzzy.add(definition);
             }
         }
@@ -237,13 +256,345 @@ public class DrStatsDatabase {
     }
 
     private static String cleanLine(String value) {
-        return value == null ? "" : value.replace('\u00A0', ' ').trim();
+        if (value == null) return "";
+        String cleaned = value.replace('\u00A0', ' ').trim();
+        String previous;
+        do {
+            previous = cleaned;
+            cleaned = ENCHANT_BONUS_SUFFIX.matcher(cleaned).replaceFirst("").trim();
+        } while (!cleaned.equals(previous));
+        return cleaned;
     }
 
     private static String normalizeName(String value) {
         String cleaned = cleanDisplayName(value).toLowerCase(Locale.ROOT);
         cleaned = cleaned.replaceAll("[^a-z0-9]+", " ").trim();
         return cleaned.replaceAll("\\s+", " ");
+    }
+
+    private static boolean isSafeFuzzyNameMatch(String normalizedDisplay, String normalizedDefinition) {
+        if (normalizedDisplay == null || normalizedDefinition == null) return false;
+        if (normalizedDisplay.isBlank() || normalizedDefinition.isBlank()) return false;
+        if (normalizedDisplay.equals(normalizedDefinition)) return true;
+        if (!(normalizedDisplay.contains(normalizedDefinition) || normalizedDefinition.contains(normalizedDisplay))) return false;
+
+        String[] displayTokens = normalizedDisplay.split(" ");
+        String[] definitionTokens = normalizedDefinition.split(" ");
+
+        // Avoid matching generic vanilla-like names such as "platemail boots" to long custom set names.
+        if (Math.min(displayTokens.length, definitionTokens.length) < 3) return false;
+
+        // Allow mild fuzzy differences, but reject names that add several custom qualifiers.
+        if (Math.abs(displayTokens.length - definitionTokens.length) > 1) return false;
+
+        return true;
+    }
+
+    private TooltipAnalysis applyUpgradeAdjustment(ItemStack stack, @Nullable TooltipAnalysis analysis) {
+        if (analysis == null) return null;
+
+        int upgradeLevel = parseUpgradeLevel(stack.getName().getString());
+        if (upgradeLevel <= 0) return analysis;
+
+        double multiplier = 1d + (upgradeLevel * 0.05d);
+        Set<String> upgradeableLabels = upgradeableLabels(stack);
+        if (upgradeableLabels.isEmpty()) return analysis;
+
+        List<StatMatch> adjustedMatches = new ArrayList<>(analysis.matches.size());
+        boolean changed = false;
+        for (StatMatch match : analysis.matches) {
+            if (!upgradeableLabels.contains(normalizeAlias(match.label))) {
+                adjustedMatches.add(match);
+                continue;
+            }
+
+            StatMatch adjusted = adjustMatchForUpgrade(match, multiplier);
+            adjustedMatches.add(adjusted);
+            changed |= adjusted != match;
+        }
+
+        return changed ? new TooltipAnalysis(analysis.definition, adjustedMatches) : analysis;
+    }
+
+    private int parseUpgradeLevel(String displayName) {
+        Matcher matcher = UPGRADE_LEVEL_PREFIX.matcher(displayName == null ? "" : displayName.trim());
+        if (!matcher.find()) return 0;
+        try {
+            return Integer.parseInt(matcher.group(1));
+        } catch (NumberFormatException ignored) {
+            return 0;
+        }
+    }
+
+    private Set<String> upgradeableLabels(ItemStack stack) {
+        WeaponKind weaponKind = WeaponKind.from(stack);
+        if (weaponKind != null) {
+            return Set.of("DMG");
+        }
+
+        ArmorKind armorKind = ArmorKind.from(stack);
+        if (armorKind == ArmorKind.Shield) {
+            return Set.of("HP", "HP REGEN");
+        }
+        if (armorKind != null) {
+            return Set.of("HP", "ENERGY REGEN");
+        }
+
+        return Set.of();
+    }
+
+    private StatMatch adjustMatchForUpgrade(StatMatch match, double multiplier) {
+        List<ValueRange> baseRanges = parseRangeText(match.rangeText);
+        List<ParsedValue> actualValues = parseActualValues(match.valueText, baseRanges.size());
+        if (baseRanges.size() != actualValues.size() || baseRanges.isEmpty()) {
+            return match;
+        }
+
+        double percentTotal = 0d;
+        for (int i = 0; i < baseRanges.size(); i++) {
+            ValueRange baseRange = baseRanges.get(i);
+            ParsedValue actual = actualValues.get(i);
+            double baseValue = inferBaseValue(actual.value(), actual.decimals(), baseRange, multiplier);
+            percentTotal += baseRange.percent(baseValue);
+        }
+
+        List<ValueRange> adjustedRanges = new ArrayList<>(baseRanges.size());
+        for (int i = 0; i < baseRanges.size(); i++) {
+            adjustedRanges.add(scaleRangeForUpgrade(baseRanges.get(i), actualValues.get(i).decimals(), multiplier));
+        }
+
+        return new StatMatch(
+            match.label,
+            match.valueText,
+            percentTotal / baseRanges.size(),
+            buildRangeText(adjustedRanges),
+            false
+        );
+    }
+
+    private List<ValueRange> parseRangeText(String rangeText) {
+        if (rangeText == null || rangeText.isBlank()) return List.of();
+
+        List<ValueRange> ranges = new ArrayList<>();
+        for (String part : rangeText.split("/")) {
+            Matcher matcher = RANGE_TEXT_PART.matcher(part.trim());
+            if (!matcher.find()) return List.of();
+            ranges.add(new ValueRange(parseDouble(matcher.group(1)), parseDouble(matcher.group(2))));
+        }
+        return ranges;
+    }
+
+    private List<ParsedValue> parseActualValues(String valueText, int expectedCount) {
+        if (valueText == null || valueText.isBlank() || expectedCount <= 0) return List.of();
+
+        int colon = valueText.indexOf(':');
+        String statPart = colon >= 0 ? valueText.substring(colon + 1) : valueText;
+        String cleaned = cleanLine(statPart);
+
+        List<ParsedValue> values = new ArrayList<>(expectedCount);
+        Matcher matcher = NUMBER_CAPTURE_PATTERN.matcher(cleaned);
+        while (matcher.find() && values.size() < expectedCount) {
+            String raw = matcher.group(1);
+            values.add(new ParsedValue(parseDouble(raw), decimalPlaces(raw)));
+        }
+        return values;
+    }
+
+    private double inferBaseValue(double actualValue, int decimals, ValueRange baseRange, double multiplier) {
+        double step = decimals <= 0 ? 1d : Math.pow(10d, -decimals);
+        double lowerBound = Math.max(baseRange.min, ((actualValue - (step / 2d)) / multiplier) - 0.0000001d);
+        double upperBound = Math.min(baseRange.max, ((actualValue + (step / 2d)) / multiplier) + 0.0000001d);
+
+        double start = decimals <= 0 ? Math.ceil(lowerBound) : Math.ceil(lowerBound / step) * step;
+        double best = actualValue / multiplier;
+        double target = best;
+        double bestDistance = Double.POSITIVE_INFINITY;
+
+        for (double candidate = start; candidate <= upperBound + (step / 2d); candidate += step) {
+            double rounded = roundToDecimals(candidate * multiplier, decimals);
+            if (Math.abs(rounded - actualValue) > (step / 2d) + 0.0000001d) continue;
+
+            double distance = Math.abs(candidate - target);
+            if (distance < bestDistance) {
+                best = candidate;
+                bestDistance = distance;
+            }
+        }
+
+        return clamp(best, baseRange.min, baseRange.max);
+    }
+
+    private ValueRange scaleRangeForUpgrade(ValueRange baseRange, int decimals, double multiplier) {
+        return new ValueRange(
+            roundToDecimals(baseRange.min * multiplier, decimals),
+            roundToDecimals(baseRange.max * multiplier, decimals)
+        );
+    }
+
+    private String buildRangeText(List<ValueRange> ranges) {
+        if (ranges.isEmpty()) return "";
+        if (ranges.size() == 1) return formatRange(ranges.get(0));
+
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < ranges.size(); i++) {
+            if (i > 0) builder.append(" / ");
+            builder.append(formatRange(ranges.get(i)));
+        }
+        return builder.toString();
+    }
+
+    private String formatRange(ValueRange range) {
+        return formatNumber(range.min) + "-" + formatNumber(range.max);
+    }
+
+    private String formatNumber(double value) {
+        if (Math.abs(value - Math.rint(value)) < 0.0001d) {
+            return Integer.toString((int) Math.rint(value));
+        }
+        return String.format(Locale.ROOT, "%.2f", value).replaceAll("0+$", "").replaceAll("\\.$", "");
+    }
+
+    private static String normalizeAlias(String value) {
+        return cleanLine(value).toUpperCase(Locale.ROOT).replaceAll("\\s+", " ");
+    }
+
+    private static String canonicalStatLabel(String value) {
+        String normalized = normalizeAlias(value);
+        return switch (normalized) {
+            case "STRENGTH" -> "STR";
+            case "DEXTERITY" -> "DEX";
+            case "VITALITY" -> "VIT";
+            case "INTELLECT", "INTELLIGENCE" -> "INT";
+            case "HEALTH" -> "HP";
+            case "HEALTH REGEN", "HEALTH/S", "HP/S", "HP REGEN/S" -> "HP REGEN";
+            case "ENERGY/S", "ENERGY REGEN/S" -> "ENERGY REGEN";
+            case "DMG REDUCTION" -> "ARMOR";
+            case "ELEMENTAL RESISTANCE" -> "ELEMENTAL RESIST";
+            case "FIRE RESISTANCE" -> "FIRE RESIST";
+            case "ICE RESISTANCE" -> "ICE RESIST";
+            case "POISON RESISTANCE" -> "POISON RESIST";
+            case "PURE RESISTANCE" -> "PURE RESIST";
+            case "MOVEMENT SPEED" -> "MOVE SPEED";
+            case "SLOW" -> "SLOWNESS";
+            default -> normalized;
+        };
+    }
+
+    private static List<String> statAliasesForLabel(String label) {
+        String canonical = canonicalStatLabel(label);
+        return switch (canonical) {
+            case "STR" -> List.of("STR", "STRENGTH");
+            case "DEX" -> List.of("DEX", "DEXTERITY");
+            case "VIT" -> List.of("VIT", "VITALITY");
+            case "INT" -> List.of("INT", "INTELLECT", "INTELLIGENCE");
+            case "HP" -> List.of("HP", "HEALTH");
+            case "HP REGEN" -> List.of("HP REGEN", "HP/S", "HP REGEN/S", "HEALTH REGEN", "HEALTH/S");
+            case "HP RECOVERY" -> List.of("HP RECOVERY");
+            case "ENERGY REGEN" -> List.of("ENERGY REGEN", "ENERGY/S", "ENERGY REGEN/S");
+            case "ARMOR" -> List.of("ARMOR", "DMG REDUCTION");
+            case "ELEMENTAL RESIST" -> List.of("ELEMENTAL RESIST", "ELEMENTAL RESISTANCE");
+            case "FIRE RESIST" -> List.of("FIRE RESIST", "FIRE RESISTANCE");
+            case "ICE RESIST" -> List.of("ICE RESIST", "ICE RESISTANCE");
+            case "POISON RESIST" -> List.of("POISON RESIST", "POISON RESISTANCE");
+            case "PURE RESIST" -> List.of("PURE RESIST", "PURE RESISTANCE");
+            case "MOVE SPEED" -> List.of("MOVE SPEED", "MOVEMENT SPEED");
+            case "SLOWNESS" -> List.of("SLOWNESS", "SLOW");
+            default -> List.of(canonical);
+        };
+    }
+
+    private double parseDouble(String value) {
+        return Double.parseDouble(value.replace(',', '.'));
+    }
+
+    private int decimalPlaces(String rawNumber) {
+        int dot = rawNumber.indexOf('.');
+        return dot < 0 ? 0 : rawNumber.length() - dot - 1;
+    }
+
+    private double roundToDecimals(double value, int decimals) {
+        if (decimals <= 0) return Math.round(value);
+        double factor = Math.pow(10d, decimals);
+        return Math.round(value * factor) / factor;
+    }
+
+    private double clamp(double value, double min, double max) {
+        return Math.max(min, Math.min(max, value));
+    }
+
+    private record ParsedValue(double value, int decimals) {
+    }
+
+    private boolean isDefinitionCompatibleWithStack(CustomItemDefinition definition, ItemStack stack, List<String> tooltipLines) {
+        String expectedType = inferExpectedItemType(stack);
+        if (!expectedType.isBlank() && !definition.itemType.isBlank()) {
+            if (!isCompatibleItemType(definition.itemType, expectedType, stack)) {
+                return false;
+            }
+        }
+
+        int expectedTier = inferExpectedTier(stack, tooltipLines);
+        if (expectedTier > 0 && definition.tier > 0 && expectedTier != definition.tier) {
+            return false;
+        }
+
+        return true;
+    }
+
+    private boolean isCompatibleItemType(String definitionItemType, String expectedType, ItemStack stack) {
+        String normalizedDefinition = normalizeName(definitionItemType);
+        String normalizedExpected = normalizeName(expectedType);
+        if (normalizedDefinition.equals(normalizedExpected)) {
+            return true;
+        }
+
+        String stackPath = Registries.ITEM.getId(stack.getItem()).getPath();
+        if (normalizedDefinition.equals(normalizeName(stackPath))) {
+            return true;
+        }
+
+        String inferredFromDefinition = inferExpectedItemTypeFromDefinition(definitionItemType);
+        return !inferredFromDefinition.isBlank() && normalizeName(inferredFromDefinition).equals(normalizedExpected);
+    }
+
+    private String inferExpectedItemTypeFromDefinition(String definitionItemType) {
+        if (definitionItemType == null || definitionItemType.isBlank()) {
+            return "";
+        }
+
+        String normalized = definitionItemType.trim().toUpperCase(Locale.ROOT);
+        if (normalized.endsWith("_HELMET")) return ArmorKind.Helmet.label;
+        if (normalized.endsWith("_CHESTPLATE")) return ArmorKind.Chestplate.label;
+        if (normalized.endsWith("_LEGGINGS")) return ArmorKind.Leggings.label;
+        if (normalized.endsWith("_BOOTS")) return ArmorKind.Boots.label;
+        if (normalized.equals("SHIELD")) return ArmorKind.Shield.label;
+        if (normalized.endsWith("_SWORD")) return WeaponKind.Sword.label;
+        if (normalized.endsWith("_HOE")) return WeaponKind.Scythe.label;
+        if (normalized.endsWith("_AXE")) return WeaponKind.Axe.label;
+        if (normalized.endsWith("_SHOVEL") || normalized.endsWith("_SPADE")) return WeaponKind.Mace.label;
+        if (normalized.equals("BOW") || normalized.equals("CROSSBOW")) return WeaponKind.Bow.label;
+        return "";
+    }
+
+    private String inferExpectedItemType(ItemStack stack) {
+        WeaponKind weaponKind = WeaponKind.from(stack);
+        if (weaponKind != null) return weaponKind.label;
+
+        ArmorKind armorKind = ArmorKind.from(stack);
+        if (armorKind != null) return armorKind.label;
+
+        return "";
+    }
+
+    private int inferExpectedTier(ItemStack stack, List<String> tooltipLines) {
+        int level = parseLevel(tooltipLines);
+        WeaponKind weaponKind = WeaponKind.from(stack);
+        if (weaponKind != null) return resolveTier(stack, level);
+
+        ArmorKind armorKind = ArmorKind.from(stack);
+        if (armorKind != null) return resolveArmorTier(stack, level);
+
+        return 0;
     }
 
     private @Nullable TooltipAnalysis analyzeGenericWeapon(ItemStack stack, List<String> tooltipLines, String displayName, @Nullable DrRarityHelper.TooltipTheme rarityTheme) {
@@ -348,6 +699,11 @@ public class DrStatsDatabase {
         templates.add(GenericStatTemplate.singleRange("FIRE DMG", "FIRE DMG", elementalRange));
         templates.add(GenericStatTemplate.singleRange("POISON DMG", "POISON DMG", elementalRange));
         templates.add(GenericStatTemplate.singleRange("LIFE STEAL", "LIFE STEAL", flatRange(LIFESTEAL_RANGES[tier - 1])));
+        if (weaponKind == WeaponKind.Bow) {
+            templates.add(GenericStatTemplate.singleRange("GLOWING", "GLOWING", flatRange(GLOWING_RANGES[tier - 1])));
+            templates.add(GenericStatTemplate.singleRange("BLINDING", "BLINDING", flatRange(BLINDING_RANGES[tier - 1])));
+            templates.add(GenericStatTemplate.singleRange("SLOWNESS", "SLOWNESS", flatRange(SLOWNESS_RANGES[tier - 1])));
+        }
 
         return templates;
     }
@@ -362,12 +718,21 @@ public class DrStatsDatabase {
             level,
             tier
         );
-        ValueRange hpRegenRange = new ValueRange(Math.floor(healthRange.min / 2d), Math.ceil(healthRange.max / 2d));
+        ValueRange hpRegenRange = scaleRange(
+            Math.floor(ARMOR_HEALTH_RANGES[tier - 1][rarityIndex][0] / 2d),
+            Math.ceil(ARMOR_HEALTH_RANGES[tier - 1][rarityIndex][1] / 2d),
+            level,
+            tier
+        );
         ValueRange energyRange = ARMOR_ENERGY_RANGES[tier - 1][rarityIndex];
 
-        templates.add(GenericStatTemplate.doubleRangeWithAliases("ARMOR", armorRangeForTier(tier), armorRangeForTier(tier), "ARMOR", "DMG REDUCTION"));
+        ValueRange[] armorRanges = ARMOR_RANGES[tier - 1][rarityIndex];
+        ValueRange[] damageReductionRanges = DAMAGE_REDUCTION_RANGES[tier - 1][rarityIndex];
+
+        templates.add(GenericStatTemplate.doubleRangeWithAliases("ARMOR", armorRanges[0], armorRanges[1], "ARMOR"));
+        templates.add(GenericStatTemplate.doubleRangeWithAliases("DMG REDUCTION", damageReductionRanges[0], damageReductionRanges[1], "DMG REDUCTION"));
         templates.add(GenericStatTemplate.singleRangeWithAliases("HP", healthRange, "HP", "HEALTH"));
-        templates.add(GenericStatTemplate.singleRangeWithAliases("HP REGEN", hpRegenRange, "HP REGEN", "HP/S", "HP REGEN/S"));
+        templates.add(GenericStatTemplate.singleRangeWithAliases("HP REGEN", hpRegenRange, "HP REGEN", "HP/S", "HP REGEN/S", "HP RECOVERY"));
         templates.add(GenericStatTemplate.singleRangeWithAliases("ENERGY REGEN", energyRange, "ENERGY REGEN", "ENERGY/S", "ENERGY REGEN/S"));
         templates.add(GenericStatTemplate.singleRangeWithAliases("STR", flatRange(STAT_ATTRIBUTE_RANGES[tier - 1]), "STR", "STRENGTH"));
         templates.add(GenericStatTemplate.singleRangeWithAliases("DEX", flatRange(STAT_ATTRIBUTE_RANGES[tier - 1]), "DEX", "DEXTERITY"));
@@ -379,6 +744,7 @@ public class DrStatsDatabase {
         templates.add(GenericStatTemplate.singleRangeWithAliases("DODGE", flatRange(DODGE_RANGES[tier - 1]), "DODGE"));
         templates.add(GenericStatTemplate.singleRangeWithAliases("GEM FIND", flatRange(GEM_FIND_RANGES[tier - 1]), "GEM FIND"));
         templates.add(GenericStatTemplate.singleRangeWithAliases("ITEM FIND", flatRange(ITEM_FIND_RANGES[tier - 1]), "ITEM FIND"));
+        templates.add(GenericStatTemplate.singleRangeWithAliases("KEY FIND", flatRange(KEY_FIND_RANGES[tier - 1]), "KEY FIND"));
         templates.add(GenericStatTemplate.singleRangeWithAliases(
             "ELEMENTAL RESIST",
             flatRange(ELEMENTAL_RESIST_RANGES[tier - 1]),
@@ -389,6 +755,19 @@ public class DrStatsDatabase {
             "ELEMENTAL RESIST", "ELEMENTAL RESISTANCE"
         ));
 
+        if (armorKind == ArmorKind.Shield) {
+            templates.add(GenericStatTemplate.singleRangeWithAliases("ABSORPTION", flatRange(ABSORPTION_RANGES[tier - 1]), "ABSORPTION"));
+            templates.add(GenericStatTemplate.singleRangeWithAliases("HP RECOVERY", flatRange(HP_RECOVERY_RANGES[tier - 1]), "HP RECOVERY"));
+        }
+        if (armorKind == ArmorKind.Helmet) {
+            templates.add(GenericStatTemplate.singleRangeWithAliases("COOLDOWN RECOVERY", scaleDiscreteRange(COOLDOWN_RECOVERY_RANGES[tier - 1][0], COOLDOWN_RECOVERY_RANGES[tier - 1][1], level, tier), "COOLDOWN RECOVERY"));
+        }
+        if (armorKind == ArmorKind.Chestplate) {
+            templates.add(GenericStatTemplate.singleRangeWithAliases("HEALING", flatRange(HEALING_RANGES[tier - 1]), "HEALING"));
+        }
+        if (armorKind == ArmorKind.Leggings) {
+            templates.add(GenericStatTemplate.singleRangeWithAliases("ENERGY DRAIN", flatRange(ENERGY_DRAIN_RANGES[tier - 1]), "ENERGY DRAIN"));
+        }
         if (armorKind == ArmorKind.Boots) {
             templates.add(GenericStatTemplate.singleRangeWithAliases("MOVE SPEED", flatRange(MOVE_SPEED_RANGES[tier - 1]), "MOVE SPEED", "MOVEMENT SPEED"));
         }
@@ -486,6 +865,19 @@ public class DrStatsDatabase {
         return new ValueRange(Math.floor(scaledMin), Math.ceil(scaledMax));
     }
 
+    private static ValueRange scaleDiscreteRange(double min, double max, int level, int tier) {
+        int median = TIER_MEDIAN_LEVELS[Math.max(0, Math.min(TIER_MEDIAN_LEVELS.length - 1, tier - 1))];
+        double scale = 1 + ((double) (level - median) / 100d);
+        double scaledMin = min * scale;
+        double scaledMax = max * scale;
+
+        if (level > 100) {
+            scaledMin *= 1 + ((level - 100) * 0.05d);
+        }
+
+        return new ValueRange(Math.round(scaledMin), Math.round(scaledMax));
+    }
+
     private static final Pattern LEVEL_LINE = Pattern.compile(".*LEVEL\\s*:\\s*(\\d+).*", Pattern.CASE_INSENSITIVE);
     private static final int[] TIER_MEDIAN_LEVELS = {10, 30, 50, 70, 90};
     private static final DamageProfile[][] DAMAGE_PROFILES = {
@@ -537,12 +929,89 @@ public class DrStatsDatabase {
     private static final int[][] SHATTER_RANGES = {{2, 3}, {3, 4}, {4, 6}, {5, 8}, {6, 10}};
     private static final int[][] ELEMENTAL_RANGES = {{3, 4}, {6, 8}, {12, 16}, {24, 32}, {48, 64}};
     private static final int[][] LIFESTEAL_RANGES = {{8, 12}, {6, 10}, {5, 8}, {5, 8}, {5, 8}};
+    private static final int[][] GLOWING_RANGES = {{15, 30}, {20, 40}, {25, 50}, {30, 60}, {35, 70}};
+    private static final int[][] BLINDING_RANGES = {{3, 5}, {4, 6}, {5, 8}, {6, 10}, {8, 12}};
+    private static final int[][] SLOWNESS_RANGES = {{3, 5}, {4, 6}, {5, 8}, {6, 10}, {8, 12}};
     private static final int[][][] ARMOR_HEALTH_RANGES = {
         {{45, 51}, {57, 63}, {69, 75}, {81, 87}, {93, 99}},
         {{131, 147}, {163, 179}, {196, 212}, {228, 244}, {260, 276}},
         {{355, 395}, {435, 475}, {516, 556}, {596, 636}, {676, 716}},
         {{894, 986}, {1077, 1169}, {1260, 1352}, {1443, 1535}, {1626, 1718}},
         {{2080, 2268}, {2457, 2645}, {2833, 3021}, {3210, 3398}, {3586, 3774}}
+    };
+    private static final ValueRange[][][] ARMOR_RANGES = {
+        {
+            {exactRange(3), new ValueRange(3, 4)},
+            {new ValueRange(3, 4), exactRange(4)},
+            {exactRange(4), new ValueRange(4, 5)},
+            {new ValueRange(4, 5), exactRange(5)},
+            {exactRange(5), new ValueRange(5, 6)}
+        },
+        {
+            {exactRange(5), new ValueRange(5, 6)},
+            {new ValueRange(5, 6), exactRange(6)},
+            {exactRange(6), new ValueRange(6, 7)},
+            {new ValueRange(6, 7), exactRange(7)},
+            {exactRange(7), new ValueRange(7, 8)}
+        },
+        {
+            {exactRange(7), new ValueRange(7, 8)},
+            {new ValueRange(7, 8), exactRange(8)},
+            {exactRange(9), new ValueRange(9, 10)},
+            {new ValueRange(9, 10), new ValueRange(10, 11)},
+            {new ValueRange(10, 11), new ValueRange(11, 12)}
+        },
+        {
+            {new ValueRange(9, 10), new ValueRange(11, 12)},
+            {new ValueRange(10, 11), new ValueRange(12, 13)},
+            {new ValueRange(11, 12), new ValueRange(13, 14)},
+            {new ValueRange(12, 13), new ValueRange(14, 15)},
+            {new ValueRange(13, 14), new ValueRange(15, 16)}
+        },
+        {
+            {new ValueRange(13, 14), new ValueRange(15, 16)},
+            {new ValueRange(14, 15), new ValueRange(16, 17)},
+            {new ValueRange(15, 16), new ValueRange(17, 18)},
+            {new ValueRange(16, 17), new ValueRange(18, 19)},
+            {new ValueRange(17, 18), new ValueRange(19, 20)}
+        }
+    };
+    private static final ValueRange[][][] DAMAGE_REDUCTION_RANGES = {
+        {
+            {exactRange(2), new ValueRange(2, 3)},
+            {new ValueRange(2, 3), exactRange(3)},
+            {exactRange(3), exactRange(3)},
+            {exactRange(3), exactRange(3)},
+            {exactRange(3), new ValueRange(3, 4)}
+        },
+        {
+            {exactRange(3), new ValueRange(3, 4)},
+            {new ValueRange(3, 4), exactRange(4)},
+            {exactRange(4), new ValueRange(4, 5)},
+            {new ValueRange(4, 5), exactRange(5)},
+            {exactRange(5), exactRange(5)}
+        },
+        {
+            {exactRange(5), exactRange(5)},
+            {exactRange(5), exactRange(5)},
+            {exactRange(6), exactRange(7)},
+            {new ValueRange(6, 7), exactRange(7)},
+            {exactRange(7), new ValueRange(7, 8)}
+        },
+        {
+            {new ValueRange(6, 7), new ValueRange(7, 8)},
+            {exactRange(7), new ValueRange(8, 9)},
+            {new ValueRange(7, 8), exactRange(9)},
+            {new ValueRange(8, 9), new ValueRange(9, 10)},
+            {exactRange(9), new ValueRange(10, 11)}
+        },
+        {
+            {exactRange(9), new ValueRange(10, 11)},
+            {new ValueRange(9, 10), exactRange(11)},
+            {new ValueRange(10, 11), new ValueRange(11, 12)},
+            {exactRange(11), new ValueRange(12, 13)},
+            {new ValueRange(11, 12), exactRange(13)}
+        }
     };
     private static final ValueRange[][] ARMOR_ENERGY_RANGES = {
         {new ValueRange(2.81, 3.00), new ValueRange(3.00, 3.19), new ValueRange(3.19, 3.38), new ValueRange(3.38, 3.56), new ValueRange(3.56, 3.75)},
@@ -553,13 +1022,19 @@ public class DrStatsDatabase {
     };
     private static final int[][] STAT_ATTRIBUTE_RANGES = {{175, 200}, {200, 225}, {225, 250}, {250, 275}, {275, 300}};
     private static final int[][] THORNS_RANGES = {{3, 4}, {3, 4}, {3, 4}, {4, 5}, {4, 6}};
-    private static final int[][] REFLECT_RANGES = {{3, 4}, {3, 4}, {4, 5}, {4, 5}, {5, 6}};
-    private static final int[][] BLOCK_RANGES = {{3, 4}, {3, 4}, {4, 5}, {4, 5}, {5, 6}};
-    private static final int[][] DODGE_RANGES = {{3, 4}, {3, 4}, {4, 5}, {4, 5}, {5, 6}};
+    private static final int[][] REFLECT_RANGES = {{3, 4}, {3, 4}, {3, 4}, {3, 4}, {4, 5}};
+    private static final int[][] BLOCK_RANGES = {{3, 4}, {3, 4}, {3, 4}, {3, 4}, {4, 5}};
+    private static final int[][] DODGE_RANGES = {{3, 4}, {3, 4}, {3, 4}, {3, 4}, {4, 5}};
     private static final int[][] ELEMENTAL_RESIST_RANGES = {{15, 25}, {15, 25}, {15, 25}, {15, 25}, {15, 25}};
-    private static final int[][] GEM_FIND_RANGES = {{12, 16}, {12, 16}, {12, 16}, {12, 16}, {12, 16}};
-    private static final int[][] ITEM_FIND_RANGES = {{6, 8}, {6, 8}, {6, 8}, {6, 8}, {6, 8}};
+    private static final int[][] GEM_FIND_RANGES = {{6, 10}, {6, 10}, {6, 10}, {6, 10}, {6, 10}};
+    private static final int[][] ITEM_FIND_RANGES = {{3, 5}, {3, 5}, {3, 5}, {3, 5}, {3, 5}};
+    private static final int[][] KEY_FIND_RANGES = {{3, 5}, {3, 5}, {3, 5}, {3, 5}, {3, 5}};
     private static final int[][] MOVE_SPEED_RANGES = {{8, 10}, {8, 10}, {8, 10}, {8, 10}, {8, 10}};
+    private static final int[][] ABSORPTION_RANGES = {{3, 4}, {3, 4}, {3, 4}, {4, 5}, {4, 6}};
+    private static final int[][] HP_RECOVERY_RANGES = {{9, 12}, {9, 12}, {9, 12}, {9, 12}, {9, 12}};
+    private static final int[][] COOLDOWN_RECOVERY_RANGES = {{10, 15}, {10, 15}, {10, 15}, {10, 15}, {10, 15}};
+    private static final int[][] HEALING_RANGES = {{4, 6}, {4, 6}, {4, 6}, {4, 6}, {4, 6}};
+    private static final int[][] ENERGY_DRAIN_RANGES = {{6, 9}, {6, 9}, {6, 9}, {6, 9}, {6, 9}};
 
     private static ValueRange exactRange(double value) {
         return new ValueRange(value, value);
@@ -746,25 +1221,38 @@ public class DrStatsDatabase {
         }
 
         public static StatTemplate parse(String template) {
-            Matcher matcher = RANGE_PATTERN.matcher(template);
+            int colonIndex = template.indexOf(':');
+            if (colonIndex <= 0) return null;
+
+            String rawLabel = template.substring(0, colonIndex).trim();
+            String canonicalLabel = canonicalStatLabel(rawLabel);
+            List<String> aliases = statAliasesForLabel(rawLabel);
+            String suffixTemplate = template.substring(colonIndex);
+
+            Matcher matcher = RANGE_PATTERN.matcher(suffixTemplate);
             List<ValueRange> ranges = new ArrayList<>();
-            StringBuilder regex = new StringBuilder("^");
+            StringBuilder suffixRegex = new StringBuilder();
 
             int last = 0;
             while (matcher.find()) {
-                appendLiteralRegex(regex, template.substring(last, matcher.start()));
-                regex.append(NUMBER_CAPTURE);
+                appendLiteralRegex(suffixRegex, suffixTemplate.substring(last, matcher.start()));
+                suffixRegex.append(NUMBER_CAPTURE);
                 ranges.add(new ValueRange(Double.parseDouble(matcher.group(1)), Double.parseDouble(matcher.group(2))));
                 last = matcher.end();
             }
 
             if (ranges.isEmpty()) return null;
 
-            appendLiteralRegex(regex, template.substring(last));
-            regex.append("$");
-
-            String label = template.substring(0, template.indexOf(':')).trim();
-            return new StatTemplate(template, label, Pattern.compile(regex.toString(), Pattern.CASE_INSENSITIVE), List.copyOf(ranges));
+            appendLiteralRegex(suffixRegex, suffixTemplate.substring(last));
+            StringBuilder finalRegex = new StringBuilder("^(?:");
+            for (int i = 0; i < aliases.size(); i++) {
+                if (i > 0) finalRegex.append("|");
+                appendLiteralRegex(finalRegex, aliases.get(i));
+            }
+            finalRegex.append(")");
+            finalRegex.append(suffixRegex);
+            finalRegex.append("$");
+            return new StatTemplate(template, canonicalLabel, Pattern.compile(finalRegex.toString(), Pattern.CASE_INSENSITIVE), List.copyOf(ranges));
         }
 
         public StatMatch match(String tooltipLine) {
@@ -772,14 +1260,12 @@ public class DrStatsDatabase {
             if (!matcher.matches() || matcher.groupCount() != ranges.size()) return null;
 
             double percentTotal = 0;
-            boolean overcap = false;
             for (int i = 0; i < ranges.size(); i++) {
                 double current = Double.parseDouble(matcher.group(i + 1));
                 percentTotal += ranges.get(i).percent(current);
-                if (ranges.get(i).isOvercap(current)) overcap = true;
             }
 
-            return new StatMatch(label, tooltipLine, percentTotal / ranges.size(), buildRangeText(), overcap);
+            return new StatMatch(label, tooltipLine, percentTotal / ranges.size(), buildRangeText(), false);
         }
 
         private String buildRangeText() {
@@ -970,14 +1456,12 @@ public class DrStatsDatabase {
 
         private @Nullable StatMatch buildMatch(String tooltipLine, Matcher matcher) {
             double percentTotal = 0;
-            boolean overcap = false;
             for (int i = 0; i < ranges.size(); i++) {
                 double current = Double.parseDouble(matcher.group(i + 1));
                 percentTotal += ranges.get(i).percent(current);
-                if (ranges.get(i).isOvercap(current)) overcap = true;
             }
 
-            return new StatMatch(label, tooltipLine, percentTotal / ranges.size(), buildRangeText(), overcap);
+            return new StatMatch(label, tooltipLine, percentTotal / ranges.size(), buildRangeText(), false);
         }
 
         private @Nullable StatMatch matchLoose(String tooltipLine, String cleaned) {
@@ -995,13 +1479,11 @@ public class DrStatsDatabase {
             if (values.size() != ranges.size()) return null;
 
             double percentTotal = 0;
-            boolean overcap = false;
             for (int i = 0; i < ranges.size(); i++) {
                 double current = values.get(i);
                 percentTotal += ranges.get(i).percent(current);
-                if (ranges.get(i).isOvercap(current)) overcap = true;
             }
-            return new StatMatch(label, tooltipLine, percentTotal / ranges.size(), buildRangeText(), overcap);
+            return new StatMatch(label, tooltipLine, percentTotal / ranges.size(), buildRangeText(), false);
         }
 
         private String buildRangeText() {

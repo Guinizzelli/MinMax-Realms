@@ -22,7 +22,22 @@ public final class DrBuildHtmlExporter {
     private static final DateTimeFormatter FILE_FORMAT = DateTimeFormatter.ofPattern("yyyyMMdd-HHmmss", Locale.ROOT).withZone(ZoneId.systemDefault());
     private static final DateTimeFormatter DISPLAY_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss z", Locale.ROOT).withZone(ZoneId.systemDefault());
     private static final List<String> CORE_STAT_PRIORITY = List.of(
-        "STR", "DEX", "VIT", "INT", "HP", "ENERGY REGEN", "DMG", "ACCURACY", "EXECUTE", "BLOCK", "ITEM FIND"
+        "STR", "DEX", "VIT", "INT", "HP", "ENERGY REGEN", "DMG", "ACCURACY", "EXECUTE", "BLOCK", "ITEM FIND", "KEY FIND"
+    );
+    private static final List<String> ATTRIBUTE_PRIORITY = List.of("STR", "DEX", "VIT", "INT");
+    private static final List<String> OFFENSE_PRIORITY = List.of(
+        "DMG", "PURE DMG", "FIRE DMG", "ICE DMG", "POISON DMG",
+        "ACCURACY", "CRITICAL HIT", "EXECUTE", "BLEEDING", "PIERCING",
+        "SHATTER", "CRUSHING", "CLEAVE", "LIFE STEAL", "GLOWING",
+        "BLINDING", "SLOWNESS", "VS. MONSTERS", "VS. PLAYERS"
+    );
+    private static final List<String> DEFENSE_PRIORITY = List.of(
+        "HP", "ARMOR", "HP REGEN", "ENERGY REGEN", "BLOCK", "DODGE",
+        "REFLECT", "THORNS", "ABSORPTION", "FIRE RESIST", "ICE RESIST",
+        "POISON RESIST", "PURE RESIST", "ELEMENTAL RESIST"
+    );
+    private static final List<String> UTILITY_PRIORITY = List.of(
+        "MOVE SPEED", "COOLDOWN RECOVERY", "HEALING", "ENERGY DRAIN", "HP RECOVERY", "ITEM FIND", "KEY FIND", "GEM FIND"
     );
     private static final List<String> RESISTANCE_PRIORITY = List.of(
         "FIRE RESIST", "ICE RESIST", "POISON RESIST", "PURE RESIST", "ELEMENTAL RESIST"
@@ -60,9 +75,10 @@ public final class DrBuildHtmlExporter {
 
     private static String renderHtml(String playerName, String timestamp, DrBuildOptimizerService.OptimizationReport report) {
         DrBuildOptimizerService.PlayerSnapshot snapshot = report.playerSnapshot();
-        List<DrBuildOptimizerService.StatTotal> offenseStats = selectCategoryStats(report.statTotals(), "Offense", 8);
-        List<DrBuildOptimizerService.StatTotal> defenseStats = selectCategoryStats(report.statTotals(), "Defense", 8);
-        List<DrBuildOptimizerService.StatTotal> utilityStats = selectCategoryStats(report.statTotals(), "Utility", 8);
+        List<DrBuildOptimizerService.StatTotal> attributeStats = selectAttributeStats(report.statTotals());
+        List<DrBuildOptimizerService.StatTotal> offenseStats = selectFixedStats(report.statTotals(), "Offense", OFFENSE_PRIORITY);
+        List<DrBuildOptimizerService.StatTotal> defenseStats = selectFixedStats(report.statTotals(), "Defense", DEFENSE_PRIORITY);
+        List<DrBuildOptimizerService.StatTotal> utilityStats = selectFixedStats(report.statTotals(), "Utility", UTILITY_PRIORITY);
         List<DrBuildOptimizerService.ItemCheck> items = report.itemChecks();
         DrBuildOptimizerService.ItemCheck weakestItem = findWeakestItem(items);
         DrBuildOptimizerService.ItemCheck strongestItem = findStrongestItem(items);
@@ -90,6 +106,8 @@ public final class DrBuildHtmlExporter {
                 .append("</div>");
         }
 
+        StringBuilder attributeSidebarStats = new StringBuilder();
+        appendSidebarStatTiles(attributeSidebarStats, attributeStats);
         StringBuilder offenseSidebarStats = new StringBuilder();
         appendSidebarStatTiles(offenseSidebarStats, offenseStats);
         StringBuilder defenseSidebarStats = new StringBuilder();
@@ -312,6 +330,10 @@ public final class DrBuildHtmlExporter {
                       <div class="sidebar-card-title">Stats</div>
                       <div class="sidebar-stat-groups">
                         <div class="sidebar-stat-group">
+                          <div class="sidebar-stat-title">Attributes</div>
+                          <div class="sidebar-stat-grid">__SIDEBAR_ATTRIBUTES__</div>
+                        </div>
+                        <div class="sidebar-stat-group">
                           <div class="sidebar-stat-title">Offense</div>
                           <div class="sidebar-stat-grid">__SIDEBAR_OFFENSE__</div>
                         </div>
@@ -408,6 +430,7 @@ public final class DrBuildHtmlExporter {
             .replace("__BEST_CLASS__", esc(bestClass))
             .replace("__BUILD_QUALITY__", format(buildQuality) + "%")
             .replace("__GEAR_CARDS__", gearCards.toString())
+            .replace("__SIDEBAR_ATTRIBUTES__", sidebarTileGridOrEmpty(attributeSidebarStats, "No attribute stats"))
             .replace("__SIDEBAR_OFFENSE__", sidebarTileGridOrEmpty(offenseSidebarStats, "No offensive stats"))
             .replace("__SIDEBAR_DEFENSE__", sidebarTileGridOrEmpty(defenseSidebarStats, "No defensive stats"))
             .replace("__SIDEBAR_UTILITY__", sidebarTileGridOrEmpty(utilitySidebarStats, "No utility stats"))
@@ -458,9 +481,7 @@ public final class DrBuildHtmlExporter {
         if (isStrongest) meta.append(chip("Strongest"));
 
         StringBuilder stats = new StringBuilder();
-        int visible = 0;
         for (DrBuildOptimizerService.StatLine stat : item.stats()) {
-            if (visible >= 5) break;
             stats.append("<div class=\"gear-stat\">")
                 .append("<span class=\"gear-stat-name\">").append(esc(stat.label())).append("</span>")
                 .append("<span class=\"gear-stat-value\">").append(esc(stat.valueText()))
@@ -468,7 +489,6 @@ public final class DrBuildHtmlExporter {
                 .append(stat.rangeText() != null && !stat.rangeText().isBlank() ? " <span class=\"muted\">[" + esc(stat.rangeText()) + "]</span>" : "")
                 .append(stat.overcap() ? " <span class=\"muted\">[overcap]</span>" : "")
                 .append("</span></div>");
-            visible++;
         }
         if (stats.isEmpty()) stats.append("<div class=\"empty-note\">No parsed stat lines available.</div>");
 
@@ -541,6 +561,24 @@ public final class DrBuildHtmlExporter {
         return builder.isEmpty()
             ? "<div class=\"sidebar-stat-item\"><span>" + esc(fallback) + "</span><strong>-</strong></div>"
             : builder.toString();
+    }
+
+    private static List<DrBuildOptimizerService.StatTotal> selectAttributeStats(List<DrBuildOptimizerService.StatTotal> totals) {
+        return selectFixedStats(totals, "Attributes", ATTRIBUTE_PRIORITY);
+    }
+
+    private static List<DrBuildOptimizerService.StatTotal> selectFixedStats(List<DrBuildOptimizerService.StatTotal> totals,
+                                                                            String category,
+                                                                            List<String> labels) {
+        List<DrBuildOptimizerService.StatTotal> selected = new ArrayList<>(labels.size());
+        for (String label : labels) {
+            DrBuildOptimizerService.StatTotal found = totals.stream()
+                .filter(total -> total.label().equalsIgnoreCase(label))
+                .findFirst()
+                .orElse(new DrBuildOptimizerService.StatTotal(label, 0, category, 0));
+            selected.add(found);
+        }
+        return selected;
     }
 
     private static List<DrBuildOptimizerService.StatTotal> selectCoreStats(List<DrBuildOptimizerService.StatTotal> totals) {
@@ -761,7 +799,7 @@ public final class DrBuildHtmlExporter {
         if (upper.contains("REGEN")) return "/s";
         if (upper.contains("RESIST") || upper.contains("FIND") || upper.contains("ACCURACY") || upper.contains("EXECUTE")
             || upper.contains("BLOCK") || upper.contains("THORNS") || upper.contains("REFLECT") || upper.contains("DODGE")
-            || upper.contains("MOVE SPEED") || upper.contains("CRITICAL HIT") || upper.contains("VS. ")) {
+            || upper.contains("MOVE SPEED") || upper.contains("CRITICAL HIT") || upper.contains("RECOVERY") || upper.contains("VS. ")) {
             return "%";
         }
         return "";
