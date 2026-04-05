@@ -26,7 +26,10 @@ If something feels off, awkward, or unclear, please do not hesitate to leave fee
   - Includes DungeonRealms-specific stats such as crit, shatter, execute, crushing, piercing, and energy sustain
 
 - `Gem Meter`
-  - Tracks gems with a lightweight HUD
+  - Tracks session gem gains with a lightweight HUD
+  - Supports `Inventory`, `Chat`, or `Hybrid` sources
+  - Shows `Gem Find`, `Item Find`, and `Key Find`
+  - Tracks slime kills and opened chests during the session
 
 - `Build Optimizer`
   - Scans your equipped gear and compares simulated DPS across class profiles
@@ -55,7 +58,7 @@ If something feels off, awkward, or unclear, please do not hesitate to leave fee
 
 ### Gem Meter
 
-![Gem Meter](docs/screenshots/gem-meter.png)
+![Gem Meter](docs/screenshots/gem-meter.webp)
 
 ### Module Config
 
