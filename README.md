@@ -6,9 +6,12 @@ Client-side Fabric mod for Minecraft `1.21.5` focused on DungeonRealms quality-o
 
 MinMax Realms is still in beta.
 
-Some parts of the mod are already very usable, but a few systems are still being refined, especially the stamina / energy-side assumptions used by the DPS simulator. I am still validating how stamina behaves in practice so the formulas and options will become smoother over time.
+Some parts of the mod are already very usable, but a few systems are still being refined.
 
 If something feels off, awkward, or unclear, please do not hesitate to leave feedback.
+
+Auto-augment is planned 
+Auto-orbing is planned
 
 ## Features
 
