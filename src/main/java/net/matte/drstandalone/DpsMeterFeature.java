@@ -21,18 +21,23 @@ import java.util.regex.Pattern;
 public final class DpsMeterFeature {
     private static final MinecraftClient mc = MinecraftClient.getInstance();
 
-    private static final double[] AVG_MOB_HP = {85, 250, 700, 1750, 3800};
+    private static final double[] AVG_MOB_HP = {100, 85, 250, 700, 1750, 3800};
     // Median armor point estimate per tier based on 4 armor pieces (shield excluded),
     // using the mid non-mythic generic armor ranges as the simulated mob baseline.
-    private static final double[] AVG_MOB_ARMOR = {17, 25, 37, 50, 66};
-    private static final double[] AVG_MOB_DODGE = {2, 4, 6, 8, 10};
-    private static final double[] AVG_MOB_BLOCK = {1, 3, 5, 7, 9};
+    private static final double[] AVG_MOB_ARMOR = {0, 17, 25, 37, 50, 66};
+    private static final double[] AVG_MOB_DODGE = {0, 2, 4, 6, 8, 10};
+    private static final double[] AVG_MOB_BLOCK = {0, 1, 3, 5, 7, 9};
 
     private static final Pattern DMG_PATTERN = Pattern.compile("^DMG\\s*:\\s*\\+?(\\d+(?:\\.\\d+)?)\\s*-\\s*(\\d+(?:\\.\\d+)?)$", Pattern.CASE_INSENSITIVE);
     private static final Pattern SINGLE_STAT_PATTERN = Pattern.compile("^([A-Z ./]+?)\\s*:\\s*\\+?(\\d+(?:\\.\\d+)?)(?:%|/s)?$", Pattern.CASE_INSENSITIVE);
+    private static final Pattern PASSIVE_SINGLE_STAT_PATTERN = Pattern.compile("^PASSIVE\\s*:\\s*([A-Z ./]+?)\\s*:\\s*\\+?(\\d+(?:\\.\\d+)?)(?:%|/s)?$", Pattern.CASE_INSENSITIVE);
     private static final Pattern LEVEL_LINE = Pattern.compile(".*LEVEL\\s*:\\s*(\\d+).*", Pattern.CASE_INSENSITIVE);
-    private static final Pattern ENCHANT_BONUS_SUFFIX = Pattern.compile("\\s*\\([+-]?\\d+(?:\\.\\d+)?\\)\\s*$");
-    private static final Pattern ENCHANT_BONUS_CAPTURE = Pattern.compile("\\(([+-]?\\d+(?:\\.\\d+)?)\\)");
+    private static final Pattern ENCHANT_BONUS_SUFFIX = Pattern.compile("\\s*\\(\\s*[+-]?\\d+(?:\\.\\d+)?\\s*\\)\\s*$");
+    private static final Pattern ENCHANT_BONUS_CAPTURE = Pattern.compile("\\(\\s*([+-]?\\d+(?:\\.\\d+)?)\\s*\\)");
+    private static final Pattern LOOSE_NUMBER_CAPTURE = Pattern.compile("[+-]?\\d+(?:\\.\\d+)?");
+    private static final double PRIMARY_WEAPON_BONUS_PER_POINT = 0.0002d;
+    private static final double STRENGTH_CRIT_CHANCE_PER_POINT = 0.005d;
+    private static final double VITALITY_ENERGY_RECOVERY_PER_POINT = 0.00006d;
 
     private DpsMeterFeature() {
     }
@@ -118,9 +123,10 @@ public final class DpsMeterFeature {
             chip("➤ Piercing: " + format(sim.piercing), 0xFF50D6F2),
             chip("☀ Shatter: " + format(sim.shatter) + "%", 0xFFE7A341)
         );
-        drawThreeCols(context, 14, 80,
+        drawFourCols(context, 14, 80,
             chip("✦ Execute: " + format(sim.execute) + "%", 0xFFFF5B57),
             chip("✺ Crushing: " + format(sim.crushing) + "%", 0xFFF2C94C),
+            chip("✶ Cleave: " + format(sim.cleave) + "%", 0xFF9BE370),
             chip("✧ Crit: " + format(sim.critChance) + "%", 0xFFEDEDED)
         );
         drawFourCols(context, 14, 94,
@@ -198,6 +204,7 @@ public final class DpsMeterFeature {
         merge(stats, parseStats(getTooltipLines(mc.player.getEquippedStack(EquipmentSlot.CHEST)), false));
         merge(stats, parseStats(getTooltipLines(mc.player.getEquippedStack(EquipmentSlot.HEAD)), false));
         merge(stats, parseStats(getTooltipLines(mc.player.getOffHandStack()), false));
+        applyWeaponBasePassives(stats, kind, weaponTooltip);
 
         if (stats.avgDamage <= 0) return null;
 
@@ -214,37 +221,41 @@ public final class DpsMeterFeature {
 
         double effectiveAccuracy = stats.accuracy;
         double effectivePiercing = stats.piercing;
-        if (profile == ClassProfile.Rogue) effectivePiercing += effectiveAccuracy * 0.5;
 
-        double avoid = Math.max(0, Math.min(0.95, (enemyDodge + enemyBlock - effectiveAccuracy) / 100d));
-        double hitChance = 1 - avoid;
+        double avoidChance = clamp((enemyDodge + enemyBlock) / 100d, 0, 0.95);
+        double accuracyBypassChance = clamp(effectiveAccuracy / 100d, 0, 1);
+        double hitChance = ((1 - accuracyBypassChance) * (1 - avoidChance)) + accuracyBypassChance;
 
         double armorAfterPiercing = Math.max(0, enemyArmor - effectivePiercing);
         double armorMitigation = armorReduction(armorAfterPiercing);
+        double baseArmorMultiplier = 1 - armorMitigation;
         double shatterChance = clamp(stats.shatter / 100d, 0, 1);
-        double expectedArmorMultiplier = ((1 - shatterChance) * (1 - armorMitigation)) + shatterChance;
+        double expectedArmorMultiplier = ((1 - shatterChance) * baseArmorMultiplier) + shatterChance;
 
         double weaponPrimaryBonus = 1;
-        if (kind == WeaponKind.Axe) weaponPrimaryBonus += stats.str * 0.0002;
-        if (kind == WeaponKind.Sword) weaponPrimaryBonus += stats.dex * 0.0002;
-        if (kind == WeaponKind.Mace) weaponPrimaryBonus += stats.vit * 0.0002;
-        if (kind == WeaponKind.Scythe) weaponPrimaryBonus += stats.intelligence * 0.0002;
+        if (kind == WeaponKind.Axe) weaponPrimaryBonus += stats.str * PRIMARY_WEAPON_BONUS_PER_POINT;
+        if (kind == WeaponKind.Sword) weaponPrimaryBonus += stats.dex * PRIMARY_WEAPON_BONUS_PER_POINT;
+        if (kind == WeaponKind.Mace) weaponPrimaryBonus += stats.vit * PRIMARY_WEAPON_BONUS_PER_POINT;
+        if (kind == WeaponKind.Scythe) weaponPrimaryBonus += stats.intelligence * PRIMARY_WEAPON_BONUS_PER_POINT;
 
         double physicalBase = stats.avgDamage * weaponPrimaryBonus;
         double mobMultiplier = 1 + (stats.vsMonsters / 100d);
         double phaseMultiplier = executeMultiplier(stats.execute, hpPct) * crushingMultiplier(stats.crushing, hpPct);
+        double cleaveMultiplier = 1 + (clamp(stats.cleave / 100d, 0, 1) * 0.5d);
 
-        double critChance = clamp((stats.critChance + (stats.str * 0.003514286)) / 100d, 0, 1);
-        double critBonus = config.baseCritBonus + (stats.dex * config.dexCritMultiplierPerPoint) + (profile == ClassProfile.Rogue ? 0.25 : 0);
+        double critChance = clamp((stats.critChance + (stats.str * STRENGTH_CRIT_CHANCE_PER_POINT)) / 100d, 0, 1);
+        double critBonus = Math.max(1.0d, config.baseCritBonus) + (stats.dex * config.dexCritMultiplierPerPoint) + (profile == ClassProfile.Rogue ? 0.25 : 0);
         double critMultiplier = 1 + (critChance * critBonus);
+        double critProcMultiplier = 1 + critBonus;
 
-        double physicalPerHit = physicalBase * mobMultiplier * phaseMultiplier * expectedArmorMultiplier * critMultiplier;
+        double physicalPerHit = physicalBase * mobMultiplier * phaseMultiplier * expectedArmorMultiplier;
         double elementalPerHit = (stats.fireDamage + stats.iceDamage + stats.poisonDamage) * (1 - clamp(config.elementalReduction, 0, 0.95));
         double purePerHit = stats.pureDamage;
-        double totalPerHit = (physicalPerHit + elementalPerHit + purePerHit) * hitChance;
+        double normalHit = (physicalBase * mobMultiplier * baseArmorMultiplier) + elementalPerHit + purePerHit;
+        double totalPerHit = (physicalPerHit + elementalPerHit + purePerHit) * critMultiplier * cleaveMultiplier * hitChance;
 
         double regenPerSecond = config.basePassiveEnergyRegen + stats.energyRegen;
-        regenPerSecond *= 1 + (stats.vit * 0.00006d);
+        regenPerSecond *= 1 + (stats.vit * VITALITY_ENERGY_RECOVERY_PER_POINT);
         double weaponEnergyCost = kind.energyCostForTier(weaponTier);
         AttackWindow attackWindow = isMelee(kind)
             ? simulateMeleeSession(Math.max(0.1d, config.meleeSessionAps), regenPerSecond, weaponEnergyCost)
@@ -263,7 +274,7 @@ public final class DpsMeterFeature {
             config.classProfile,
             config.targetTier,
             config.targetHpPercent,
-            format(stats.avgDamage) + " avg",
+            format(normalHit) + " hit",
             dps,
             aps,
             ttk,
@@ -273,8 +284,9 @@ public final class DpsMeterFeature {
             stats.shatter,
             stats.execute,
             stats.crushing,
+            stats.cleave,
             critChance * 100,
-            critBonus,
+            critProcMultiplier,
             stats.str,
             stats.dex,
             stats.vit,
@@ -312,7 +324,7 @@ public final class DpsMeterFeature {
                 stats.poisonDamage += convertible * 0.5;
 
                 if (config.rogueTargetPoisoned) stats.avgDamage *= 1.15;
-                if (config.rogueDashBonus) stats.vsMonsters += 10;
+        if (config.rogueDashBonus) stats.vsMonsters += 10;
 
                 stats.accuracy += 10;
                 if (config.rogueFirstSeconds) {
@@ -364,14 +376,15 @@ public final class DpsMeterFeature {
                 }
             }
 
-            Matcher single = SINGLE_STAT_PATTERN.matcher(matchableLine);
-            if (!single.matches()) continue;
-            String key = single.group(1).trim().toUpperCase(Locale.ROOT);
-            double value = parseDouble(single.group(2)) + extractEnchantBonus(line);
+            ParsedStat parsed = tryParseSingleStat(matchableLine, line);
+            if (parsed == null) continue;
+            String key = parsed.key();
+            double value = parsed.value();
 
             switch (key) {
                 case "VS. MONSTERS" -> stats.vsMonsters += value;
                 case "CRITICAL HIT" -> stats.critChance += value;
+                case "BLEEDING" -> stats.bleeding += value;
                 case "PURE DMG" -> stats.pureDamage += value;
                 case "FIRE DMG" -> stats.fireDamage += value;
                 case "ICE DMG" -> stats.iceDamage += value;
@@ -381,6 +394,7 @@ public final class DpsMeterFeature {
                 case "SHATTER" -> stats.shatter += value;
                 case "EXECUTE" -> stats.execute += value;
                 case "CRUSHING" -> stats.crushing += value;
+                case "CLEAVE" -> stats.cleave += value;
                 case "STR", "STRENGTH" -> stats.str += value;
                 case "DEX", "DEXTERITY" -> stats.dex += value;
                 case "VIT", "VITALITY" -> stats.vit += value;
@@ -390,6 +404,60 @@ public final class DpsMeterFeature {
             }
         }
         return stats;
+    }
+
+    private static @Nullable ParsedStat tryParseSingleStat(String matchableLine, String originalLine) {
+        Matcher single = SINGLE_STAT_PATTERN.matcher(matchableLine);
+        if (single.matches()) {
+            return new ParsedStat(single.group(1).trim().toUpperCase(Locale.ROOT), parseDouble(single.group(2)) + extractEnchantBonus(originalLine));
+        }
+
+        single = PASSIVE_SINGLE_STAT_PATTERN.matcher(matchableLine);
+        if (single.matches()) {
+            return new ParsedStat(single.group(1).trim().toUpperCase(Locale.ROOT), parseDouble(single.group(2)) + extractEnchantBonus(originalLine));
+        }
+
+        String loose = matchableLine.trim();
+        if (loose.regionMatches(true, 0, "PASSIVE:", 0, "PASSIVE:".length())) {
+            loose = loose.substring("PASSIVE:".length()).trim();
+        }
+
+        int colon = loose.indexOf(':');
+        if (colon <= 0 || colon >= loose.length() - 1) return null;
+
+        String key = loose.substring(0, colon).trim().toUpperCase(Locale.ROOT);
+        Matcher number = LOOSE_NUMBER_CAPTURE.matcher(loose.substring(colon + 1));
+        if (!number.find()) return null;
+        return new ParsedStat(key, parseDouble(number.group()) + extractEnchantBonus(originalLine));
+    }
+
+    private static void applyWeaponBasePassives(Stats stats, WeaponKind kind, List<String> weaponTooltip) {
+        switch (kind) {
+            case Sword -> {
+                if (!containsStatLine(weaponTooltip, "ACCURACY")) stats.accuracy += 5;
+            }
+            case Scythe -> {
+                if (!containsStatLine(weaponTooltip, "CLEAVE")) stats.cleave += 5;
+            }
+            case Axe -> {
+                if (!containsStatLine(weaponTooltip, "CRITICAL HIT")) stats.critChance += 5;
+            }
+            case Mace -> {
+                if (!containsStatLine(weaponTooltip, "CRUSHING")) stats.crushing += 5;
+            }
+            case Bow -> {
+                if (!containsStatLine(weaponTooltip, "BLEEDING")) stats.bleeding += 5;
+            }
+        }
+    }
+
+    private static boolean containsStatLine(List<String> tooltip, String key) {
+        String expected = key.toUpperCase(Locale.ROOT);
+        for (String line : tooltip) {
+            ParsedStat parsed = tryParseSingleStat(sanitizeTooltipLine(line), line);
+            if (parsed != null && parsed.key().equals(expected)) return true;
+        }
+        return false;
     }
 
     private static int resolveWeaponTier(ItemStack stack, List<String> tooltipLines) {
@@ -431,6 +499,7 @@ public final class DpsMeterFeature {
         into.avgDamage += from.avgDamage;
         into.vsMonsters += from.vsMonsters;
         into.critChance += from.critChance;
+        into.bleeding += from.bleeding;
         into.pureDamage += from.pureDamage;
         into.fireDamage += from.fireDamage;
         into.iceDamage += from.iceDamage;
@@ -440,6 +509,7 @@ public final class DpsMeterFeature {
         into.shatter += from.shatter;
         into.execute += from.execute;
         into.crushing += from.crushing;
+        into.cleave += from.cleave;
         into.str += from.str;
         into.dex += from.dex;
         into.vit += from.vit;
@@ -475,10 +545,11 @@ public final class DpsMeterFeature {
 
     private static double extractEnchantBonus(String value) {
         Matcher matcher = ENCHANT_BONUS_CAPTURE.matcher(value);
-        if (matcher.find()) {
-            return parseDouble(matcher.group(1));
+        double total = 0d;
+        while (matcher.find()) {
+            total += parseDouble(matcher.group(1));
         }
-        return 0d;
+        return total;
     }
 
     private static double parseDouble(String value) {
@@ -490,15 +561,15 @@ public final class DpsMeterFeature {
     }
 
     private static double executeMultiplier(double execute, double hpPct) {
-        if (hpPct >= 0.5) return 1;
-        double depth = (0.5 - hpPct) / 0.5;
-        return 1 + (execute / 100d) * depth;
+        double executeChance = clamp(execute / 100d, 0, 1);
+        double missingHealthPct = 1d - clamp(hpPct, 0, 1);
+        return 1 + (executeChance * 1.75d * missingHealthPct);
     }
 
     private static double crushingMultiplier(double crushing, double hpPct) {
-        if (hpPct <= 0.5) return 1;
-        double depth = (hpPct - 0.5) / 0.5;
-        return 1 + (crushing / 100d) * depth;
+        double crushingChance = clamp(crushing / 100d, 0, 1);
+        double currentHealthPct = clamp(hpPct, 0, 1);
+        return 1 + (crushingChance * 1.75d * currentHealthPct);
     }
 
     private static double clamp(double value, double min, double max) {
@@ -567,7 +638,7 @@ public final class DpsMeterFeature {
     }
 
     private enum TargetTier {
-        T1(2), T2(4), T3(8), T4(16), T5(32);
+        T0(0), T1(2), T2(4), T3(8), T4(16), T5(32);
         final int classDamage;
         TargetTier(int classDamage) { this.classDamage = classDamage; }
     }
@@ -595,6 +666,7 @@ public final class DpsMeterFeature {
         double avgDamage;
         double vsMonsters;
         double critChance;
+        double bleeding;
         double pureDamage;
         double fireDamage;
         double iceDamage;
@@ -604,6 +676,7 @@ public final class DpsMeterFeature {
         double shatter;
         double execute;
         double crushing;
+        double cleave;
         double str;
         double dex;
         double vit;
@@ -628,6 +701,7 @@ public final class DpsMeterFeature {
         double shatter,
         double execute,
         double crushing,
+        double cleave,
         double critChance,
         double critMult,
         double str,
@@ -648,5 +722,8 @@ public final class DpsMeterFeature {
     }
 
     private record AttackWindow(double aps, int hits, double stopSeconds, String sessionLabel) {
+    }
+
+    private record ParsedStat(String key, double value) {
     }
 }

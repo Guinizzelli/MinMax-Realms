@@ -36,8 +36,8 @@ public class DrStandaloneConfig {
     public double meleeSessionAps = 4.0;
     public double practicalAttackCap = 4.0;
     public double attackSpeed = 1.5;
-    public double baseCritBonus = 0.5;
-    public double dexCritMultiplierPerPoint = 0.00025;
+    public double baseCritBonus = 1.0;
+    public double dexCritMultiplierPerPoint = 0.00035;
     public double mobHealthScale = 1.0;
     public double mobArmorScale = 1.0;
     public double mobAvoidanceScale = 1.0;
@@ -59,6 +59,9 @@ public class DrStandaloneConfig {
     public int gemHudX = 8;
     public int gemHudY = 8;
     public double gemHudScale = 1.0;
+    public String gemSourceMode = "Hybrid";
+    public String gemChatKeywords = "gem,gems,emerald,emeralds,pouch";
+    public String chestChatKeywords = "key unlocks,nearby chest,chest";
     public boolean gemInventorySource = true;
     public boolean gemChatSource = true;
     public boolean gemActionBarSource = false;

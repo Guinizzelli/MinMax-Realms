@@ -1,15 +1,14 @@
 package net.matte.drstandalone;
 
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.item.tooltip.TooltipType;
-import net.minecraft.text.Text;
 import net.minecraft.text.Text;
 
 import java.util.ArrayList;
@@ -22,10 +21,16 @@ public final class GemMeterFeature {
     private static final MinecraftClient mc = MinecraftClient.getInstance();
     private static final Pattern SINGLE_STAT_PATTERN = Pattern.compile("^([A-Z ./]+?)\\s*:\\s*\\+?(\\d+(?:\\.\\d+)?)(?:%|/s)?$", Pattern.CASE_INSENSITIVE);
     private static final Pattern ENCHANT_BONUS_CAPTURE = Pattern.compile("\\(([+-]?\\d+(?:\\.\\d+)?)\\)");
+    private static final Pattern GEM_GAIN_PATTERN = Pattern.compile("(?i)(?:\\+\\s*|gained\\s+|gain\\s+|earned\\s+|received\\s+|obtained\\s+|added\\s+)(\\d+(?:[.,]\\d+)?)\\s*(?:g|gems?|emeralds?)");
+    private static final Pattern ANY_NUMBER_PATTERN = Pattern.compile("(\\d+(?:[.,]\\d+)?)");
 
     private static int gainedEmeralds;
     private static int currentEmeralds;
+    private static int gainedSlimeballs;
+    private static int gainedChests;
     private static int lastInventoryEmeralds = -1;
+    private static int lastInventorySlimeballs = -1;
+    private static int pendingChatEmeralds;
     private static long sessionStartMs;
 
     private GemMeterFeature() {
@@ -33,29 +38,110 @@ public final class GemMeterFeature {
 
     public static void init() {
         ClientTickEvents.END_CLIENT_TICK.register(client -> tick());
+        ClientReceiveMessageEvents.GAME.register((message, overlay) -> onIncomingMessage(message.getString(), overlay));
         HudRenderCallback.EVENT.register((drawContext, tickCounter) -> render(drawContext));
     }
 
     private static void tick() {
         DrStandaloneConfig config = DrStandaloneMod.config();
         if (!config.gemMeterEnabled || mc.player == null) return;
+        if (!config.gemInventorySource) {
+            if (sessionStartMs == 0) sessionStartMs = System.currentTimeMillis();
+            return;
+        }
 
         int inventoryEmeralds = countInventoryEmeralds();
+        int inventorySlimeballs = countInventoryItem(net.minecraft.item.Items.SLIME_BALL);
         currentEmeralds = Math.max(currentEmeralds, inventoryEmeralds);
 
         if (lastInventoryEmeralds == -1) {
             lastInventoryEmeralds = inventoryEmeralds;
+            lastInventorySlimeballs = inventorySlimeballs;
             if (sessionStartMs == 0) sessionStartMs = System.currentTimeMillis();
             return;
         }
 
         int delta = inventoryEmeralds - lastInventoryEmeralds;
         if (delta > 0) {
-            gainedEmeralds += delta;
+            int unmatchedDelta = Math.max(0, delta - pendingChatEmeralds);
+            gainedEmeralds += unmatchedDelta;
             currentEmeralds = inventoryEmeralds;
+            pendingChatEmeralds = Math.max(0, pendingChatEmeralds - delta);
         }
 
+        int slimeDelta = inventorySlimeballs - lastInventorySlimeballs;
+        if (slimeDelta > 0) gainedSlimeballs += slimeDelta;
+
         lastInventoryEmeralds = inventoryEmeralds;
+        lastInventorySlimeballs = inventorySlimeballs;
+    }
+
+    public static void resetSession() {
+        gainedEmeralds = 0;
+        currentEmeralds = 0;
+        gainedSlimeballs = 0;
+        gainedChests = 0;
+        lastInventoryEmeralds = -1;
+        lastInventorySlimeballs = -1;
+        pendingChatEmeralds = 0;
+        sessionStartMs = System.currentTimeMillis();
+    }
+
+    private static void onIncomingMessage(String raw, boolean overlay) {
+        DrStandaloneConfig config = DrStandaloneMod.config();
+        if (!config.gemMeterEnabled) return;
+        if (raw == null || raw.isBlank()) return;
+        if (sessionStartMs == 0) sessionStartMs = System.currentTimeMillis();
+
+        if (matchesChestMessage(raw)) {
+            gainedChests++;
+        }
+
+        if (!config.gemChatSource) return;
+        if (overlay && !config.gemActionBarSource) return;
+
+        Integer gained = parseGemGain(raw);
+        if (gained == null || gained <= 0) return;
+
+        gainedEmeralds += gained;
+        pendingChatEmeralds += gained;
+        currentEmeralds += gained;
+    }
+
+    private static Integer parseGemGain(String raw) {
+        String normalized = raw.replace('\u00A0', ' ').trim();
+        if (!containsAnyConfiguredKeyword(normalized, DrStandaloneMod.config().gemChatKeywords, true)) return null;
+
+        Matcher matcher = GEM_GAIN_PATTERN.matcher(normalized);
+        if (matcher.find()) {
+            String numeric = matcher.group(1).replace(',', '.');
+            return (int) Math.round(Double.parseDouble(numeric));
+        }
+
+        double max = -1;
+        Matcher any = ANY_NUMBER_PATTERN.matcher(normalized);
+        while (any.find()) {
+            double parsed = Double.parseDouble(any.group(1).replace(',', '.'));
+            if (parsed > max) max = parsed;
+        }
+        if (max > 0) return (int) Math.round(max);
+        return null;
+    }
+
+    private static boolean matchesChestMessage(String raw) {
+        String normalized = raw.replace('\u00A0', ' ').trim();
+        return containsAnyConfiguredKeyword(normalized, DrStandaloneMod.config().chestChatKeywords, false);
+    }
+
+    private static boolean containsAnyConfiguredKeyword(String raw, String keywords, boolean blankMatchesAll) {
+        String normalized = raw.toLowerCase(Locale.ROOT);
+        if (keywords == null || keywords.isBlank()) return blankMatchesAll;
+
+        for (String token : keywords.split(",")) {
+            String keyword = token.trim().toLowerCase(Locale.ROOT);
+            if (!keyword.isEmpty() && normalized.contains(keyword)) return true;
+        }
+        return false;
     }
 
     private static void render(DrawContext context) {
@@ -67,6 +153,7 @@ public final class GemMeterFeature {
         lines.add("Gained: " + formatCompact(gainedEmeralds) + "G");
         lines.add("G/h: " + formatCompact(getEmeraldsPerHour()));
         lines.add("Session: " + getSessionTimeString());
+        lines.add("Slime " + gainedSlimeballs + " | Chest " + gainedChests);
         lines.add("GF " + formatStat(findStats.gemFind()) + "% | IF " + formatStat(findStats.itemFind()) + "% | KF " + formatStat(findStats.keyFind()) + "%");
 
         int padding = 6;
@@ -97,8 +184,8 @@ public final class GemMeterFeature {
         for (int i = 0; i < mc.player.getInventory().size(); i++) {
             ItemStack stack = mc.player.getInventory().getStack(i);
             if (stack.isEmpty()) continue;
-            if (stack.isOf(Items.EMERALD)) total += stack.getCount();
-            else if (stack.isOf(Items.EMERALD_BLOCK)) total += stack.getCount() * 9;
+            if (stack.isOf(net.minecraft.item.Items.EMERALD)) total += stack.getCount();
+            else if (stack.isOf(net.minecraft.item.Items.EMERALD_BLOCK)) total += stack.getCount() * 9;
         }
         return total;
     }
@@ -145,6 +232,15 @@ public final class GemMeterFeature {
             String label = normalizeStatLabel(matcher.group(1));
             if (!targetLabel.equals(label)) continue;
             total += parseDouble(matcher.group(2)) + extractEnchantBonus(raw);
+        }
+        return total;
+    }
+
+    private static int countInventoryItem(Item item) {
+        int total = 0;
+        for (int i = 0; i < mc.player.getInventory().size(); i++) {
+            ItemStack stack = mc.player.getInventory().getStack(i);
+            if (!stack.isEmpty() && stack.isOf(item)) total += stack.getCount();
         }
         return total;
     }

@@ -4,6 +4,7 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.tooltip.Tooltip;
 import net.minecraft.client.gui.widget.ButtonWidget;
+import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.text.Text;
 
 import java.util.Locale;
@@ -13,6 +14,8 @@ public class DrStandaloneConfigScreen extends Screen {
     private static DpsSubSection selectedDpsSubSection = DpsSubSection.General;
 
     private final Screen parent;
+    private TextFieldWidget gemKeywordsField;
+    private TextFieldWidget chestKeywordsField;
 
     public DrStandaloneConfigScreen(Screen parent) {
         super(Text.literal("MinMax Realms"));
@@ -74,7 +77,7 @@ public class DrStandaloneConfigScreen extends Screen {
                     refresh();
                 }));
                 y += 24;
-                addDrawableChild(cycleButton(left, y, 166, () -> "Tier: " + config.targetTier, new String[]{"T1", "T2", "T3", "T4", "T5"}, v -> config.targetTier = v));
+                addDrawableChild(cycleButton(left, y, 166, () -> "Tier: " + config.targetTier, new String[]{"T0", "T1", "T2", "T3", "T4", "T5"}, v -> config.targetTier = v));
                 addDrawableChild(stepButton(right, y, 166, () -> "Target HP: " + format(config.targetHpPercent) + "%", -10, 10, v -> config.targetHpPercent = clamp(config.targetHpPercent + v, 0, 100)));
                 y += 24;
                 addDrawableChild(stepButton(left, y, 166, () -> "Passive Regen: " + format(config.basePassiveEnergyRegen), -0.5, 0.5, v -> config.basePassiveEnergyRegen = clamp(config.basePassiveEnergyRegen + v, 0, 20)));
@@ -176,10 +179,37 @@ public class DrStandaloneConfigScreen extends Screen {
         addDrawableChild(stepButton(left, y, 166, () -> "HUD X: " + config.gemHudX, -10, 10, v -> config.gemHudX += v));
         addDrawableChild(stepButton(right, y, 166, () -> "HUD Y: " + config.gemHudY, -10, 10, v -> config.gemHudY += v));
         y += 24;
-        addDrawableChild(toggleButton(left, y, 166, "Inventory Source", () -> config.gemInventorySource, v -> config.gemInventorySource = v));
-        addDrawableChild(toggleButton(right, y, 166, "Chat Source", () -> config.gemChatSource, v -> config.gemChatSource = v));
+        syncGemSourceMode(config);
+        addDrawableChild(cycleButton(left, y, 166, () -> "Source: " + config.gemSourceMode, new String[]{"Inventory", "Chat", "Hybrid"}, v -> {
+            config.gemSourceMode = v;
+            applyGemSourceMode(config);
+        }));
+        addDrawableChild(ButtonWidget.builder(Text.literal("Reset Session"), button -> {
+            GemMeterFeature.resetSession();
+            refresh();
+        }).dimensions(right, y, 166, 20).tooltip(Tooltip.of(Text.literal("Reset gained gems, rates and session timer"))).build());
         y += 24;
-        addDrawableChild(toggleButton(left, y, 166, "ActionBar Source", () -> config.gemActionBarSource, v -> config.gemActionBarSource = v));
+        addDrawableChild(labelButton(left, y, 344, switch (config.gemSourceMode) {
+            case "Inventory" -> "Tracks only visible inventory emerald changes.";
+            case "Chat" -> "Tracks chat/system gem gain messages, including pouch deposits.";
+            default -> "Combines inventory deltas and chat/system gem gain messages.";
+        }));
+        y += 24;
+        gemKeywordsField = new TextFieldWidget(this.textRenderer, left, y, 344, 18, Text.literal("Gem chat keywords"));
+        gemKeywordsField.setText(config.gemChatKeywords == null ? "" : config.gemChatKeywords);
+        gemKeywordsField.setPlaceholder(Text.literal("gem,gems,emerald,emeralds,pouch"));
+        gemKeywordsField.setChangedListener(value -> config.gemChatKeywords = value);
+        addDrawableChild(gemKeywordsField);
+        y += 22;
+        addDrawableChild(labelButton(left, y, 344, "Chat keywords: comma-separated words used to detect gem messages."));
+        y += 24;
+        chestKeywordsField = new TextFieldWidget(this.textRenderer, left, y, 344, 18, Text.literal("Chest chat keywords"));
+        chestKeywordsField.setText(config.chestChatKeywords == null ? "" : config.chestChatKeywords);
+        chestKeywordsField.setPlaceholder(Text.literal("key unlocks,nearby chest,chest"));
+        chestKeywordsField.setChangedListener(value -> config.chestChatKeywords = value);
+        addDrawableChild(chestKeywordsField);
+        y += 22;
+        addDrawableChild(labelButton(left, y, 344, "Chest keywords: used to count chest opens from chat messages."));
     }
 
     private ButtonWidget sectionButton(int x, int y, int width, String label, Section section) {
@@ -260,6 +290,39 @@ public class DrStandaloneConfigScreen extends Screen {
         config.gemHudY = 8;
         config.gemHudScale = 1.0;
         config.save();
+    }
+
+    private static void syncGemSourceMode(DrStandaloneConfig config) {
+        if ("Inventory".equals(config.gemSourceMode) || "Chat".equals(config.gemSourceMode) || "Hybrid".equals(config.gemSourceMode)) {
+            applyGemSourceMode(config);
+            return;
+        }
+
+        if (config.gemInventorySource && config.gemChatSource) config.gemSourceMode = "Hybrid";
+        else if (config.gemChatSource || config.gemActionBarSource) config.gemSourceMode = "Chat";
+        else config.gemSourceMode = "Inventory";
+        applyGemSourceMode(config);
+    }
+
+    private static void applyGemSourceMode(DrStandaloneConfig config) {
+        switch (config.gemSourceMode) {
+            case "Inventory" -> {
+                config.gemInventorySource = true;
+                config.gemChatSource = false;
+                config.gemActionBarSource = false;
+            }
+            case "Chat" -> {
+                config.gemInventorySource = false;
+                config.gemChatSource = true;
+                config.gemActionBarSource = true;
+            }
+            default -> {
+                config.gemSourceMode = "Hybrid";
+                config.gemInventorySource = true;
+                config.gemChatSource = true;
+                config.gemActionBarSource = true;
+            }
+        }
     }
 
     private static String onOff(boolean value) {
