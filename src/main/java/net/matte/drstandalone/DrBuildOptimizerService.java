@@ -26,10 +26,12 @@ public final class DrBuildOptimizerService {
     private static final Set<String> TRUSTED_ENDPOINT_HOSTS = Set.of("api.openai.com", "openai.com");
     private static final Pattern DMG_PATTERN = Pattern.compile("^DMG\\s*:\\s*\\+?(\\d+(?:\\.\\d+)?)\\s*-\\s*(\\d+(?:\\.\\d+)?)$", Pattern.CASE_INSENSITIVE);
     private static final Pattern SINGLE_STAT_PATTERN = Pattern.compile("^([A-Z ./]+?)\\s*:\\s*\\+?([+-]?\\d+(?:\\.\\d+)?)(?:%|/s| HP/s)?$", Pattern.CASE_INSENSITIVE);
+    private static final Pattern PASSIVE_SINGLE_STAT_PATTERN = Pattern.compile("^PASSIVE\\s*:\\s*([A-Z ./]+?)\\s*:\\s*\\+?([+-]?\\d+(?:\\.\\d+)?)(?:%|/s| HP/s)?$", Pattern.CASE_INSENSITIVE);
     private static final Pattern ITEM_LEVEL_PATTERN = Pattern.compile(".*LEVEL\\s*:?\\s*(\\d+).*", Pattern.CASE_INSENSITIVE);
     private static final Pattern DR_STATUS_PATTERN = Pattern.compile("LV\\s*(\\d+)\\s+([A-Z]+)\\s*-\\s*HP\\s*(\\d+(?:\\.\\d+)?)\\s*-\\s*XP\\s*(\\d+(?:\\.\\d+)?)%", Pattern.CASE_INSENSITIVE);
-    private static final Pattern ENCHANT_BONUS_SUFFIX = Pattern.compile("\\s*\\([+-]?\\d+(?:\\.\\d+)?\\)\\s*$");
-    private static final Pattern ENCHANT_BONUS_CAPTURE = Pattern.compile("\\(([+-]?\\d+(?:\\.\\d+)?)\\)");
+    private static final Pattern ENCHANT_BONUS_SUFFIX = Pattern.compile("\\s*\\(\\s*[+-]?\\d+(?:\\.\\d+)?\\s*(?:%|/s)?\\s*\\)\\s*$");
+    private static final Pattern ENCHANT_BONUS_CAPTURE = Pattern.compile("\\(\\s*([+-]?\\d+(?:\\.\\d+)?)\\s*(?:%|/s)?\\s*\\)");
+    private static final Pattern LOOSE_NUMBER_CAPTURE = Pattern.compile("[+-]?\\d+(?:\\.\\d+)?");
     private static String sessionApiKey = "";
 
     private DrBuildOptimizerService() {
@@ -175,7 +177,7 @@ public final class DrBuildOptimizerService {
 
         Map<String, StatLine> parsedByLabel = new LinkedHashMap<>();
         for (StatLine parsed : parsedStats) {
-            parsedByLabel.putIfAbsent(parsed.label(), parsed);
+            parsedByLabel.merge(parsed.label(), parsed, DrBuildOptimizerService::mergeStatLines);
         }
 
         List<StatLine> statLines = new ArrayList<>();
@@ -290,21 +292,50 @@ public final class DrBuildOptimizerService {
                 continue;
             }
 
-            Matcher single = SINGLE_STAT_PATTERN.matcher(matchableLine);
-            if (!single.matches()) continue;
-            String label = normalizeStatLabel(single.group(1));
+            ParsedStat parsed = tryParseSingleStat(matchableLine, line);
+            if (parsed == null) continue;
+            String label = normalizeStatLabel(parsed.key());
             if ("LEVEL".equals(label)) continue;
-            double value = parseDouble(single.group(2)) + extractEnchantBonus(line);
-            stats.add(new StatLine(label, line, value, statCategory(label), -1, "", false));
+            stats.add(new StatLine(label, line, parsed.value(), statCategory(label), -1, "", false));
         }
         return stats;
     }
 
     private static void mergeFallbackStats(List<StatLine> primary, List<StatLine> fallback) {
         for (StatLine extra : fallback) {
-            boolean exists = primary.stream().anyMatch(stat -> stat.label().equalsIgnoreCase(extra.label()));
-            if (!exists) primary.add(extra);
+            boolean merged = false;
+            for (int i = 0; i < primary.size(); i++) {
+                StatLine existing = primary.get(i);
+                if (existing.label().equalsIgnoreCase(extra.label())) {
+                    primary.set(i, mergeStatLines(existing, extra));
+                    merged = true;
+                    break;
+                }
+            }
+            if (!merged) primary.add(extra);
         }
+    }
+
+    private static StatLine mergeStatLines(StatLine existing, StatLine extra) {
+        double mergedValue = 0d;
+        boolean hasFinite = false;
+        if (Double.isFinite(existing.numericValue())) {
+            mergedValue += existing.numericValue();
+            hasFinite = true;
+        }
+        if (Double.isFinite(extra.numericValue())) {
+            mergedValue += extra.numericValue();
+            hasFinite = true;
+        }
+        return new StatLine(
+            existing.label(),
+            existing.valueText(),
+            hasFinite ? mergedValue : Double.NaN,
+            existing.category(),
+            existing.percent(),
+            existing.rangeText(),
+            existing.overcap() || extra.overcap()
+        );
     }
 
     private static double statValue(String valueText, String label) {
@@ -313,10 +344,9 @@ public final class DrBuildOptimizerService {
             return (parseDouble(dmg.group(1)) + parseDouble(dmg.group(2))) / 2d;
         }
 
-        String sanitized = sanitizeTooltipLine(valueText);
-        Matcher single = SINGLE_STAT_PATTERN.matcher(sanitized);
-        if (single.matches()) {
-            return parseDouble(single.group(2)) + extractEnchantBonus(valueText);
+        ParsedStat parsed = tryParseSingleStat(sanitizeTooltipLine(valueText), valueText);
+        if (parsed != null) {
+            return parsed.value();
         }
 
         return Double.NaN;
@@ -418,10 +448,36 @@ public final class DrBuildOptimizerService {
 
     private static double extractEnchantBonus(String value) {
         Matcher matcher = ENCHANT_BONUS_CAPTURE.matcher(value);
-        if (matcher.find()) {
-            return parseDouble(matcher.group(1));
+        double total = 0d;
+        while (matcher.find()) {
+            total += parseDouble(matcher.group(1));
         }
-        return 0d;
+        return total;
+    }
+
+    private static ParsedStat tryParseSingleStat(String matchableLine, String originalLine) {
+        Matcher single = SINGLE_STAT_PATTERN.matcher(matchableLine);
+        if (single.matches()) {
+            return new ParsedStat(single.group(1).trim().toUpperCase(Locale.ROOT), parseDouble(single.group(2)) + extractEnchantBonus(originalLine));
+        }
+
+        single = PASSIVE_SINGLE_STAT_PATTERN.matcher(matchableLine);
+        if (single.matches()) {
+            return new ParsedStat(single.group(1).trim().toUpperCase(Locale.ROOT), parseDouble(single.group(2)) + extractEnchantBonus(originalLine));
+        }
+
+        String loose = matchableLine.trim();
+        if (loose.regionMatches(true, 0, "PASSIVE:", 0, "PASSIVE:".length())) {
+            loose = loose.substring("PASSIVE:".length()).trim();
+        }
+
+        int colon = loose.indexOf(':');
+        if (colon <= 0 || colon >= loose.length() - 1) return null;
+
+        String key = loose.substring(0, colon).trim().toUpperCase(Locale.ROOT);
+        Matcher number = LOOSE_NUMBER_CAPTURE.matcher(loose.substring(colon + 1));
+        if (!number.find()) return null;
+        return new ParsedStat(key, parseDouble(number.group()) + extractEnchantBonus(originalLine));
     }
 
     private static int detectItemLevel(List<String> tooltipLines) {
@@ -512,6 +568,9 @@ public final class DrBuildOptimizerService {
             case "Paladin" -> "VIT, PURE DMG, CRUSHING, VS. MONSTERS";
             default -> "DMG de base + ENERGY REGEN + CRIT";
         };
+    }
+
+    private record ParsedStat(String key, double value) {
     }
 
     public record StatLine(String label, String valueText, double numericValue, String category, double percent, String rangeText, boolean overcap) {

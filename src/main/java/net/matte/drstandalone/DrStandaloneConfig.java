@@ -16,9 +16,30 @@ public class DrStandaloneConfig {
     public boolean itemRollsEnabled = true;
     public boolean dpsMeterEnabled = true;
     public boolean gemMeterEnabled = true;
+    public boolean autoAugmentEnabled = false;
+    public boolean autoAugmentWeaponsmith = true;
+    public boolean autoAugmentArmorsmith = true;
+    public boolean autoAugmentRequireAugmentSlot = true;
+    public int autoAugmentClickDelayTicks = 10;
+    public int autoAugmentShiftRightDelayTicks = 6;
+    public int autoAugmentResultSnapshotDelayTicks = 2;
+    public int autoAugmentConfiguredAttempts = 10;
+    public String autoAugmentRunMode = "Attempts";
+    public String autoAugmentStopMode = "Any";
+    public String autoAugmentPauseRule = "None";
+    public boolean autoOrbingEnabled = false;
+    public boolean autoOrbingPlacementGuideEnabled = false;
+    public int autoOrbingActionDelayTicks = 4;
+    public int autoOrbingResultSnapshotDelayTicks = 2;
+    public String autoOrbingStopMode = "Any";
+    public int autoOrbingMinStatsRequired = 1;
+    public boolean autoOrbingMinStatsRuleEnabled = true;
+    public boolean autoOrbingLogToChat = false;
+    public java.util.Map<String, Integer> autoOrbingMinRollPercentByLabel = new java.util.LinkedHashMap<>();
 
     public boolean showOverallOnLevel = true;
-    public boolean statBreakdown = true;
+    public boolean showCompactEnchantCode = false;
+    public boolean debugEnchantColorParsing = false;
     public int maxStats = 12;
     public String inlineStyle = "Percent";
     public boolean fancyMode = false;
@@ -61,7 +82,11 @@ public class DrStandaloneConfig {
     public double gemHudScale = 1.0;
     public String gemSourceMode = "Hybrid";
     public String gemChatKeywords = "gem,gems,emerald,emeralds,pouch";
+    public String slimeChatKeywords = "slime,loot slime,fall from,portal shards";
     public String chestChatKeywords = "key unlocks,nearby chest,chest";
+    public String slimeParseMode = "Chat";
+    public String chestParseMode = "Chat";
+    public java.util.List<GemCustomRule> gemCustomRules = new java.util.ArrayList<>();
     public boolean gemInventorySource = true;
     public boolean gemChatSource = true;
     public boolean gemActionBarSource = false;
@@ -70,6 +95,12 @@ public class DrStandaloneConfig {
     // Session-only secret: never persisted to disk.
     public transient String optimizerApiKey = "";
     public String optimizerApiEndpoint = "";
+
+    public static class GemCustomRule {
+        public String title = "Custom";
+        public String parseMode = "Disabled";
+        public String chatKeywords = "";
+    }
 
     public DrStandaloneConfig copy() {
         return GSON.fromJson(GSON.toJson(this), DrStandaloneConfig.class);

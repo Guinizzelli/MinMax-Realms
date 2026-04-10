@@ -33,11 +33,22 @@ Auto-orbing is planned
   - Supports `Inventory`, `Chat`, or `Hybrid` sources
   - Shows `Gem Find`, `Item Find`, and `Key Find`
   - Tracks slime kills and opened chests during the session
+  - Supports custom rule counters with user-defined titles and chat keyword parsing
 
 - `Build Optimizer`
   - Scans your equipped gear and compares simulated DPS across class profiles
   - Exports a standalone HTML build sheet with player snapshot, item cards, and grouped stats
   - Keeps the in-game flow simple with `Scan current gear` and `Export HTML`
+
+- `AutoAugment`
+  - Adds an in-inventory smith overlay for Weaponsmith and Armorsmith workflows
+  - Supports single augment, looped auto augment, attempts slider, rule matching, and live roll logs
+  - Includes a dedicated preview screen from the config menu for faster UI iteration
+
+- `Auto-Orbing`
+  - Adds a dedicated orb workflow overlay with fixed placement mapping and colored slot guides
+  - Supports `Orb x1`, full auto-run, rule matching, roll-percent thresholds, and chat logging
+  - Includes a preview screen plus a rules tab for temporary stat targeting
 
 - `Codex + Stats Wiki`
   - Browse indexed DR custom items from the bundled stats database
@@ -66,6 +77,24 @@ Auto-orbing is planned
 ### Module Config
 
 ![Module Config](docs/screenshots/module-config.png)
+
+### AutoAugment UI
+
+![AutoAugment UI](docs/screenshots/auto-augment.png)
+
+### Auto-Orbing UI
+
+![Auto-Orbing UI](docs/screenshots/auto-orb.png)
+
+### AutoAugment / Auto-Orbing Config
+
+The standalone config screen now includes dedicated sections for:
+
+- `DPS` with `General / Class / HUD`
+- `Item Rolls` with `General / Debug`
+- `Gem Meter` with split sub-tabs for `General`, `HUD`, `Gems`, `Slimes`, `Chests`, and custom rules
+- `AutoAugment` preview
+- `Auto-Orbing` preview and runtime settings
 
 ### Build Optimizer
 
@@ -99,7 +128,15 @@ The config is stored in:
 
 `config/dr-standalone.json`
 
-You can configure feature toggles, HUD placement, DPS simulation settings, melee session APS, item roll display style, tooltip cleanup options, and codex access.
+You can configure feature toggles, HUD placement, DPS simulation settings, item roll display options, gem parsing rules, AutoAugment preview access, and Auto-Orbing runtime settings.
+
+## UI Theme
+
+The mod now uses a higher-contrast charcoal + gold UI pass for the custom overlays and config screens.
+
+- AutoAugment and Auto-Orbing are styled directly in code so the rest of Minecraft stays untouched
+- The config screen has been reworked to match the same visual language
+- The theme is built to stay readable at Minecraft's native UI scale without blur or shader effects
 
 ## Build
 

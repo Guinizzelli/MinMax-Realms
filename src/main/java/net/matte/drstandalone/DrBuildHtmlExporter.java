@@ -799,7 +799,9 @@ public final class DrBuildHtmlExporter {
         if (upper.contains("REGEN")) return "/s";
         if (upper.contains("RESIST") || upper.contains("FIND") || upper.contains("ACCURACY") || upper.contains("EXECUTE")
             || upper.contains("BLOCK") || upper.contains("THORNS") || upper.contains("REFLECT") || upper.contains("DODGE")
-            || upper.contains("MOVE SPEED") || upper.contains("CRITICAL HIT") || upper.contains("RECOVERY") || upper.contains("VS. ")) {
+            || upper.contains("MOVE SPEED") || upper.contains("CRITICAL HIT") || upper.contains("RECOVERY") || upper.contains("VS. ")
+            || upper.contains("BLEEDING") || upper.contains("SHATTER") || upper.contains("CRUSHING") || upper.contains("CLEAVE")
+            || upper.contains("LIFE STEAL") || upper.contains("GLOWING") || upper.contains("BLINDING") || upper.contains("SLOWNESS")) {
             return "%";
         }
         return "";

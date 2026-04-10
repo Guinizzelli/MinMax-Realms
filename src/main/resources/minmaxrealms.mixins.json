@@ -3,7 +3,8 @@
   "package": "net.matte.drstandalone.mixin",
   "compatibilityLevel": "JAVA_21",
   "client": [
-    "DrawContextMixin"
+    "DrawContextMixin",
+    "HandledScreenMixin"
   ],
   "injectors": {
     "defaultRequire": 1

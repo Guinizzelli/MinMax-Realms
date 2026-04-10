@@ -26,12 +26,19 @@ public final class GemMeterFeature {
 
     private static int gainedEmeralds;
     private static int currentEmeralds;
-    private static int gainedSlimeballs;
+    private static int gainedSlimes;
     private static int gainedChests;
+    private static final List<Integer> customRuleCounts = new ArrayList<>();
     private static int lastInventoryEmeralds = -1;
-    private static int lastInventorySlimeballs = -1;
     private static int pendingChatEmeralds;
     private static long sessionStartMs;
+    private static String lastSlimeMessage = "";
+    private static long lastSlimeMessageAtMs;
+    private static String lastChestMessage = "";
+    private static long lastChestMessageAtMs;
+    private static final List<String> lastCustomRuleMessages = new ArrayList<>();
+    private static final List<Long> lastCustomRuleMessageAtMs = new ArrayList<>();
+    private static final long CHAT_EVENT_DEDUP_MS = 750L;
 
     private GemMeterFeature() {
     }
@@ -51,12 +58,10 @@ public final class GemMeterFeature {
         }
 
         int inventoryEmeralds = countInventoryEmeralds();
-        int inventorySlimeballs = countInventoryItem(net.minecraft.item.Items.SLIME_BALL);
         currentEmeralds = Math.max(currentEmeralds, inventoryEmeralds);
 
         if (lastInventoryEmeralds == -1) {
             lastInventoryEmeralds = inventoryEmeralds;
-            lastInventorySlimeballs = inventorySlimeballs;
             if (sessionStartMs == 0) sessionStartMs = System.currentTimeMillis();
             return;
         }
@@ -69,22 +74,27 @@ public final class GemMeterFeature {
             pendingChatEmeralds = Math.max(0, pendingChatEmeralds - delta);
         }
 
-        int slimeDelta = inventorySlimeballs - lastInventorySlimeballs;
-        if (slimeDelta > 0) gainedSlimeballs += slimeDelta;
-
         lastInventoryEmeralds = inventoryEmeralds;
-        lastInventorySlimeballs = inventorySlimeballs;
     }
 
     public static void resetSession() {
         gainedEmeralds = 0;
         currentEmeralds = 0;
-        gainedSlimeballs = 0;
+        gainedSlimes = 0;
         gainedChests = 0;
         lastInventoryEmeralds = -1;
-        lastInventorySlimeballs = -1;
         pendingChatEmeralds = 0;
         sessionStartMs = System.currentTimeMillis();
+        lastSlimeMessage = "";
+        lastSlimeMessageAtMs = 0L;
+        lastChestMessage = "";
+        lastChestMessageAtMs = 0L;
+        ensureCustomRuleStateSize();
+        for (int i = 0; i < customRuleCounts.size(); i++) {
+            customRuleCounts.set(i, 0);
+            lastCustomRuleMessages.set(i, "");
+            lastCustomRuleMessageAtMs.set(i, 0L);
+        }
     }
 
     private static void onIncomingMessage(String raw, boolean overlay) {
@@ -93,14 +103,28 @@ public final class GemMeterFeature {
         if (raw == null || raw.isBlank()) return;
         if (sessionStartMs == 0) sessionStartMs = System.currentTimeMillis();
 
-        if (matchesChestMessage(raw)) {
+        String normalized = raw.replace('\u00A0', ' ').trim();
+
+        if (matchesSlimeMessage(normalized) && shouldCountChatEvent(normalized, true)) {
+            gainedSlimes++;
+        }
+
+        if (matchesChestMessage(normalized) && shouldCountChatEvent(normalized, false)) {
             gainedChests++;
+        }
+
+        ensureCustomRuleStateSize();
+        for (int i = 0; i < config.gemCustomRules.size(); i++) {
+            DrStandaloneConfig.GemCustomRule rule = config.gemCustomRules.get(i);
+            if (matchesCustomRuleMessage(normalized, rule) && shouldCountCustomRuleEvent(normalized, i)) {
+                customRuleCounts.set(i, customRuleCounts.get(i) + 1);
+            }
         }
 
         if (!config.gemChatSource) return;
         if (overlay && !config.gemActionBarSource) return;
 
-        Integer gained = parseGemGain(raw);
+        Integer gained = parseGemGain(normalized);
         if (gained == null || gained <= 0) return;
 
         gainedEmeralds += gained;
@@ -108,8 +132,7 @@ public final class GemMeterFeature {
         currentEmeralds += gained;
     }
 
-    private static Integer parseGemGain(String raw) {
-        String normalized = raw.replace('\u00A0', ' ').trim();
+    private static Integer parseGemGain(String normalized) {
         if (!containsAnyConfiguredKeyword(normalized, DrStandaloneMod.config().gemChatKeywords, true)) return null;
 
         Matcher matcher = GEM_GAIN_PATTERN.matcher(normalized);
@@ -128,9 +151,75 @@ public final class GemMeterFeature {
         return null;
     }
 
-    private static boolean matchesChestMessage(String raw) {
-        String normalized = raw.replace('\u00A0', ' ').trim();
+    private static boolean matchesSlimeMessage(String normalized) {
+        if (!"Chat".equalsIgnoreCase(DrStandaloneMod.config().slimeParseMode)) return false;
+        String lowered = normalized.toLowerCase(Locale.ROOT);
+        if (!lowered.contains("slime")) return false;
+
+        // Only count actual reward / drop lines, not combat feedback lines that repeat the mob name.
+        if (lowered.contains("fall from") || lowered.contains("dropped:") || lowered.contains("dropped ")) {
+            return true;
+        }
+
+        if (lowered.contains("dodged") || lowered.contains("absorbed") || lowered.contains("blocked")
+            || lowered.contains("target ") || lowered.contains("opponent ")) {
+            return false;
+        }
+
+        return containsAnyConfiguredKeyword(normalized, DrStandaloneMod.config().slimeChatKeywords, false)
+            && (lowered.contains("fall from") || lowered.contains("dropped"));
+    }
+
+    private static boolean matchesChestMessage(String normalized) {
+        if (!"Chat".equalsIgnoreCase(DrStandaloneMod.config().chestParseMode)) return false;
         return containsAnyConfiguredKeyword(normalized, DrStandaloneMod.config().chestChatKeywords, false);
+    }
+
+    private static boolean matchesCustomRuleMessage(String normalized, DrStandaloneConfig.GemCustomRule rule) {
+        return rule != null
+            && "Chat".equalsIgnoreCase(rule.parseMode)
+            && containsAnyConfiguredKeyword(normalized, rule.chatKeywords, false);
+    }
+
+    private static boolean shouldCountChatEvent(String normalized, boolean slimeEvent) {
+        long now = System.currentTimeMillis();
+        if (slimeEvent) {
+            if (normalized.equalsIgnoreCase(lastSlimeMessage) && (now - lastSlimeMessageAtMs) <= CHAT_EVENT_DEDUP_MS) {
+                return false;
+            }
+            lastSlimeMessage = normalized;
+            lastSlimeMessageAtMs = now;
+            return true;
+        }
+
+        if (normalized.equalsIgnoreCase(lastChestMessage) && (now - lastChestMessageAtMs) <= CHAT_EVENT_DEDUP_MS) {
+            return false;
+        }
+        lastChestMessage = normalized;
+        lastChestMessageAtMs = now;
+        return true;
+    }
+
+    private static boolean shouldCountCustomRuleEvent(String normalized, int index) {
+        long now = System.currentTimeMillis();
+        String lastMessage = lastCustomRuleMessages.get(index);
+        long lastAt = lastCustomRuleMessageAtMs.get(index);
+        if (normalized.equalsIgnoreCase(lastMessage) && (now - lastAt) <= CHAT_EVENT_DEDUP_MS) {
+            return false;
+        }
+        lastCustomRuleMessages.set(index, normalized);
+        lastCustomRuleMessageAtMs.set(index, now);
+        return true;
+    }
+
+    private static void ensureCustomRuleStateSize() {
+        int target = DrStandaloneMod.config().gemCustomRules == null ? 0 : DrStandaloneMod.config().gemCustomRules.size();
+        while (customRuleCounts.size() < target) customRuleCounts.add(0);
+        while (lastCustomRuleMessages.size() < target) lastCustomRuleMessages.add("");
+        while (lastCustomRuleMessageAtMs.size() < target) lastCustomRuleMessageAtMs.add(0L);
+        while (customRuleCounts.size() > target) customRuleCounts.remove(customRuleCounts.size() - 1);
+        while (lastCustomRuleMessages.size() > target) lastCustomRuleMessages.remove(lastCustomRuleMessages.size() - 1);
+        while (lastCustomRuleMessageAtMs.size() > target) lastCustomRuleMessageAtMs.remove(lastCustomRuleMessageAtMs.size() - 1);
     }
 
     private static boolean containsAnyConfiguredKeyword(String raw, String keywords, boolean blankMatchesAll) {
@@ -153,7 +242,17 @@ public final class GemMeterFeature {
         lines.add("Gained: " + formatCompact(gainedEmeralds) + "G");
         lines.add("G/h: " + formatCompact(getEmeraldsPerHour()));
         lines.add("Session: " + getSessionTimeString());
-        lines.add("Slime " + gainedSlimeballs + " | Chest " + gainedChests);
+        String sideCounters = buildSideCounters(config);
+        if (!sideCounters.isBlank()) {
+            lines.add(sideCounters);
+        }
+        ensureCustomRuleStateSize();
+        for (int i = 0; i < config.gemCustomRules.size(); i++) {
+            DrStandaloneConfig.GemCustomRule rule = config.gemCustomRules.get(i);
+            if (rule == null || "Disabled".equalsIgnoreCase(rule.parseMode)) continue;
+            String title = rule.title == null || rule.title.isBlank() ? "Custom " + (i + 1) : rule.title.trim();
+            lines.add(title + " " + customRuleCounts.get(i));
+        }
         lines.add("GF " + formatStat(findStats.gemFind()) + "% | IF " + formatStat(findStats.itemFind()) + "% | KF " + formatStat(findStats.keyFind()) + "%");
 
         int padding = 6;
@@ -188,6 +287,13 @@ public final class GemMeterFeature {
             else if (stack.isOf(net.minecraft.item.Items.EMERALD_BLOCK)) total += stack.getCount() * 9;
         }
         return total;
+    }
+
+    private static String buildSideCounters(DrStandaloneConfig config) {
+        List<String> chunks = new ArrayList<>();
+        if ("Chat".equalsIgnoreCase(config.slimeParseMode)) chunks.add("Slime " + gainedSlimes);
+        if ("Chat".equalsIgnoreCase(config.chestParseMode)) chunks.add("Chest " + gainedChests);
+        return String.join(" | ", chunks);
     }
 
     private static FindStats collectFindStats() {
@@ -232,15 +338,6 @@ public final class GemMeterFeature {
             String label = normalizeStatLabel(matcher.group(1));
             if (!targetLabel.equals(label)) continue;
             total += parseDouble(matcher.group(2)) + extractEnchantBonus(raw);
-        }
-        return total;
-    }
-
-    private static int countInventoryItem(Item item) {
-        int total = 0;
-        for (int i = 0; i < mc.player.getInventory().size(); i++) {
-            ItemStack stack = mc.player.getInventory().getStack(i);
-            if (!stack.isEmpty() && stack.isOf(item)) total += stack.getCount();
         }
         return total;
     }

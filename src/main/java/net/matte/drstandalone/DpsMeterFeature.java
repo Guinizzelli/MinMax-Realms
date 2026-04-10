@@ -20,6 +20,8 @@ import java.util.regex.Pattern;
 
 public final class DpsMeterFeature {
     private static final MinecraftClient mc = MinecraftClient.getInstance();
+    public static final int PREVIEW_WIDTH = 328;
+    public static final int PREVIEW_HEIGHT = 138;
 
     private static final double[] AVG_MOB_HP = {100, 85, 250, 700, 1750, 3800};
     // Median armor point estimate per tier based on 4 armor pieces (shield excluded),
@@ -69,6 +71,30 @@ public final class DpsMeterFeature {
         } else {
             drawSimulation(context, sim, width);
         }
+
+        context.getMatrices().pop();
+    }
+
+    public static void renderPreview(DrawContext context, int x, int y, double scale) {
+        context.getMatrices().push();
+        context.getMatrices().translate(x, y, 0);
+        context.getMatrices().scale((float) scale, (float) scale, 1);
+        drawPanel(context, PREVIEW_WIDTH, PREVIEW_HEIGHT);
+
+        int white = 0xFFE6E6E6;
+        drawCentered(context, "DPS Meter Preview", PREVIEW_WIDTH, 10, 0xFFE5983A);
+        context.drawText(mc.textRenderer, Text.literal("Weapon: Rogue Training Dagger"), 14, 26, 0xFFFFFFFF, false);
+        context.drawText(mc.textRenderer, Text.literal("Session DPS: 1432.8"), 14, 40, 0xFFA4D037, false);
+        context.drawText(mc.textRenderer, Text.literal("Target: T3  HP 100.0%"), 14, 54, white, false);
+        context.fill(14, 70, PREVIEW_WIDTH - 14, 71, 0xFF666666);
+        drawTwoCols(context, 14, 80,
+            chip("Drag this HUD to place it", 0xFF5D8BFF),
+            chip("Scale stays in config", 0xFFE5B73E)
+        );
+        drawTwoCols(context, 14, 96,
+            chip("ESC or Return = back", white),
+            chip("No live combat needed", 0xFF9BE370)
+        );
 
         context.getMatrices().pop();
     }

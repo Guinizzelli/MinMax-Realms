@@ -1,6 +1,8 @@
 package net.matte.drstandalone;
 
 import net.fabricmc.api.ClientModInitializer;
+import net.matte.drstandalone.autoaugment.AutoAugmentFeature;
+import net.matte.drstandalone.autoorbing.AutoOrbingFeature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,6 +24,8 @@ public class DrStandaloneMod implements ClientModInitializer {
         DrItemRollsFeature.init();
         DpsMeterFeature.init();
         GemMeterFeature.init();
+        AutoAugmentFeature.init();
+        AutoOrbingFeature.init();
 
         LOG.info("DR Standalone initialized.");
     }
